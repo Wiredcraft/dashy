@@ -1,0 +1,52 @@
+<script type='text/javascript'>
+$(function() {
+  Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":2,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1}]')
+  Dashing.widget_base_dimensions = [370, 340]
+  Dashing.numColumns = 5
+});
+</script>
+
+<% content_for(:title) { "Wiredash" } %>
+
+<div class="gridster">
+  <ul>
+    
+    <!-- Announcements -->
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="welcome" data-view="Text" data-title="Announcements" data-text="Hello im jamie" data-moreinfo="Smaller comment thing under the announcement"></div>
+    </li>
+
+    <!-- Time -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-view="Clock"></div>
+      <i class="icon-time icon-background"></i>
+    </li>
+
+    <!-- Countdown -->
+<!--     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-view="Countdown" data-title="Countdown!" data-end="22-May-2013 16:20:00"></div>
+    </li> -->
+
+    <!-- Weather -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="weather" data-view="Weather"></div>
+    </li>
+    
+    <!-- Twitter Feed -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="twitter_mentions" data-view="Twitter" style="background-color:#71388a;" data-moreinfo="Tweets mentioning @wiredcraft"></div>
+      <i class="icon-twitter icon-background"></i>
+    </li>
+
+    <!-- Issue List -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="github_issues" data-view="List" data-title="Open Issues in Repository" data-moreinfo="Top 5"></div>
+    </li>
+
+    <!-- Last Issue in Repo -->
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="gh_last_issue" data-view="Issue" data-title="Embarq Last Issue"></div>
+    </li>
+
+  </ul>
+</div>
