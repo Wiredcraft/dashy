@@ -1,6 +1,5 @@
 <script type='text/javascript'>
 $(function() {
-  Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":2,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1}]')
   Dashing.widget_base_dimensions = [370, 340]
   Dashing.numColumns = 5
 });
@@ -24,7 +23,7 @@ $(function() {
 
     <!-- Countdown -->
 <!--     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-view="Countdown" data-title="Countdown!" data-end="22-May-2013 16:20:00"></div>
+      <div data-view="Countdown" data-title="Countdown!" data-end="28-May-2013 16:20:00"></div>
     </li> -->
 
     <!-- Weather -->
@@ -40,12 +39,17 @@ $(function() {
 
     <!-- Issue List -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="github_issues" data-view="List" data-title="Open Issues in Repository" data-moreinfo="Top 5"></div>
+      <div data-id="github_issues" data-view="List" data-title="Open Issues in Repository"></div>
     </li>
 
     <!-- Last Issue in Repo -->
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="gh_last_issue" data-view="Issue" data-title="Embarq Last Issue"></div>
+      <div data-id="gh_last_issue" data-view="Issue" data-title="Latest Issue"></div>
+    </li>
+
+    <!-- Latest Milestone in Repo -->
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="gh_milestone" data-view="Test"></div>
     </li>
 
   </ul>

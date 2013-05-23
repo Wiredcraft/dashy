@@ -1,0 +1,20 @@
+<div data-foreach-item="values">
+
+<h1 class="title" data-bind="item.title"></h1>
+
+<h1 data-bind="timeleft" class="countdown-time"></h1>
+
+<ul class="list-nostyle">
+  <li>
+    <span class="issue">Open Issues:</span>
+    <span class="assignee" data-bind="item.open_issues"></span>
+    <p class="comment">Extra space to put more things! :D<p>
+  </li>
+</ul>
+
+<p class="before-more-info">Deadline:</p>
+<p class="more-info" data-bind="item.due_on"></p>
+<p class="updated-at" data-bind="updatedAtMessage"></p>
+
+</div>
+

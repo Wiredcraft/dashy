@@ -7,22 +7,13 @@ require 'uri'
 # ------
 github_username = 'wiredcraft'
 
-# show this many issues
-max_length = 5
+github_reponame = 'gwilcher'
 
 # order by (false for default github)
 ordered = true
 
-# list repos
-# /orgs/wiredcraft/repos
-
-# list issues for repo
-# "/repos/#{github_username}/#{repo_name}/issues"
-
-# curl -H "Authorization: token cf993c25daf7d73be73023cc088636bf930d8a0c" \https://api.github.com/path/to/info
-
 SCHEDULER.every '3m', :first_in => 0 do |job|
-  uri = uri = URI.parse("https://api.github.com/orgs/#{github_username}/repos")
+  uri = uri = URI.parse("https://api.github.com/repos/#{github_username}/#{github_reponame}/milestones")
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
   headers = { "Authorization" => "token cf993c25daf7d73be73023cc088636bf930d8a0c" }
@@ -37,16 +28,18 @@ SCHEDULER.every '3m', :first_in => 0 do |job|
     repos_issues = Array.new
     data.each do |repo|
       repos_issues.push({
-      label: repo['name'],
-      value: repo['open_issues_count']
+      title: repo['title'],
+      number: repo['number'],
+      due_on: repo['due_on'],
+      open_issues: repo['open_issues']
     })
     end
 
     if ordered
-      repos_issues = repos_issues.sort_by { |obj| -obj[:value] }
+      repos_issues = repos_issues.sort_by { |obj| -obj[:number] }
     end
 
-    send_event('github_issues', { items: repos_issues.slice(0, max_length) })
+    send_event('gh_milestone', { values: repos_issues.slice(0, 1) })
 
   end
 

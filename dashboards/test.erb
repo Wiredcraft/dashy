@@ -1,0 +1,27 @@
+<script type='text/javascript'>
+$(function() {
+  Dashing.widget_base_dimensions = [370, 340]
+  Dashing.numColumns = 5
+});
+</script>
+
+<% content_for(:title) { "Wiredash" } %>
+
+<div class="gridster">
+  <ul>
+    <!-- Dashboard to test new widgets, remove old ones before adding new ones        -->
+    <!-- Copy widgets from other dashboards to compare the new widget with old ones   -->
+
+
+    <!-- Last Issue in Repo -->
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="gh_last_issue" data-view="Issue" data-title="Latest Issue"></div>
+    </li>
+
+    <!-- Latest Milestone in Repo -->
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="gh_milestone" data-view="Test" data-title="Test"></div>
+    </li>
+
+  </ul>
+</div>
