@@ -31,7 +31,8 @@ SCHEDULER.every '3m', :first_in => 0 do |job|
       title: repo['title'],
       number: repo['number'],
       due_on: repo['due_on'],
-      open_issues: repo['open_issues']
+      open_issues: repo['open_issues'],
+      closed_issues: repo['closed_issues']
     })
     end
 

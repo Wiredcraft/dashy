@@ -5,7 +5,7 @@ class Dashing.Test extends Dashing.Widget
 
   startCountdown: =>
     current_timestamp = Math.round(new Date().getTime()/1000)
-    end_timestamp = Math.round( Date.parse($(@node).find(".more-info").html())/1000 )
+    end_timestamp = Math.round( Date.parse($(@node).find(".date").html())/1000 )
     seconds_until_end = end_timestamp - current_timestamp
     if seconds_until_end < 3600
       $(@node).parent().remove()

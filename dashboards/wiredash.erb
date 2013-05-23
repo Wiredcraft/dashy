@@ -12,7 +12,7 @@ $(function() {
     
     <!-- Announcements -->
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="welcome" data-view="Text" data-title="Announcement!" data-text="I am your dashboard. Bow before my might!" data-moreinfo="Small comment thing, but do not be fooled... I AM ALSO MIGHTY!"></div>
+      <div data-id="shout" data-view="Text" data-title="Announcement!" data-text="I am your dashboard. Bow before my might!" data-moreinfo="curl -d '{ 'auth_token': 'YOUR_AUTH_TOKEN', 'text': 'OMG I changed the text!' }' \http://<%=request.host%>:<%=request.port%>/widgets/shout"></div>
     </li>
 
     <!-- Time -->
