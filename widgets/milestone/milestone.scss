@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // Sass declarations
 // ----------------------------------------------------------------------------
-$background-color:  #007241;
+$background-color:  #205C8C;
 $value-color:       #fff;
 
 $title-color:       rgba(255, 255, 255, 0.7);
@@ -9,9 +9,9 @@ $label-color:       rgba(255, 255, 255, 0.7);
 $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
 // ----------------------------------------------------------------------------
-// Widget-issue styles
+// Widget-milestone styles
 // ----------------------------------------------------------------------------
-.widget-issue {
+.widget-milestone {
 
   background-color: $background-color;
   vertical-align: top;
@@ -58,6 +58,10 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
   .updated-at {
     color: rgba(0, 0, 0, 0.3);
+  }
+
+  .before-more-info {
+    color: $moreinfo-color;
   }
 
   .more-info {

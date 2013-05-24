@@ -12,7 +12,7 @@ $(function() {
     
     <!-- Announcements -->
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="shout" data-view="Text" data-title="Announcement!" data-text="I am your dashboard. Bow before my might!" data-moreinfo="curl -d '{ 'auth_token': 'YOUR_AUTH_TOKEN', 'text': 'OMG I changed the text!' }' \http://<%=request.host%>:<%=request.port%>/widgets/shout"></div>
+      <div data-id="shout" data-view="Text" data-title="Announcement!" data-text="I am your dashboard. Bow before my might!" data-moreinfo="curl -d ''{ 'auth_token': 'wiredauth', 'text': 'Change the announcement!' }'' \http://<%=request.host%>:<%=request.port%>/widgets/shout"></div>
     </li>
 
     <!-- Time -->
@@ -28,13 +28,13 @@ $(function() {
     
     <!-- Twitter Feed -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="twitter_mentions" data-view="Twitter" style="background-color:#71388a;" data-moreinfo="Tweets mentioning @wiredcraft"></div>
+      <div data-id="twitter_mentions" data-view="Twitter" style="background-color:#71388a;" data-moreinfo="Tweets mentioning @wiredcraft" data-extrainfo="updated every minute"></div>
       <i class="icon-twitter icon-background"></i>
     </li>
 
     <!-- Issue List -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="github_issues" data-view="List" data-title="Open Issues @ Wiredcraft"></div>
+      <div data-id="github_issues" data-view="List" data-title="Open Issues @ Wiredcraft" style="background-color:#71388a;"></div>
     </li>
 
     <!-- Last Issue in Repo -->
@@ -44,7 +44,7 @@ $(function() {
 
     <!-- Latest Milestone in Repo -->
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="gh_milestone" data-view="Test"></div>
+      <div data-id="gh_milestone" data-view="Milestone"></div>
     </li>
 
   </ul>

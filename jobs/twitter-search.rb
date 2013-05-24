@@ -9,7 +9,7 @@ end
  
 search_term = URI::encode('@wiredcraft')
  
-SCHEDULER.every '10m', :first_in => 0 do |job|
+SCHEDULER.every '60s', :first_in => 0 do |job|
   tweets = Twitter.search("#{search_term}").results
   if tweets
     tweets.map! do |tweet|

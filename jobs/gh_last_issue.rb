@@ -7,7 +7,7 @@ require 'uri'
 # ------
 github_username = 'wiredcraft'
 
-# List issues for this repo 
+# Last issue for this repo 
 repo_name = 'embarq'
 
 # show this many issues
