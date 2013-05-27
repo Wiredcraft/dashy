@@ -22,7 +22,7 @@ ordered = true
 # curl -H "Authorization: token cf993c25daf7d73be73023cc088636bf930d8a0c" \https://api.github.com/path/to/info
 
 SCHEDULER.every '3m', :first_in => 0 do |job|
-  uri = uri = URI.parse("https://api.github.com/orgs/#{github_username}/repos")
+  uri = uri = URI.parse("https://api.github.com/orgs/#{github_username}/repos?per_page=100")
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
   headers = { "Authorization" => "token cf993c25daf7d73be73023cc088636bf930d8a0c" }
