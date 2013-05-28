@@ -46,7 +46,7 @@ SCHEDULER.every '3m', :first_in => 0 do |job|
         title: "#{rpo}",
         issue: repo['title'],
         assignee: repo['user']['login'],
-        body: repo['body']
+        body: repo['body'].gsub( %r{</?[^>]+?>}, '' )
       })
       end
     end

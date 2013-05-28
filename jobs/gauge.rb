@@ -5,7 +5,16 @@ require 'uri'
 
 # Config
 # ------
-gauges_token = '63ebd419515ba26ec1b36a0c6281074d'
+gauges_token = 'fb42a9864d5b86f982629fb740f1114f'
+
+# Guages for token
+# ----------------
+# [0] = devo.ps
+# [1] = ShanghaiHN.org
+# [2] = shanghaios.org
+# [3] = teddy.fr
+# [4] = TheWineDrop.com
+use = 0
 
 # order by (false for default github)
 ordered = true
@@ -26,7 +35,7 @@ SCHEDULER.every '5m', :first_in => 0 do |job|
     puts "gaug.es api error (status-code: #{response.code})\n#{response.body}"
   else
 
-    gauge = data['gauges'][0]
+    gauge = data['gauges'][use]
     gtitle = gauge['title']
     current_count = gauge['today']['views']
     last_count = gauge['yesterday']['views']
