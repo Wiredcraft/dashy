@@ -44,7 +44,15 @@ Inside `/widgets` are folders for each style of widget you can use. Inside each 
 # Custom Widgets
 
 ### Current Custom Widgets
-- 
+* Issue
+* Issuecycle
+* Milestone - [.coffee source](https://gist.github.com/ruleb/5353056#file-countdown-coffee)
+* Twitter - [source](https://gist.github.com/jeroenbegyn/5419267)
+* Weather - [source](https://gist.github.com/davefp/4990174) 
+
+# Job Details
+
+Important Details for specific jobs.
 
 # Reference
 [Dashing Website](http://shopify.github.com/dashing) for more information.
