@@ -27,9 +27,10 @@ SCHEDULER.every '5m', :first_in => 0 do |job|
   else
 
     gauge = data['gauges'][0]
+    gtitle = gauge['title']
     current_count = gauge['today']['views']
     last_count = gauge['yesterday']['views']
 
-    send_event('gauge', { current: current_count, last: last_count })
+    send_event('gauge', { current: current_count, last: last_count, title: gtitle })
   end
 end
