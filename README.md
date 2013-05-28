@@ -41,5 +41,10 @@ Within the `<li data-row=…>` you place a `<div>`, this is where you hook your 
 ### Widgets
 Inside `/widgets` are folders for each style of widget you can use. Inside each folder you will find an `.html` file, `.coffee` file and a `.scss` file. These three files determine what data is shown on a widget and what the widget looks like.
 
+# Custom Widgets
+
+### Current Custom Widgets
+- 
+
 # Reference
 [Dashing Website](http://shopify.github.com/dashing) for more information.
