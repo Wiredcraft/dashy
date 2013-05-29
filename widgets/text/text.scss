@@ -14,7 +14,12 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
   background-color: $background-color;
 
   .title {
+    font-size: 35px;
     color: $title-color;
+  }
+
+  .textbody {
+    font-size: 30px;
   }
 
   .more-info {

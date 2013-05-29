@@ -7,7 +7,7 @@ require 'uri'
 # ------
 github_username = 'wiredcraft'
 
-github_reponame = 'gwilcher'
+github_reponame = 'dashboard'
 
 # order by (false for default github)
 ordered = true

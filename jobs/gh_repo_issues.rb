@@ -8,7 +8,7 @@ require 'uri'
 github_username = 'wiredcraft'
 
 # Last issue for this repo 
-repo_names = ['embarq', 'gwilcher', 'hnshanghai']
+repo_names = ['embarq', 'dashboard', 'hnshanghai']
 
 # show this many issues per repo
 max_length = 1

@@ -1,6 +1,6 @@
 <script type='text/javascript'>
 $(function() {
-  Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":2,"size_y":1},{"col":4,"row":2,"size_x":2,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":2,"size_y":1}]')
+  Dashing.gridsterLayout('[{"col":2,"row":1,"size_x":2,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":1},{"col":4,"row":1,"size_x":1,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":2},{"col":2,"row":2,"size_x":3,"size_y":1},{"col":5,"row":2,"size_x":1,"size_y":1},{"col":2,"row":3,"size_x":1,"size_y":1},{"col":3,"row":3,"size_x":2,"size_y":1},{"col":5,"row":3,"size_x":1,"size_y":1}]')
   Dashing.widget_base_dimensions = [370, 340]
   Dashing.numColumns = 5
 });
@@ -34,17 +34,17 @@ $(function() {
     </li>
 
     <!-- Issue List -->
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
       <div data-id="github_issues" data-view="List" data-title="Open Issues @ Wiredcraft" style="background-color:#71388a;"></div>
     </li>
 
     <!-- Cycling Issue Widget -->
-    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+    <li data-row="1" data-col="1" data-sizex="3" data-sizey="1">
       <div data-id="gh_repo_issues" data-view="Issuecycle">
     </li>
 
     <!-- Latest Milestone in Repo -->
-    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
       <div data-id="gh_milestone" data-view="Milestone"></div>
     </li>
 
@@ -57,6 +57,11 @@ $(function() {
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
       <div data-id="graph_prev" data-view="Graph" data-title="Demo Graph" style="background-color:#ff9618"></div>
     </li>
+
+    <!-- Logo -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-view="Image" data-image="/logo.png" data-width="275" style="background-color:#71388a"></div>
+    </li>    
 
   </ul>
 </div>

@@ -8,7 +8,7 @@ require 'uri'
 github_username = 'wiredcraft'
 
 # show this many issues
-max_length = 5
+max_length = 12
 
 # order by (false for default github)
 ordered = true
