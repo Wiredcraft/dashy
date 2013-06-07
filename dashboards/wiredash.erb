@@ -13,54 +13,74 @@ $(function() {
     
     <!-- Announcements -->
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="shout" data-view="Text" data-title="Announcement!" data-text="I am your dashboard. Bow before my might!" data-moreinfo="curl -d ''{ 'auth_token': 'wiredauth', 'text': 'Change the announcement!' }'' \http://<%=request.host%>:<%=request.port%>/widgets/shout 'text' 'title' and 'moreinfo' are possible params to change"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="shout" data-view="Text" data-title="Announcement!" data-text="I am your dashboard. Bow before my might!" data-moreinfo="curl -d ''{ 'auth_token': 'wiredauth', 'text': 'Change the announcement!' }'' \http://<%=request.host%>:<%=request.port%>/widgets/shout 'text' 'title' and 'moreinfo' are possible params to change"></div>
+      </div>
     </li>
 
     <!-- Time -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-view="Clock"></div>
-      <i class="icon-time icon-background"></i>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-view="Clock"></div>
+        <i class="icon-time icon-background"></i>
+      </div>
     </li>
 
     <!-- Weather -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="weather" data-view="Weather"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="weather" data-view="Weather"></div>
+      </div>
     </li>
     
     <!-- Twitter Feed -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="twitter_mentions" data-view="Twitter" style="background-color:#71388a;" data-moreinfo="Tweets mentioning @wiredcraft" data-extrainfo="updated every minute"></div>
-      <i class="icon-twitter icon-background"></i>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="twitter_mentions" data-view="Twitter" style="background-color:#71388a;" data-moreinfo="Tweets mentioning @wiredcraft" data-extrainfo="updated every minute"></div>
+        <i class="icon-twitter icon-background"></i>
+      </div>
     </li>
 
     <!-- Issue List -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
-      <div data-id="github_issues" data-view="List" data-title="Open Issues @ Wiredcraft" style="background-color:#71388a;"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="github_issues" data-view="List" data-title="Open Issues @ Wiredcraft" style="background-color:#71388a;"></div>
+      </div>
     </li>
 
     <!-- Cycling Issue Widget -->
     <li data-row="1" data-col="1" data-sizex="3" data-sizey="1">
-      <div data-id="gh_repo_issues" data-view="Issuecycle">
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="gh_repo_issues" data-view="Issuecycle">
+      </div>
     </li>
 
     <!-- Latest Milestone in Repo -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="gh_milestone" data-view="Milestone"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="gh_milestone" data-view="Milestone"></div>
+      </div>
     </li>
 
     <!-- Gaug.es View Count -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="gauge" data-view="Number" data-title="Views" data-moreinfo="Today vs Yesterday" style="background-color:#13857D;"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="gauge" data-view="Number" data-title="Views" data-moreinfo="Today vs Yesterday" style="background-color:#13857D;"></div>
+      </div>
     </li>
 
     <!-- Graph Demo -->
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="graph_prev" data-view="Graph" data-title="Demo Graph" style="background-color:#ff9618"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-id="graph_prev" data-view="Graph" data-title="Demo Graph" style="background-color:#ff9618"></div>
+      </div>
     </li>
 
     <!-- Logo -->
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-view="Image" data-image="/logo.png" data-width="275" style="background-color:#71388a"></div>
+      <div style="display: table; width: 100%; height: 100%;">
+        <div data-view="Image" data-image="/logo.png" data-width="275" style="background-color:#71388a"></div>
+      </div>
     </li>    
 
   </ul>

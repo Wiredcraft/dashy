@@ -116,6 +116,11 @@ h3 {
   margin: 0px auto;
 }
 
+.gridster li {
+    overflow: hidden;
+    display:  list-item;
+}
+
 .icon-background {
   width: 100%!important;
   height: 100%;
