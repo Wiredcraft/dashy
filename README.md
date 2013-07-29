@@ -1,5 +1,5 @@
 ##Install these first!
-NPM & Grunt must be installed, Ruby must be installed for gems.
+NPM & Grunt must be installed, Ruby must be installed for the compass gem.
 
 Compass -	`gem update && gem install compass`
 
@@ -12,10 +12,8 @@ Compass -	`gem update && gem install compass`
 5. Go to `http://localhost:4000/`
 6. Optional: Open a new terminal window and run grunt when working on css
 
-##Terms
-`widget` - a tile on the dashboard.
-
-`visualization` - visual parts which make up a widget, not including the title/heading.
+## In progress
+Admin interface - working on ability to add new widget. Changed 2 directives to use source the normal way. Need method to show different options per selected template during widget creation. (eg. If user selects a list then a box should appear that allows users to limit the list to however many entries.)
 
 ##API
 
