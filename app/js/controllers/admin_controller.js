@@ -1,6 +1,7 @@
 angular.module('Dashboard.Admin', [])
 
-// Adding controller
+// Add Widget controller
+// Work in progress
 .controller('AddCtrl', ['$scope', 'Sources', '$http',
     function($scope, Sources, $http) {
 
@@ -54,7 +55,6 @@ angular.module('Dashboard.Admin', [])
                     "data-sizey": widget.layout.data_sizey
                 }
             }
-
             console.log($scope.realWidget);
 
             // $scope.test = {

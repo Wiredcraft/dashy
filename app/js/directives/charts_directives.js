@@ -58,7 +58,7 @@ angular.module('Dashboard.Charts', [])
             data: '@',
             templates: '@'
         },
-        templateUrl: 'templates/countdown2.html',
+        templateUrl: 'templates/countdown.html',
         controller: function($scope, $element, $timeout) {
             var oDate = JSON.parse($scope.templates).countdown,
                 timer = function () {
@@ -225,9 +225,6 @@ angular.module('Dashboard.Charts', [])
                 $scope.builds = true;
             };
 
-            // console.log(array)
-            // axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
-
             // Data into scope
             if (nLimit) {   // if has limit attr
                 $scope.list = array.splice(0, nLimit);
@@ -268,7 +265,6 @@ angular.module('Dashboard.Charts', [])
         templateUrl: 'templates/picture.html',
         controller: function($scope, $element) {
             var sData = JSON.parse($scope.data),
-                tmpls = JSON.parse($scope.templates),
                 image = sData[0].value.image;
 
             $scope.imageUrl = image;
