@@ -1,0 +1,60 @@
+<link data-require="bootstrap-css@2.3.2" data-semver="2.3.2" rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" />
+
+<div class="row-fluid">
+    <div class="span3 offset2">
+
+    <form name='form' novalidate>
+        <h3>Configuration</h3>
+
+        <label>ID</label>
+            <input class='span' type='text' ng-model='widget._id' required>
+
+        <label>Refresh</label>
+            <input class='span' type='number' ng-model='widget.config.refresh' required>
+
+        <label>Source</label>
+            <select class='span' ng-model='widget.config.source' required>
+                <option disabled value='pick'>Pick one...</option>
+                <option value=''>None</option>
+                <option ng-repeat='item in sources' value='{{item.id}}'>{{item.id}}</option>
+            </select>
+
+        <label>Title</label>
+            <input class='span' type='text' ng-model='widget.content.title' required>
+
+        <label>Templates</label>
+            <select class='span' ng-model='widget1' required>
+                <option disabled value=''>Pick one...</option>
+                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+            </select>
+            <select class='span' ng-model='widget2'>
+                <option disabled value=''>None (I only want 1 template)</option>
+                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+            </select>
+
+        <label>{{widget1}} Options</label>
+            <input class='span' type='text' ng-model='widget.test' required>
+
+        <label>{{widget2}} Options</label>
+            <input class='span' type='text' ng-model='widget.tests' required>
+
+        <label>Layout</label>
+            <input class='span' type='number' ng-model='widget.layout.data_row' placeholder='Row Position' required>
+            <input class='span' type='number' ng-model='widget.layout.data_col' placeholder='Column Position' required>
+            <input class='span' type='number' ng-model='widget.layout.data_sizex' placeholder='Width Size' required>
+            <input class='span' type='number' ng-model='widget.layout.data_sizey' placeholder='Height Size' required>
+
+        <button ng-click='addWidget(widget)'>Test</button>
+    </form>
+
+
+    </div>
+
+    <div class="span5" style="padding-top:85px;">
+<pre>
+{{widget | json}}
+</pre>
+    </div>
+
+</div>
+

@@ -1,0 +1,10 @@
+<ul>
+    <li class="widget" ng-repeat="widget in widgets">
+        <header><h1>{{widget.value.content.title}}</h1></header>
+        <widget 
+            templates={{widget.value.content.templates}}
+            data={{widget.value.data}}
+            layout={{widget.value.layout}}>
+        </widget>
+    </li>
+</ul>

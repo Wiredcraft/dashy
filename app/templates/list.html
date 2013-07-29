@@ -1,0 +1,9 @@
+<ul class='list'>
+    <li ng-repeat='item in list'>
+            <span ng-show='builds' class='{{item.status}} status'></span>
+            <img ng-hide='builds' src="{{item.img}}" />
+            <p class='title'>{{item.title}}</p>
+            <p ng-hide='builds' class='time'>{{item.time}}</p>
+            <p ng-show='builds' class='stat'>{{item.status | upperCase}}</p>
+    </li>
+</ul>

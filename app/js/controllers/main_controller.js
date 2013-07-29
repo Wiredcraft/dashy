@@ -1,0 +1,35 @@
+angular.module('Dashboard.Controllers', [])
+
+// Main controller
+.controller('MainAppCtrl', ['$scope', 'Widgets',
+    function($scope, Widgets) {
+        // get widget's info
+        var getWidgetData = function () {
+            angular.forEach($scope.widgets, function (widget, index) {
+                var source = widget.value.config.source;
+
+                // for countdown widget we dont need couchdb source
+                if (angular.isObject(source)) {
+                    widget['value']['data'] = source;
+                } else {
+                    Widgets.getWidgetData(source).then(function(data) {
+                        widget['value']['data'] = data;
+                    }, function(err) {
+                        console.log(err);
+                    })
+                }
+            })
+        }      
+
+        // get widget list info
+        Widgets.getWidgetList().then(function(data) {
+            $scope.widgets = data;
+            
+            // get widget's info
+            getWidgetData();
+        }, function(err) {
+            console.log(err);
+        })
+
+    }
+])
