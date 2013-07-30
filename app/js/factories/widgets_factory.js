@@ -51,3 +51,21 @@ angular.module('Dashboard.Models', [])
 
     return Sources;
 }])
+.factory('Admin', ['$http', '$q', function($http, $q) {
+    var Admin = {},
+    apiUrl = 'http://127.0.0.1:4000/widget/';
+
+    Admin.deleteWidget = function(id) {
+        var deferred = $q.defer();
+
+        $http.delete(apiUrl + id).success(function(data) {
+            deferred.resolve(data);
+        }).error(function(err) {
+            deferred.reject(err);
+        })
+
+        return deferred.promise;
+    };
+
+    return Admin;
+}])

@@ -9,13 +9,26 @@ angular.module('Dashboard.Tags', [])
             widgets: '='
         },
         templateUrl: 'partials/widgets.html',
-        controller: function($rootScope, $scope, $element) {
+        controller: function($rootScope, $scope, $element, Admin) {
             // cache it for global use
             $rootScope.gridster = $element.gridster({
                 widget_margins: [5, 5], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
-                min_cols: 12
+                min_cols: 12,
+                draggable: {handle: '.handle'}
             }).data('gridster');
+            // $rootScope.gridster.disable();
+
+            $scope.updateWidget = function(id, rev) {
+                console.log(id);
+                console.log(rev);
+            }
+
+            $scope.deleteWidget = function(id) {
+                console.log(id);
+                Admin.deleteWidget(id);
+            }
+
         }
     };
 })

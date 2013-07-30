@@ -60,6 +60,11 @@ ul, ol{
             color: rgb(139, 139, 139);
             font-size: inherit;
             margin: 0;
+            float: left;
+        }
+        span {
+            float: right;
+            margin-right: 5px;
         }
     }
     .widget-body{

@@ -3,6 +3,7 @@ angular.module('Dashboard.Controllers', [])
 // Main controller
 .controller('MainAppCtrl', ['$scope', 'Widgets',
     function($scope, Widgets) {
+
         // get widget's info
         var getWidgetData = function () {
             angular.forEach($scope.widgets, function (widget, index) {
@@ -14,6 +15,7 @@ angular.module('Dashboard.Controllers', [])
                 } else {
                     Widgets.getWidgetData(source).then(function(data) {
                         widget['value']['data'] = data;
+                        // console.log(widget); // Data available at partials/widgets.html
                     }, function(err) {
                         console.log(err);
                     })
@@ -29,7 +31,7 @@ angular.module('Dashboard.Controllers', [])
             getWidgetData();
         }, function(err) {
             console.log(err);
-        })
+        })      
 
     }
 ])

@@ -61,10 +61,10 @@ angular.module('Dashboard.Admin', [])
         $scope.widget = {};
         $scope.realWidget;
         $scope.addWidget = function(widget, options){
-            var temp1 = options.template1,
-                temp2 = options.template2,
-                dir1 = {},
-                dir2 = {};
+            var temp1 = options.template1;
+            var temp2 = options.template2;
+            var dir1 = {};
+            var dir2 = {};
 
             // Construct Widget
             // >>>>>>>>>>>>>>>>
