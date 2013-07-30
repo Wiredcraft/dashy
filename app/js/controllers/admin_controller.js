@@ -63,6 +63,9 @@ angular.module('Dashboard.Admin', [])
             var dir1 = {};
             var dir2 = {};
 
+
+            // Construct Widget
+            // >>>>>>>>>>>>>>>>
             $scope.realWidget = {
                 "_id" : widget._id,
                 "config": {
@@ -81,6 +84,14 @@ angular.module('Dashboard.Admin', [])
                 }
             }
 
+            // Check Source Value
+            // >>>>>>>>>>>>>>>>>>
+            if(widget.config.source == undefined) {
+                widget.config.source = " ";
+            }
+
+            // Prepare Template Options
+            // >>>>>>>>>>>>>>>>>>>>>>>>
             for(i = 0; i < $scope.template1.length; i++) {
                 console.log($scope.template1[i]);
                 dir1[$scope.template1[i].key] = $scope.template1[i].value;
@@ -99,11 +110,13 @@ angular.module('Dashboard.Admin', [])
 
             console.log($scope.realWidget);
 
-            // $http.post('http://127.0.0.1:4000/widget', $scope.test).success(function(response) {
-            //     console.log(response);
-            // }).error(function(err) {
-            //     console.log(err);
-            // });
+            // POST to Database
+            // >>>>>>>>>>>>>>>>
+            $http.post('http://127.0.0.1:4000/widget', $scope.realWidget).success(function(response) {
+                console.log(response);
+            }).error(function(err) {
+                console.log(err);
+            });
 
         }
 
