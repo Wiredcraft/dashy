@@ -1,10 +1,10 @@
 angular.module('Dashboard.Admin', [])
 
-// Add Widget controller
-// Work in progress
 .controller('AddCtrl', ['$scope', 'Sources', '$http',
     function($scope, Sources, $http) {
 
+        // List of possible templates
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>
         $scope.dbWidgets = {
             "linechart": {
                 "points": 0
@@ -33,6 +33,9 @@ angular.module('Dashboard.Admin', [])
                 "subtitle": ""
             }
         }
+
+        // Get list of useable datasources
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         $scope.sources = Sources.getSources();
 
 
@@ -58,11 +61,10 @@ angular.module('Dashboard.Admin', [])
         $scope.widget = {};
         $scope.realWidget;
         $scope.addWidget = function(widget, options){
-            var temp1 = options.template1;
-            var temp2 = options.template2;
-            var dir1 = {};
-            var dir2 = {};
-
+            var temp1 = options.template1,
+                temp2 = options.template2,
+                dir1 = {},
+                dir2 = {};
 
             // Construct Widget
             // >>>>>>>>>>>>>>>>
@@ -93,17 +95,12 @@ angular.module('Dashboard.Admin', [])
             // Prepare Template Options
             // >>>>>>>>>>>>>>>>>>>>>>>>
             for(i = 0; i < $scope.template1.length; i++) {
-                console.log($scope.template1[i]);
                 dir1[$scope.template1[i].key] = $scope.template1[i].value;
             }
 
             for(i = 0; i < $scope.template2.length; i++) {
-                console.log($scope.template2[i]);
                 dir2[$scope.template2[i].key] = $scope.template2[i].value;
             }
-
-            console.log('dir1 = ', dir1);
-            console.log('dir2 = ', dir2);
 
             $scope.realWidget.content.templates[temp1] = dir1;
             $scope.realWidget.content.templates[temp2] = dir2;
