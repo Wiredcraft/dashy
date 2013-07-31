@@ -119,13 +119,23 @@ angular.module('Dashboard.Admin', [])
 .controller('UpdateCtrl', ['$scope', '$http', '$location', 'Admin', 'Sources', 'Widgets',
     function($scope, $http, $location, Admin, Sources, Widgets) {
 
+        // Get widget to update ID
+        // >>>>>>>>>>>>>>>>>>>>>>>
         var id = $location.hash();
-        console.log(id);
-        $scope.test = id;
+        $scope.thisId = id;
 
-        var widgets = Widgets.getWidgetList();
-        $scope.widgets = widgets;
-        console.log('widgets = ', widgets)
+        // Get Widgets list, find correct one
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        Widgets.getWidgetList().then(function(data) {
+            var selectedWidget;
+            angular.forEach(data, function(data) {
+                if (id == data.id) {
+                    selectedWidget = data;
+                }
+            });
+            $scope.widgets = selectedWidget;
+            // console.log(selectedWidget.value);
+        });
 
     }
 ])

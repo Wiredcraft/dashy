@@ -20,11 +20,7 @@ angular.module('Dashboard.Tags', [])
             // $rootScope.gridster.disable()
 
             $scope.updateWidget = function(id, rev) {
-                console.log(id);
-                console.log(rev);
-                // console.log($location.path());
                 $location.path('update').hash(id);
-
             };
 
             $scope.deleteWidget = function(id) {
