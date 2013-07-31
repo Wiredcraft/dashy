@@ -1,10 +1,13 @@
 <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
 
+<h2 class='offset1'><i class='icon-cog'></i> Configuration</h2>
+
+<hr class='span12' />
+
 <div class="row-fluid">
-    <div class="span3 offset2">
+    <div class="span3 offset1">
 
     <form name='form' novalidate>
-        <h3>Configuration</h3>
 
         <label>ID</label>
             <input class='span' type='text' ng-model='widget._id' required>
@@ -53,7 +56,7 @@
             <input class='span' type='number' ng-model='widget.layout.data_sizey' placeholder='Height Size' required>
 
         <button class='btn btn-primary btn-block btn-large' ng-click='addWidget(widget, options)'>
-            <i class='icon-ok icon-white'></i> 
+            <i class='icon-ok'></i> 
             Add Widget
         </button>
     </form>
@@ -61,7 +64,7 @@
 
     </div>
 
-    <div class="span5" style="padding-top:85px;">
+    <div class="span7">
 Widget
 <pre>
 {{widget | json}}

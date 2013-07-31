@@ -38,7 +38,6 @@ angular.module('Dashboard.Admin', [])
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         $scope.sources = Sources.getSources();
 
-
         // Template Options
         // >>>>>>>>>>>>>>>>
         $scope.template1 = [];
@@ -134,7 +133,7 @@ angular.module('Dashboard.Admin', [])
                 }
             });
             $scope.widgets = selectedWidget;
-            // console.log(selectedWidget.value);
+            console.log(selectedWidget);
         });
 
     }

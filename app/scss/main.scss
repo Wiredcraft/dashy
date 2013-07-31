@@ -215,23 +215,6 @@ text.subtitle{
     fill: #d3d4d4;
 }
 
-/* Gauge */
-#power-gauge g.arc {
-    fill: steelblue;
-}
-
-#power-gauge g.pointer {
-    fill: #FF9900;
-    stroke: #E38800;
-}
-
-#power-gauge g.label text {
-    text-anchor: middle;
-    font-size: 14px;
-    font-weight: bold;
-    fill: #666;
-}
-
 /* Picture */
 .picture {
     display: block;

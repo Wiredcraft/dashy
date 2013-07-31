@@ -1,7 +1,91 @@
 <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
 
-<h1 class='offset1'>Updating Widget - ID : {{thisId}}</h1>
+<!-- Testing Toastr -->
+<link rel="stylesheet" type="text/css" href="../css/toastr.css">
+<script src="../lib/toastr.js"></script>
 
-<pre class='span9 offset1'>
+
+<h2 class='offset1'><i class='icon-wrench'></i> Updating Widget - ID : {{thisId}}</h2>
+
+<hr class='span12' />
+
+<div class="row-fluid">
+    <div class="span3 offset1">
+
+    <form name='form' novalidate>
+
+        <label>ID</label>
+            <input class='span' type='text' ng-model='widget._id' required>
+
+        <label>Refresh</label>
+            <input class='span' type='number' ng-model='widget.config.refresh' required>
+
+        <label>Source</label>
+            <select class='span' ng-model='widget.config.source' required>
+                <option disabled value='pick'>Pick one...</option>
+                <option value=''>None</option>
+                <option ng-repeat='item in sources' value='{{item.id}}'>{{item.id}}</option>
+            </select>
+
+        <label>Title</label>
+            <input class='span' type='text' ng-model='widget.content.title' required>
+
+        <label>Templates</label>
+            <select class='span' ng-model='options.template1' required>
+                <option disabled value=''>Pick one...</option>
+                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+            </select>
+            <select class='span' ng-model='options.template2'>
+                <option disabled value=''>None (I only want 1 template)</option>
+                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+            </select>
+
+        <label>{{options.template1}} Options</label>
+            <input class='span' type='text' ng-model='template1.key' placeholder='Option Name' required>
+            <div class='input-append'>
+                <input class='span' type='text' ng-model='template1.value' placeholder='Option Value' required>
+                <button class='btn' ng-click='template1Option(template1)'>Add</button>
+            </div>
+
+        <label>{{options.template2}} Options</label>
+            <input class='span' type='text' ng-model='template2.key' placeholder='Option Name' required>
+            <div class='input-append'>
+                <input class='span' type='text' ng-model='template2.value' placeholder='Option Value' required>
+                <button class='btn' ng-click='template2Option(template2)'>Add</button>
+            </div>
+
+        <label>Layout</label>
+            <input class='span' type='number' ng-model='widget.layout.data_row' placeholder='Row Position' required>
+            <input class='span' type='number' ng-model='widget.layout.data_col' placeholder='Column Position' required>
+            <input class='span' type='number' ng-model='widget.layout.data_sizex' placeholder='Width Size' required>
+            <input class='span' type='number' ng-model='widget.layout.data_sizey' placeholder='Height Size' required>
+
+        <button class='btn btn-success btn-block btn-large' ng-click='addWidget(widget, options)'>
+            <i class='icon-refresh icon-spin'></i> 
+            Update Widget
+        </button>
+    </form>
+
+
+    </div>
+
+    <div class="span7">
+Widget
+<pre>
 {{widgets | json}}
 </pre>
+
+<label>{{options.template1}} Options</label>
+<pre>
+{{template1 | json}}
+</pre>
+
+<label>{{options.template2}} Options</label>
+<pre>
+{{template2 | json}}
+</pre>
+    </div>
+
+</div>
+
+<button class='btn btn-large btn-danger span3 offset1' ng-click='toastr()'>Test Toastr</button>
