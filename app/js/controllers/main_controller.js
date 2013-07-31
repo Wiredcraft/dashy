@@ -1,8 +1,8 @@
 angular.module('Dashboard.Controllers', [])
 
 // Main controller
-.controller('MainAppCtrl', ['$scope', 'Widgets',
-    function($scope, Widgets) {
+.controller('MainAppCtrl', ['$scope', 'Widgets', '$rootScope',
+    function($scope, Widgets, $rootScope) {
 
         // get widget's info
         var getWidgetData = function () {

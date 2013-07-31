@@ -9,25 +9,31 @@ angular.module('Dashboard.Tags', [])
             widgets: '='
         },
         templateUrl: 'partials/widgets.html',
-        controller: function($rootScope, $scope, $element, Admin) {
+        controller: function($rootScope, $scope, $element, $location, Admin) {
             // cache it for global use
             $rootScope.gridster = $element.gridster({
                 widget_margins: [5, 5], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
-                min_cols: 12,
-                draggable: {handle: '.handle'}
+                min_cols: 12
+                // draggable: {handle: '.handle'}
             }).data('gridster');
-            // $rootScope.gridster.disable();
+            // $rootScope.gridster.disable()
 
             $scope.updateWidget = function(id, rev) {
                 console.log(id);
                 console.log(rev);
-            }
+                // console.log($location.path());
+                $location.path('update').hash(id);
+
+            };
 
             $scope.deleteWidget = function(id) {
-                console.log(id);
-                Admin.deleteWidget(id);
-            }
+                var yes = confirm('Delete this widget? This action cannot be undone.')
+                if (yes) {
+                    Admin.deleteWidget(id);
+                    document.location.reload(true);
+                }
+            };
 
         }
     };

@@ -63,8 +63,22 @@ ul, ol{
             float: left;
         }
         span {
-            float: right;
-            margin-right: 5px;
+            /*float: right;*/
+            button {
+                background-color: rgb(39, 39, 39);
+                color: rgba(139, 139, 139, 0.2);
+                border: none;
+                height: 51px;
+                width: 40px;
+            }
+            button:hover {
+                background-color: rgb(42, 42, 42);
+                color: rgba(139, 139, 139, 1);
+            }
+            button:active {
+                background-color: rgb(39, 39, 39);
+                color: rgba(139, 139, 139, 0.2); 
+            }
         }
     }
     .widget-body{

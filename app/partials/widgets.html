@@ -1,12 +1,17 @@
 <ul>
     <li class="widget" ng-repeat="widget in widgets">
         <header>
-            <h1 class='handle'>{{widget.value.content.title}}</h1>
+            <h1>{{widget.value.content.title}}</h1>
+
             <span>
-                <button ng-click='updateWidget(widget.id, widget.key)'>U</button>
-                <button ng-click='deleteWidget(widget.id)'>X</button>
-                <button class='handle'>M</button>
+                <button ng-click='updateWidget(widget.id, widget.key)'>
+                    <i class='icon-wrench icon-large'></i>
+                </button>
+                <button ng-click='deleteWidget(widget.id)'>
+                    <i class='icon-trash icon-large'></i>
+                </button>
             </span>
+
         </header>
         <widget
             templates={{widget.value.content.templates}}

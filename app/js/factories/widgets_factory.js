@@ -33,6 +33,7 @@ angular.module('Dashboard.Models', [])
 
     return Widgets;
 }])
+
 .factory('Sources', ['$http', '$q', function($http, $q) {
     var Sources = {},
         apiUrl = 'http://127.0.0.1:4000/sources';
@@ -51,9 +52,26 @@ angular.module('Dashboard.Models', [])
 
     return Sources;
 }])
+
 .factory('Admin', ['$http', '$q', function($http, $q) {
     var Admin = {},
     apiUrl = 'http://127.0.0.1:4000/widget/';
+
+    Admin.addWidget = function(data) {
+        var deferred = $q.defer();
+
+        console.log(data);
+
+        $http.post(apiUrl, data).success(function(response) {
+            deferred.resolve(data);
+            console.log(response);
+        }).error(function(err) {
+            deferred.reject(err);
+            console.log(err);
+        });
+
+        return deferred.promise;
+    };
 
     Admin.deleteWidget = function(id) {
         var deferred = $q.defer();

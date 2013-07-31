@@ -1,7 +1,7 @@
 angular.module('Dashboard.Admin', [])
 
-.controller('AddCtrl', ['$scope', 'Sources', '$http',
-    function($scope, Sources, $http) {
+.controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
+    function($scope, $http, Admin, Sources) {
 
         // List of possible templates
         // >>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -109,13 +109,23 @@ angular.module('Dashboard.Admin', [])
 
             // POST to Database
             // >>>>>>>>>>>>>>>>
-            $http.post('http://127.0.0.1:4000/widget', $scope.realWidget).success(function(response) {
-                console.log(response);
-            }).error(function(err) {
-                console.log(err);
-            });
+            Admin.addWidget($scope.realWidget);
 
         }
+
+    }
+])
+
+.controller('UpdateCtrl', ['$scope', '$http', '$location', 'Admin', 'Sources', 'Widgets',
+    function($scope, $http, $location, Admin, Sources, Widgets) {
+
+        var id = $location.hash();
+        console.log(id);
+        $scope.test = id;
+
+        var widgets = Widgets.getWidgetList();
+        $scope.widgets = widgets;
+        console.log('widgets = ', widgets)
 
     }
 ])

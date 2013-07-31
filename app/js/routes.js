@@ -25,6 +25,9 @@ var DashboardApp = angular.module('Dashboard', [
         }).when('/add', {
             templateUrl: 'partials/addwidget.html',
             controller: 'AddCtrl'
+        }).when('/update', {
+            templateUrl: 'partials/updatewidget.html',
+            controller: 'UpdateCtrl'
         }).otherwise({
             redirectTo: '/404'
         });
