@@ -79,7 +79,6 @@ angular.module('Dashboard.Models', [])
             console.log(response);
         }).error(function(err) {
             deferred.reject(err);
-            console.log(err);
         });
 
         return deferred.promise;
@@ -90,6 +89,7 @@ angular.module('Dashboard.Models', [])
 
         $http.delete(apiUrl + id).success(function(data) {
             deferred.resolve(data);
+            console.log(data);
         }).error(function(err) {
             deferred.reject(err);
         });
@@ -100,15 +100,11 @@ angular.module('Dashboard.Models', [])
     Admin.updateWidget = function(id, data) {
         var deferred = $q.defer();
 
-        console.log('id =', id);
-        console.log('data =', data);
-
         $http.put(apiUrl + id, data).success(function(data) {
             deferred.resolve(data);
             console.log(data);
         }).error(function(err) {
             deferred.reject(err);
-            console.log(err);
         });
 
         return deferred.promise;
