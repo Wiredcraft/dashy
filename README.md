@@ -12,12 +12,14 @@ Compass -	`gem update && gem install compass`
 5. Go to `http://localhost:4000/`
 6. Optional: Open a new terminal window and run grunt when working on css
 
-## In progress
-Admin interface - working on ability to add new widget. Changed 2 directives to use source the normal way. Need method to show different options per selected template during widget creation. (eg. If user selects a list then a box should appear that allows users to limit the list to however many entries.)
+## Admin Interface
+TBD
 
 ##API
 
 `/widget` - returns list of widgets
+
+`/widget/:id` - returns a widget by Id
 
 `/sources` - returns list of sources (must be manually set up, settings.js)
 
@@ -81,26 +83,7 @@ It is recommended that this be the first thing you do as this will create the Co
 
 
 ##Files
-`main_controller.js` - main controller for the app, calls for data and passes it to directives and more...
-
-`charts_directives.js` - directives for each visualization.
-
-`tags_directives.js` - directives for the widget and widgets html tags, responsible for placing gridster and its elements (the widgets) onto the page.
-
-`formatters.js` - Contains formatters that can be used by directives to reformat data. As opposed to re-writing the same formatters in multiple widgets.
-
-`filters.js` - Contains fitlters that are always on for a visualization. These are applied in the `/templates/someTemplate.html`.
-
-`widgets_factory.js` - Service to handle api calls for that delicious data.
-
-`routes.js` - the route provider for the app.
-
-`/partials/` - folder containing html files that are used by `tags_directives` and `ng-view`.
-
-`/templates/` - folder containing html templates for visualizations. Html files are named identically to the name of their directive. For example the gauge visualization's directive is called gauge, therefore its html template is called `gauge.html`
-
-`index.html` - index page, all `<script>` and `<link>` tags are here. Contains `<ng-view>`
-
+TBD
 
 ##Install Script
 Is now very out-dated and will be updated soon. Along with this section of documentation.
@@ -113,6 +96,7 @@ Names of Databases in use:
  - `githubrepos` - Data set
  - `builds` - Data set
  - `commits` - Data set
+ - And more data sets...
 
 ##Replication
 Should you need to replicate a database from another machine use the following code
