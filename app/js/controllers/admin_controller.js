@@ -164,6 +164,7 @@ angular.module('Dashboard.Admin', [])
             $scope.widget = data;
         });
 
+
         // Template Options
         // >>>>>>>>>>>>>>>>
         $scope.template1 = [];
@@ -171,13 +172,11 @@ angular.module('Dashboard.Admin', [])
 
         $scope.template1Option = function(template1) {
             $scope.template1.push({"key": template1.key, "value": template1.value});
-            // console.log($scope.template1);
             template1.key = "", template1.value = "";
         }
 
         $scope.template2Option = function(template2) {
             $scope.template2.push({"key": template2.key, "value": template2.value});
-            // console.log($scope.template2);
             template2.key = "", template2.value = "";
         }
 
