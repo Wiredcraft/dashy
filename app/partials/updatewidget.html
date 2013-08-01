@@ -10,7 +10,7 @@
     <form name='form' novalidate>
 
         <label>ID</label>
-            <input class='span' type='text' ng-model='widget._id' required>
+            <input class='span' type='text' ng-model='widget._id' disabled>
 
         <label>Refresh</label>
             <input class='span' type='number' ng-model='widget.config.refresh' required>
@@ -67,7 +67,7 @@
     <div class="span7">
 Widget
 <pre>
-{{widgets | json}}
+{{widget | json}}
 </pre>
 
 <label>{{options.template1}} Options</label>

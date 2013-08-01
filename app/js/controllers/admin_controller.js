@@ -95,11 +95,11 @@ angular.module('Dashboard.Admin', [])
             // >>>>>>>>>>>>>>>>>>>>>>>>
             for(i = 0; i < $scope.template1.length; i++) {
                 dir1[$scope.template1[i].key] = $scope.template1[i].value;
-            }
+            };
 
             for(i = 0; i < $scope.template2.length; i++) {
                 dir2[$scope.template2[i].key] = $scope.template2[i].value;
-            }
+            };
 
             $scope.realWidget.content.templates[temp1] = dir1;
             $scope.realWidget.content.templates[temp2] = dir2;
@@ -112,11 +112,47 @@ angular.module('Dashboard.Admin', [])
 
         }
 
+        // Console.log form output at any time.
+        $scope.test = function() {
+            console.log($scope.widget);
+        }
+
     }
 ])
 
 .controller('UpdateCtrl', ['$scope', '$http', '$location', 'Admin', 'Sources', 'Widgets',
     function($scope, $http, $location, Admin, Sources, Widgets) {
+
+        // List of possible templates
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>
+        $scope.dbWidgets = {
+            "linechart": {
+                "points": 0
+            },
+            "delta": {},
+            "gauge": {
+                "min": 0,
+                "max": 0,
+            },
+            "sum": {
+                "append": "",
+                "prepend": "",
+                "subtitle": ""
+            },
+            "list": {
+                "limit": 0
+            },
+            "picture": {},
+            "gauge": {},
+            "countdown": {
+                "startdate": 0,
+                "enddate": 0
+            },
+            "announcement": {
+                "announcement": "",
+                "subtitle": ""
+            }
+        }
 
         // Get widget to update ID
         // >>>>>>>>>>>>>>>>>>>>>>>
@@ -126,7 +162,8 @@ angular.module('Dashboard.Admin', [])
         // Get Widgets list, find correct one
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         Widgets.getWidgetById($scope.thisId).then(function(data) {
-            $scope.widgets = data;
+            // $scope.widgets = data;
+            $scope.widget = data;
         });
 
     }

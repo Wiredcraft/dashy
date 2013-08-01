@@ -56,6 +56,7 @@ ul, ol{
         text-shadow: 1px 1px rgb(14, 14, 14);
         line-height: 50px;
         text-indent: 20px;
+        overflow: hidden;
         h1 {
             color: rgb(139, 139, 139);
             font-size: inherit;
@@ -63,7 +64,7 @@ ul, ol{
             float: left;
         }
         span {
-            /*float: right;*/
+            float: right;
             button {
                 background-color: rgb(39, 39, 39);
                 color: rgba(139, 139, 139, 0.2);
