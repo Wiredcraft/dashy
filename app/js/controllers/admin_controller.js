@@ -88,7 +88,7 @@ angular.module('Dashboard.Admin', [])
             // Check Source Value
             // >>>>>>>>>>>>>>>>>>
             if(widget.config.source == undefined) {
-                widget.config.source = " ";
+                $scope.realWidget.config.source = " ";
             }
 
             // Prepare Template Options
@@ -110,12 +110,7 @@ angular.module('Dashboard.Admin', [])
             // >>>>>>>>>>>>>>>>
             Admin.addWidget($scope.realWidget);
 
-        }
-
-        // Console.log form output at any time.
-        $scope.test = function() {
-            console.log($scope.widget);
-        }
+        };
 
     }
 ])

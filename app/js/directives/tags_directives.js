@@ -17,7 +17,7 @@ angular.module('Dashboard.Tags', [])
                 min_cols: 12
                 // draggable: {handle: '.handle'}
             }).data('gridster');
-            // $rootScope.gridster.disable()
+            // $rootScope.gridster.disable();
 
             $scope.updateWidget = function(id, rev) {
                 $location.path('update').hash(id);

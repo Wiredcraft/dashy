@@ -74,8 +74,6 @@ angular.module('Dashboard.Models', [])
     Admin.addWidget = function(data) {
         var deferred = $q.defer();
 
-        console.log(data);
-
         $http.post(apiUrl, data).success(function(response) {
             deferred.resolve(data);
             console.log(response);
@@ -98,6 +96,12 @@ angular.module('Dashboard.Models', [])
 
         return deferred.promise;
     };
+
+    // Admin.updateWidget = function(id, rev, data) {
+    //     var deferred = $q.defer();
+
+    //     $http.put(apiUrl + id)
+    // }
 
     return Admin;
 }])
