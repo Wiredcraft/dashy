@@ -149,8 +149,8 @@ angular.module('Dashboard.Admin', [])
             }
         }
 
-        // Get widget to update ID
-        // >>>>>>>>>>>>>>>>>>>>>>>
+        // Get widget ID
+        // >>>>>>>>>>>>>
         var id = $location.hash();
         $scope.thisId = id;
 
@@ -159,6 +159,10 @@ angular.module('Dashboard.Admin', [])
         Widgets.getWidgetById($scope.thisId).then(function(data) {
             $scope.widget = data;
         });
+
+        $scope.updateWidget = function(widget, options) {
+            Admin.updateWidget(id, widget);
+        };
 
     }
 ])

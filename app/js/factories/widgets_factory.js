@@ -92,16 +92,27 @@ angular.module('Dashboard.Models', [])
             deferred.resolve(data);
         }).error(function(err) {
             deferred.reject(err);
-        })
+        });
 
         return deferred.promise;
     };
 
-    // Admin.updateWidget = function(id, rev, data) {
-    //     var deferred = $q.defer();
+    Admin.updateWidget = function(id, data) {
+        var deferred = $q.defer();
 
-    //     $http.put(apiUrl + id)
-    // }
+        console.log('id =', id);
+        console.log('data =', data);
+
+        $http.put(apiUrl + id, data).success(function(data) {
+            deferred.resolve(data);
+            console.log(data);
+        }).error(function(err) {
+            deferred.reject(err);
+            console.log(err);
+        });
+
+        return deferred.promise;
+    }
 
     return Admin;
 }])
