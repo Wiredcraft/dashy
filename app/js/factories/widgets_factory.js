@@ -31,6 +31,20 @@ angular.module('Dashboard.Models', [])
         return deferred.promise;
     };
 
+    // Get a Widget by ID
+    Widgets.getWidgetById = function(id) {
+        var deferred = $q.defer(),
+            sUrl = apiUrl + 'widget/' + id;
+
+        $http.get(sUrl).success(function(data) {
+            deferred.resolve(data);
+        }).error(function(err) {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+    }
+
     return Widgets;
 }])
 

@@ -125,15 +125,8 @@ angular.module('Dashboard.Admin', [])
 
         // Get Widgets list, find correct one
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        Widgets.getWidgetList().then(function(data) {
-            var selectedWidget;
-            angular.forEach(data, function(data) {
-                if (id == data.id) {
-                    selectedWidget = data;
-                }
-            });
-            $scope.widgets = selectedWidget;
-            console.log(selectedWidget);
+        Widgets.getWidgetById($scope.thisId).then(function(data) {
+            $scope.widgets = data;
         });
 
     }
