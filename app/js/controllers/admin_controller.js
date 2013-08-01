@@ -149,18 +149,90 @@ angular.module('Dashboard.Admin', [])
             }
         }
 
+        // Get list of useable datasources
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        $scope.sources = Sources.getSources();
+
         // Get widget ID
         // >>>>>>>>>>>>>
         var id = $location.hash();
         $scope.thisId = id;
 
-        // Get Widgets list, find correct one
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // Get the widget to edit
+        // >>>>>>>>>>>>>>>>>>>>>>
         Widgets.getWidgetById($scope.thisId).then(function(data) {
             $scope.widget = data;
         });
 
+        // Template Options
+        // >>>>>>>>>>>>>>>>
+        $scope.template1 = [];
+        $scope.template2 = [];
+
+        $scope.template1Option = function(template1) {
+            $scope.template1.push({"key": template1.key, "value": template1.value});
+            // console.log($scope.template1);
+            template1.key = "", template1.value = "";
+        }
+
+        $scope.template2Option = function(template2) {
+            $scope.template2.push({"key": template2.key, "value": template2.value});
+            // console.log($scope.template2);
+            template2.key = "", template2.value = "";
+        }
+
+
+        // Update Function
+        // >>>>>>>>>>>>>>>
         $scope.updateWidget = function(widget, options) {
+            var dir1 = {};
+            var dir2 = {};
+
+            // Check Source Value
+            // >>>>>>>>>>>>>>>>>>
+            if(widget.config.source == undefined) {
+                widget.config.source = " ";
+            }
+
+            // Prepare Template Options
+            // >>>>>>>>>>>>>>>>>>>>>>>>
+            if ($scope.template1.length > 0) {
+                for(i = 0; i < $scope.template1.length; i++) {
+                    dir1[$scope.template1[i].key] = $scope.template1[i].value;
+                };                
+            }
+
+            if ($scope.template2.length > 0) {
+                for(i = 0; i < $scope.template2.length; i++) {
+                    dir2[$scope.template2[i].key] = $scope.template2[i].value;
+                };                
+            }
+
+            // Get current template names
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>
+            var currentTemplates = Object.keys(widget.content.templates);
+
+            // Replace templates if new ones chosen
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            if (options !== undefined) {
+                if (options.template1 !== undefined && options.template1 !== 'undefined') {
+                    delete widget.content.templates[currentTemplates[0]];
+                    widget.content.templates[options.template1] = dir1;
+                }
+                if (options.template2 !== undefined && options.template2 !== 'undefined') {
+                    delete widget.content.templates[currentTemplates[1]];
+                    widget.content.templates[options.template2] = dir2;
+                }
+            }
+
+            // Remove the 2nd template if selected
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            if (options != undefined && options.remove != undefined && options.remove === true) {
+                delete widget.content.templates[currentTemplates[1]];
+            }
+
+            // PUT update to db
+            // >>>>>>>>>>>>>>>>
             Admin.updateWidget(id, widget);
         };
 

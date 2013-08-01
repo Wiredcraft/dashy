@@ -31,9 +31,14 @@
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
             <select class='span' ng-model='options.template2'>
-                <option disabled value=''>None (I only want 1 template)</option>
+                <option value='undefined'>None (I only want 1 template)</option>
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
+
+        <label class="checkbox">
+            <input type="checkbox" ng-model='options.remove'>
+            Remove 2nd Template?
+        </label>
 
         <label>{{options.template1}} Options</label>
             <input class='span' type='text' ng-model='template1.key' placeholder='Option Name' required>
@@ -82,5 +87,3 @@ Widget
     </div>
 
 </div>
-
-<button class='btn btn-large btn-danger span3 offset1' ng-click='toastr()'>Test Toastr</button>
