@@ -18,21 +18,20 @@ module.exports =  function (app) {
         });
     });
 
-    // // GET ID
-    // app.get('/widget/:id', function (req, res) {
-    //     var test = req.params.id;
-    //     // console.log('id = ', id);
-
-    //     widget.read(test).then(function(data) {
-    //         res.json(200, data);
-    //     }, function(err) {
-    //         // server error
-    //         res.json(500, {
-    //             status : 500,
-    //             message: err
-    //         });
-    //     });
-    // });
+    // GET ID
+    app.get('/widget/:id', function (req, res) {
+        var id = req.params.id;
+        // If no ID, get widgets/all
+        widget.read(id).then(function(data) {
+            res.json(200, data);
+        }, function(err) {
+            // server error
+            res.json(500, {
+                status : 500,
+                message: err
+            });
+        });
+    });
 
     // POST
     app.post('/widget', function (req, res, next) {

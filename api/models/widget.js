@@ -9,18 +9,28 @@ module.exports = {
     del : del
 }
 
-function read() {
+function read(id) {
     var def = Q.defer();
 
     db.initWidgetsDB().then(function(database) {
-        // get widgets info
-        database.view('widgets/all', {}, function(err, data) {
-            // read view document error
-            if (err) return def.reject(new Error('Read widget error'));
-            
-            // return data
-            def.resolve(data || {});
-        });
+        // If no ID get widgets/all
+        if(id == null || id == undefined) {
+            // get widgets info
+            database.view('widgets/all', {}, function(err, data) {
+                // read view document error
+                if (err) return def.reject(new Error('Read widget error'));
+                
+                // return data
+                def.resolve(data || {});
+            });  
+        } else {
+            // Get specific widget
+            database.get(id, function(err, data) {
+                if(err) return def.reject(new Error('Read widget error'));
+
+                def.resolve(data || {});
+            });
+        }
     }, function(err) {
         def.reject(err);
     });
