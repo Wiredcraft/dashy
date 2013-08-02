@@ -24,8 +24,8 @@ angular.module('Dashboard.Tags', [])
             };
 
             $scope.deleteWidget = function(id) {
-                var yes = confirm('Delete this widget? This action cannot be undone.')
-                if (yes) {
+                var del = confirm('Delete this widget? This action cannot be undone.')
+                if (del) {
                     Admin.deleteWidget(id);
                     document.location.reload(true);
                 }

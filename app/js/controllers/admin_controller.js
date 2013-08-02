@@ -3,8 +3,6 @@ angular.module('Dashboard.Admin', [])
 .controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
     function($scope, $http, Admin, Sources) {
 
-        console.log(window);
-
         // List of possible templates
         // >>>>>>>>>>>>>>>>>>>>>>>>>>
         $scope.dbWidgets = {
@@ -59,7 +57,7 @@ angular.module('Dashboard.Admin', [])
 
         // Add widget function
         // >>>>>>>>>>>>>>>>>>>
-        $scope.widget = {};
+        $scope.widget = {_id:"", config: {}, content: {},layout: {}};
         $scope.realWidget;
         $scope.addWidget = function(widget, options){
             var temp1 = options.template1;
@@ -80,10 +78,10 @@ angular.module('Dashboard.Admin', [])
                     "templates": {}
                 },
                 "layout": {
-                    "data-row": widget.layout.data_row,
-                    "data-col": widget.layout.data_col,
-                    "data-sizex": widget.layout.data_sizex,
-                    "data-sizey": widget.layout.data_sizey
+                    "data-row": widget.layout["data-row"],
+                    "data-col": widget.layout["data-col"],
+                    "data-sizex": widget.layout["data-sizex"],
+                    "data-sizey": widget.layout["data-sizey"]
                 }
             }
 

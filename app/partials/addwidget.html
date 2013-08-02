@@ -50,10 +50,10 @@
             </div>
 
         <label>Layout</label>
-            <input class='span' type='number' ng-model='widget.layout.data_row' placeholder='Row Position' required>
-            <input class='span' type='number' ng-model='widget.layout.data_col' placeholder='Column Position' required>
-            <input class='span' type='number' ng-model='widget.layout.data_sizex' placeholder='Width Size' required>
-            <input class='span' type='number' ng-model='widget.layout.data_sizey' placeholder='Height Size' required>
+            <input class='span' type='number' ng-model='widget.layout["data-row"]' placeholder='Row Position' required>
+            <input class='span' type='number' ng-model='widget.layout["data-col"]' placeholder='Column Position' required>
+            <input class='span' type='number' ng-model='widget.layout["data-sizex"]' placeholder='Width Size' required>
+            <input class='span' type='number' ng-model='widget.layout["data-sizey"]' placeholder='Height Size' required>
 
         <button class='btn btn-primary btn-block btn-large' ng-click='addWidget(widget, options)'>
             <i class='icon-ok'></i> 
