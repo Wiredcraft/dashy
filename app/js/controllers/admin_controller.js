@@ -3,6 +3,8 @@ angular.module('Dashboard.Admin', [])
 .controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
     function($scope, $http, Admin, Sources) {
 
+        console.log(window);
+
         // List of possible templates
         // >>>>>>>>>>>>>>>>>>>>>>>>>>
         $scope.dbWidgets = {

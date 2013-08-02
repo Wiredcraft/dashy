@@ -12,8 +12,6 @@ Compass -	`gem update && gem install compass`
 5. Go to `http://localhost:4000/`
 6. Optional: Open a new terminal window and run grunt when working on css
 
-## Admin Interface
-TBD
 
 ##API
 
@@ -38,7 +36,48 @@ TBD
 	- PUT - `/:database/:id`
 	- DELETE - `/:database/:id`
 	
-###Settings
+
+##Files
+*Controllers*
+
+- `main_controller.js` - Main controller, handles getting getting the list of widgets and their data.
+- `admin_controller.js` - Admin controller, contains logic for adding and updating widgets.
+
+*Directives*
+
+- `tags_directives.js` - Directives for Widget tags, contains logic for all widgets. (eg. update & delete buttons active functions in the directive controllers)
+- `charts_directives.js` - Directives for templates, contains the logic for all templates that can be placed on a widget (eg. linechart, gauge, countdown, etc…)
+
+*Factories*
+
+- `formatters.js` - Formatting functions that can be used by anything, however mainly made for templates in `charts_directives.js` (eg. the "sum" template uses the "Number" formatter, a quick look at the code should give you a good idea of how to utilize this.)
+- `widgets_factory.js` - Where the app meets database, all calls for data, sources happen here. Also the functions for adding, updating and deleting widgets are here. There are 3 Sections to it: Widgets, Sources, Admin. Widgets contains functions for getting widget information, either all or by ID. Sources contains a function for getting the source databases.
+
+*Filters*
+
+- `filters.js` - General filters that can be used on templates/partials.
+
+*Utils*
+
+- `utils.js` - not used at the moment, may replace formatters.js in the future.
+
+*Other*
+
+- `routes.js` - handles routing for dashy.
+
+*Partials* - contains html pages / templates that make up the structure of dashy.
+
+*Templates* - contains html templates for widget templates (aka `charts_directives`) that need a template.
+
+
+## Adding a Widget Template
+Steps to successfully add a widget template;
+
+1. Add a directive for your template into `charts_directives.js`.
+2. If it needs an html template add it into the `/templates` folder.
+3. As of v0.0.2, If you want your directive to be selectable in the admin interface, you must add your directive information (name & possible options) into `$scope.dbWidgets` inside `admin_controllers.js`. A solution for this is being worked on, however if you plan to add your widget via couchDB you can skip this step.
+
+## Adding a Source Database
 In order to add a new datasource to the widget, you must first define it in the `settings.js` file. Below is an example of the database `githubrepos` being defined inside `settings.js`
 
         githubrepos: {
@@ -82,23 +121,17 @@ It is recommended that this be the first thing you do as this will create the Co
 `Needs verification` - To change the design/view at a later time you must manually add it into CouchDB yourself.
 
 
-##Files
-TBD
-
 ##Install Script
-Is now very out-dated and will be updated soon. Along with this section of documentation.
+The install script is now very out-dated and will be updated soon. Once updated this section will detail the script's abilities.
 
 ##CouchDB
 Names of Databases in use:
  
  - `widgets` - Widget configuration documents
  - `sources` - Documents containing source information
- - `githubrepos` - Data set
- - `builds` - Data set
- - `commits` - Data set
- - And more data sets...
+ - And various user-defined datasource databases.
 
-##Replication
+###Replication
 Should you need to replicate a database from another machine use the following code
 
 `curl -H 'Content-Type: application/json' -X POST http://localhost:5984/_replicate -d ' {"source": "http://SOURCE-URL:5984/DATABASE_TO_REPLICATE", "target": "db_to_replicate_into", "create_target":true} '`
