@@ -292,7 +292,7 @@ angular.module('Dashboard.Charts', [])
 
             var min = parseFloat(tmpls.gauge.min);
             var max = parseFloat(tmpls.gauge.max);
-            var current = 589;
+            var current = sData[0].value.amount;
 
             // No higher/lower than max/min
             if (current > max) {

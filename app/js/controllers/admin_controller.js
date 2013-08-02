@@ -15,9 +15,9 @@ angular.module('Dashboard.Admin', [])
                 "max": 0,
             },
             "sum": {
-                "append": "",
-                "prepend": "",
-                "subtitle": ""
+                "append": "1",
+                "prepend": "2",
+                "subtitle": "3"
             },
             "list": {
                 "limit": 0

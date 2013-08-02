@@ -13,6 +13,11 @@ Compass -	`gem update && gem install compass`
 6. Optional: Open a new terminal window and run grunt when working on css
 
 
+##Known Bugs + To Do
+
+Can be found [here](https://hackpad.com/Dashy-jjdu6nzpWnk)
+
+
 ##API
 
 `/widget` - returns list of widgets

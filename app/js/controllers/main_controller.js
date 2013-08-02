@@ -32,10 +32,5 @@ angular.module('Dashboard.Controllers', [])
         }, function(err) {
             console.log(err);
         })      
-
-
-        $scope.drag = function() {
-            $rootScope.gridster.disable();
-        };
     }
 ])
