@@ -11,10 +11,10 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.date && doc.amount) {
+                        if (doc.date && doc.data) {
                             emit(doc._rev,{
                                 'date' : doc.date,
-                                'amount' : doc.amount
+                                'data' : doc.data
                             });
                         }
                     }

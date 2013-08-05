@@ -32,7 +32,7 @@ angular.module('Dashboard.Charts', [])
                     var target = data.value;
 
                     target.date = parseDate(target.date);
-                    target.amount = +target.amount.toFixed();
+                    target.amount = +target.data.value.toFixed(); //target.amount
                 });
 
                 // sort by date, its important, linechart need
@@ -138,9 +138,9 @@ angular.module('Dashboard.Charts', [])
             // Order Information by date
             sData.sort(function(a, b) { return a['value']['date'] - b['value']['date'] });
 
-            var base = sData[0].value.amount,
+            var base = sData[0].value.data.value,
                 length = sData.length - 1,
-                current = sData[length].value.amount,
+                current = sData[length].value.data.value,
                 diff = ((current / base) * 100);
 
             var status;
@@ -186,7 +186,7 @@ angular.module('Dashboard.Charts', [])
                 total = 0;
 
             angular.forEach(sData, function(data, index, source){
-                total += data.value.amount;
+                total += data.value.data.value;
             });
 
             total = Number(total, prepend, append);
@@ -292,7 +292,7 @@ angular.module('Dashboard.Charts', [])
 
             var min = parseFloat(tmpls.gauge.min);
             var max = parseFloat(tmpls.gauge.max);
-            var current = sData[0].value.amount;
+            var current = sData[0].value.data.value;
 
             // No higher/lower than max/min
             if (current > max) {
