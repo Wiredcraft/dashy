@@ -207,10 +207,16 @@ ul, ol{
 
 /*line chart*/
 path.line {
-    fill: rgba(184,179,255,0.1);
+    fill: none;
     stroke: #b8b3ff;
     stroke-width: 1.5px;
 }
+
+path.area {
+    fill: rgba(184, 179, 255, 0.1);
+}
+
+/* sum */
 text.subtitle{
     font-size: 26px;
     fill: #d3d4d4;

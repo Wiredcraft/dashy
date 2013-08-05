@@ -2,6 +2,54 @@
 angular.module('Dashboard.Charts', [])
 
 // linechart directive
+// .directive('linechart', function() {
+//     return {
+//         restrict: 'E',
+//         replace: true,
+//         scope: {
+//             data: '@'
+//         },
+//         controller: function($scope, $element, $timeout) {
+//             $timeout(function () {
+//                 var axisData = JSON.parse($scope.data),
+//                     width = $element.width(),
+//                     height = $element.height(),
+//                     parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
+//                     x = d3.time.scale().range([0, width]),
+//                     y = d3.scale.linear().range([height, 0]),
+//                     xAxis = d3.svg.axis().scale(x).orient("bottom"),
+//                     yAxis = d3.svg.axis().scale(y).orient("left"),
+//                     line = d3.svg.line()
+//                         .x(function(d) { 
+//                             return x(d.value.date); 
+//                         })
+//                         .y(function(d) { 
+//                             return y(d.value.amount); 
+//                         }),
+//                     svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
+
+//                 angular.forEach(axisData, function(data, index, source){
+//                     var target = data.value;
+
+//                     target.date = parseDate(target.date);
+//                     target.amount = +target.data.value.toFixed(); //target.amount
+//                 });
+
+//                 // sort by date, its important, linechart need
+//                 axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
+
+//                 x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
+//                 y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
+
+//                 // line
+//                 svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
+
+//             }, 0)
+//         }
+//     };
+// })
+
+
 .directive('linechart', function() {
     return {
         restrict: 'E',
@@ -26,6 +74,14 @@ angular.module('Dashboard.Charts', [])
                         .y(function(d) { 
                             return y(d.value.amount); 
                         }),
+                    area = d3.svg.area()
+                        .x(function(d) {
+                            return x(d.value.date);
+                        })
+                        .y0(height)
+                        .y1(function(d) {
+                            return y(d.value.amount);
+                        }),
                     svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
 
                 angular.forEach(axisData, function(data, index, source){
@@ -42,12 +98,14 @@ angular.module('Dashboard.Charts', [])
                 y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
 
                 // line
+                svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
                 svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
 
             }, 0)
         }
     };
 })
+
 
 // Countdown Directive
 .directive('countdown', function() {
