@@ -48,5 +48,11 @@ angular.module('Dashboard.Controllers', [])
             $rootScope.locked = false;
         };
 
+        // Manually refresh widget data.
+        // For now refreshes whole page.
+        $scope.refresh = function() {
+            document.location.reload(true);
+        }
+
     }
 ])

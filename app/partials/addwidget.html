@@ -9,8 +9,11 @@
 
     <form name='form' novalidate>
 
-        <label>ID</label>
-            <input class='span' type='text' ng-model='widget._id' required>
+        <label class="checkbox">
+            <input type="checkbox" ng-model='randomID'>
+            Use random ID
+        </label>
+            <input class='span' type='text' ng-model='widget._id' required ng-disabled="randomID" placeholder='Enter ID or Use Random'>
 
         <label>Refresh</label>
             <input class='span' type='number' ng-model='widget.config.refresh' required>
@@ -42,42 +45,12 @@
                 <button class='btn' ng-click='template1Option(template1)'>Add</button>
             </div>
 
-        <div class='optionsList'>
-            <ul>
-                <li ng-repeat="item in template1">
-                    Option: {{item.key}}
-                    <br />
-                    Value: {{item.value}}
-                    <div class='action'>
-                        <a href="" ng-click="template1Remove($index)">
-                            <i class='icon-remove icon-large'></i>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
         <label>{{options.template2}} Options</label>
             <input class='span' type='text' ng-model='template2.key' placeholder='Option Name' required>
             <div class='input-append'>
                 <input class='span' type='text' ng-model='template2.value' placeholder='Option Value' required>
                 <button class='btn' ng-click='template2Option(template2)'>Add</button>
             </div>
-
-        <div class='optionsList'>
-            <ul>
-                <li ng-repeat="item in template2">
-                    Option: {{item.key}}
-                    <br />
-                    Value: {{item.value}}
-                    <div class='action'>
-                        <a href="" ng-click="template2Remove($index)">
-                            <i class='icon-remove icon-large'></i>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
 
         <label>Layout</label>
             <input class='span' type='number' ng-model='widget.layout["data-row"]' placeholder='Row Position' required>
@@ -99,6 +72,39 @@ Widget
 <pre>
 {{widget | json}}
 </pre>
+
+        <div class='optionsList span4' ng-show='options.template1'>
+            <ul>
+                <li>{{options.template1}} Options</li>
+                <li ng-repeat="item in template1">
+                    Option: {{item.key}}
+                    <br />
+                    Value: {{item.value}}
+                    <div class='action'>
+                        <a href="" ng-click="template1Remove($index)">
+                            <i class='icon-remove icon-large'></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class='optionsList span4' ng-show='options.template2'>
+            <ul>
+                <li>{{options.template2}} Options</li>
+                <li ng-repeat="item in template2">
+                    Option: {{item.key}}
+                    <br />
+                    Value: {{item.value}}
+                    <div class='action'>
+                        <a href="" ng-click="template2Remove($index)">
+                            <i class='icon-remove icon-large'></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
 </div>

@@ -2,6 +2,7 @@ angular.module('Dashboard.Admin', [])
 
 .controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
     function($scope, $http, Admin, Sources) {
+        $scope.randomID = true;
 
         // List of possible templates
         // >>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -72,7 +73,6 @@ angular.module('Dashboard.Admin', [])
             // Construct Widget
             // >>>>>>>>>>>>>>>>
             $scope.realWidget = {
-                "_id" : widget._id,
                 "config": {
                     "refresh": widget.config.refresh,
                     "source": widget.config.source,
@@ -87,6 +87,14 @@ angular.module('Dashboard.Admin', [])
                     "data-sizex": widget.layout["data-sizex"],
                     "data-sizey": widget.layout["data-sizey"]
                 }
+            }
+
+            // Add ID if not random
+            // >>>>>>>>>>>>>>>>>>>>
+            if ($scope.randomID === false) {
+                $scope.realWidget._id = widget._id;
+                console.log('false')
+                console.log(widget._id)
             }
 
             // Check Source Value
@@ -163,7 +171,7 @@ angular.module('Dashboard.Admin', [])
         Widgets.getWidgetById(thisId).then(function(data) {
             $scope.widget = data;
             console.log(data.content.title);
-            $scope.thisId = data.content.title;
+            $scope.thisTitle = data.content.title;
         });
 
         // Get list of useable datasources
