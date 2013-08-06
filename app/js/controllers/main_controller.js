@@ -35,9 +35,13 @@ angular.module('Dashboard.Controllers', [])
     }
 ])
 
-.controller('NavCtrl', ['$scope', '$rootScope',
-    function($scope, $rootScope) {
+.controller('NavCtrl', ['$scope', '$rootScope', '$location',
+    function($scope, $rootScope, $location) {
         
+        $scope.add = function() {
+            $location.path('add');
+        }
+
         // Lock / Unlock draggable
         $scope.lock = function() {
             $rootScope.gridster.disable();

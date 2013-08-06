@@ -33,9 +33,9 @@ var DashboardApp = angular.module('Dashboard', [
         });
 
         // Removes hash from url
-        // can cause strange behavior
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>
-        // $locationProvider.html5Mode(true);
+        // HTML5 mode also conflicts with API
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);
 
