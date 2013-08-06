@@ -241,6 +241,7 @@ angular.module('Dashboard.Charts', [])
             } else {
                 $scope.list = array;
             }
+
         }
     }
 })
@@ -362,7 +363,7 @@ angular.module('Dashboard.Charts', [])
                             config = {
                                 size                     : ($element.width() - 20),
                                 clipWidth                : $element.width(),
-                                clipHeight               : $element.height(),
+                                clipHeight               : $element.height()/1.5,
                                 ringInset                : 20,
                                 ringWidth                : 40,
                                 pointerWidth             : 10,
@@ -506,10 +507,16 @@ angular.module('Dashboard.Charts', [])
                 powerGauge = gauge();
                 powerGauge.render();
 
+                setInterval(function() {
+                    var num = Math.random() * 1000;
+                    powerGauge.update(num);
+                }, 5000);
+
                 $scope.$watch('data', function (aft, bef) {
-                    powerGauge.update(459);
+                    var num = Math.random() * 1000;
+                    powerGauge.update(num);
                 });
- 
+
             }, 0)           
         }
     }

@@ -8,7 +8,6 @@ angular.module('Dashboard.Controllers', [])
         var getWidgetData = function () {
             angular.forEach($scope.widgets, function (widget, index) {
                 var source = widget.value.config.source;
-
                 // for countdown widget we dont need couchdb source
                 if (angular.isObject(source)) {
                     widget['value']['data'] = source;
@@ -31,6 +30,17 @@ angular.module('Dashboard.Controllers', [])
             getWidgetData();
         }, function(err) {
             console.log(err);
-        })      
+        });
+
+        // Lock / Unlock draggable
+        $scope.lock = function() {
+            $rootScope.gridster.disable();
+            $rootScope.locked = true;
+        };
+        $scope.unlock = function() {
+            $rootScope.gridster.enable();
+            $rootScope.locked = false;
+        };
+
     }
 ])

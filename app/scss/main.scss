@@ -24,7 +24,7 @@ ul, ol{
                 color: #d3d4d4;
             }
         }
-        #add-widget {
+        .navbtn {
             float: right;
             display: block;
             color: #fff;
@@ -34,6 +34,7 @@ ul, ol{
             text-decoration: none;
             background-color: #434343;
             text-transform: uppercase;
+            margin-left: 5px;
             @include transition-duration(0.2s);
             @include border-radius(3px);
             &:hover {
@@ -232,6 +233,14 @@ text.subtitle{
 }
 
 /* Gauge */
+
+
+.gauge {
+    bottom: 0;
+    left: 10%;
+    position: absolute;
+}
+
 g.pointer {
     fill: #e85116;
     stroke: #b64011;
@@ -242,4 +251,43 @@ g.label text {
     font-size: 14px;
     font-weight: bold;
     fill: #666;
+}
+
+/* Admin Interface */
+.optionsList {
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        position: relative;
+        margin: 10px 0;
+        padding: 15px;
+        background: #f5f5f5;
+        border-left: 4px solid #ccc;
+    }
+    li .action {
+        position: absolute;
+        right: 6px;
+        top: 25px;
+        display: block;
+        opacity: 0.2;
+        -webkit-transition: all 0.1s linear;
+    }
+    li:hover .action {
+        opacity: 1;
+    }
+    a {
+        color: black;
+        opacity: 0.5
+    }
+    a:hover {
+        text-decoration: none;
+        color: red;
+        opacity: 1;
+    }
+    a:active {
+        color: darkred;
+    }
 }

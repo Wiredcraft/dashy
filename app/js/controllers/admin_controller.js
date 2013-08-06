@@ -45,14 +45,18 @@ angular.module('Dashboard.Admin', [])
 
         $scope.template1Option = function(template1) {
             $scope.template1.push({"key": template1.key, "value": template1.value});
-            console.log($scope.template1);
             template1.key = "", template1.value = "";
+        }
+        $scope.template1Remove = function(index) {
+            $scope.template1.splice(index, 1);
         }
 
         $scope.template2Option = function(template2) {
             $scope.template2.push({"key": template2.key, "value": template2.value});
-            console.log($scope.template2)
             template2.key = "", template2.value = "";
+        }
+        $scope.template2Remove = function(index) {
+            $scope.template2.splice(index, 1);
         }
 
         // Add widget function
@@ -149,21 +153,22 @@ angular.module('Dashboard.Admin', [])
             }
         }
 
-        // Get list of useable datasources
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        $scope.sources = Sources.getSources();
-
         // Get widget ID
         // >>>>>>>>>>>>>
         var id = $location.hash();
-        $scope.thisId = id;
+        var thisId = id;
 
         // Get the widget to edit
         // >>>>>>>>>>>>>>>>>>>>>>
-        Widgets.getWidgetById($scope.thisId).then(function(data) {
+        Widgets.getWidgetById(thisId).then(function(data) {
             $scope.widget = data;
+            console.log(data.content.title);
+            $scope.thisId = data.content.title;
         });
 
+        // Get list of useable datasources
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        $scope.sources = Sources.getSources();
 
         // Template Options
         // >>>>>>>>>>>>>>>>
