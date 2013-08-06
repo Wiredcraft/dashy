@@ -284,65 +284,236 @@ angular.module('Dashboard.Charts', [])
 })
 
 // Gauge
+// .directive('gauge', function() {
+//     return {
+//         restrict: 'E',
+//         replace: true,
+//         scope: {
+//             templates: '@',
+//             data: '@'
+//         },
+//         templateUrl: "templates/gauge.html",
+//         controller: function($scope, $element) {
+//             var sData = JSON.parse($scope.data),
+//                 tmpls = JSON.parse($scope.templates);
+
+//             var svg = d3.select($element[0]).append("svg");
+//             var pi = Math.PI;
+
+//             var min = parseFloat(tmpls.gauge.min);
+//             var max = parseFloat(tmpls.gauge.max);
+//             var current = sData[0].value.data.value;
+
+//             // No higher/lower than max/min
+//             if (current > max) {
+//                 current = max;
+//             }
+//             if (current < min) {
+//                 current = min;
+//             }
+
+//             // Color Scheme
+//             var prct = ((current / max) * 100),
+//                 color = undefined;
+
+//             if (prct < 34) {
+//                 color = "#3c9b33";
+//             } else if (prct > 66) {
+//                 color = "#aa3f38"
+//             } else {
+//                 color = "#c2bb48"
+//             }
+
+//             // Calculate draw angle
+//             var drawAng = (((current * 180) / max) - 90);
+
+//             var arc = d3.svg.arc()
+//                 .innerRadius(50)
+//                 .outerRadius(90)
+//                 .startAngle(-90 * (pi/180))
+//                 .endAngle(drawAng * (pi/180))
+
+//             svg.append("path")
+//                 .attr("fill", color)
+//                 .attr("d", arc)
+//                 .attr("transform", "translate(130,100)")
+
+//             $scope.value = current;
+
+//         }
+//     }
+// })
+
 .directive('gauge', function() {
     return {
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            data: '@',
+            templates: '@'
         },
-        templateUrl: "templates/gauge.html",
-        controller: function($scope, $element) {
-            var sData = JSON.parse($scope.data),
-                tmpls = JSON.parse($scope.templates);
+        controller: function($scope, $element, $timeout) {
+            $timeout(function () {
+                var powerGauge,
+                    sData = JSON.parse($scope.data),
+                    tmpls = JSON.parse($scope.templates),
+                    gauge = function(configuration) {
+                        var that = {},
+                            config = {
+                                size                     : ($element.width() - 20),
+                                clipWidth                : $element.width(),
+                                clipHeight               : $element.height(),
+                                ringInset                : 20,
+                                ringWidth                : 40,
+                                pointerWidth             : 10,
+                                pointerTailLength        : 5,
+                                pointerHeadLengthPercent : 0.9,
+                                
+                                minValue                 : tmpls.min || 0,
+                                maxValue                 : tmpls.max || 1000,
 
-            var svg = d3.select($element[0]).append("svg");
-            var pi = Math.PI;
+                                minAngle                 : -90,
+                                maxAngle                 : 90, 
 
-            var min = parseFloat(tmpls.gauge.min);
-            var max = parseFloat(tmpls.gauge.max);
-            var current = sData[0].value.data.value;
+                                transitionMs             : 3500,
+                                majorTicks               : 5,
+                                labelFormat              : d3.format(',g'),
+                                labelInset               : 10,
+                                arcColorFn               : d3.interpolateHsl(d3.rgb('#AEAEFF'), d3.rgb('#383872'))
+                            },
+                            range, r, pointerHeadLength, svg, arc, scale, ticks, tickData, pointer,
+                            value = 0,
+                            donut = d3.layout.pie(),
+                            deg2rad = function(deg) {
+                                return deg * Math.PI / 180;
+                            },
+                            newAngle = function(d) {
+                                var newAngle = config.minAngle + (scale(d) * range);
+                                return newAngle;
+                            },
+                            configure = function(configuration) {
+                                var prop = undefined;
 
-            // No higher/lower than max/min
-            if (current > max) {
-                current = max;
-            }
-            if (current < min) {
-                current = min;
-            }
+                                for ( prop in configuration ) {
+                                    config[prop] = configuration[prop];
+                                }
 
-            // Color Scheme
-            var prct = ((current / max) * 100),
-                color = undefined;
+                                range = config.maxAngle - config.minAngle;
+                                r = config.size / 2;
+                                pointerHeadLength = Math.round(r * config.pointerHeadLengthPercent);
 
-            if (prct < 34) {
-                color = "#3c9b33";
-            } else if (prct > 66) {
-                color = "#aa3f38"
-            } else {
-                color = "#c2bb48"
-            }
+                                // a linear scale that maps domain values to a percent from 0..1
+                                scale = d3.scale.linear()
+                                    .range([0,1])
+                                    .domain([config.minValue, config.maxValue]);
 
-            // Calculate draw angle
-            var drawAng = (((current * 180) / max) - 90);
+                                ticks = scale.ticks(config.majorTicks);
+                                tickData = d3.range(config.majorTicks).map(function() {return 1/config.majorTicks;});
 
-            var arc = d3.svg.arc()
-                .innerRadius(50)
-                .outerRadius(90)
-                .startAngle(-90 * (pi/180))
-                .endAngle(drawAng * (pi/180))
+                                arc = d3.svg.arc()
+                                    .innerRadius(r - config.ringWidth - config.ringInset)
+                                    .outerRadius(r - config.ringInset)
+                                    .startAngle(function(d, i) {
+                                        var ratio = d * i;
+                                        return deg2rad(config.minAngle + (ratio * range));
+                                    })
+                                    .endAngle(function(d, i) {
+                                        var ratio = d * (i+1);
+                                        return deg2rad(config.minAngle + (ratio * range));
+                                    });
+                            },
+                            centerTranslation = function() {
+                                return 'translate('+r +','+ r +')';
+                            },
+                            isRendered = function() {
+                                return (svg !== undefined);
+                            },
+                            render = function(newValue) {
+                                svg = d3.select($element[0])
+                                    .append('svg:svg')
+                                        .attr('class', 'gauge')
+                                        .attr('width', config.clipWidth)
+                                        .attr('height', config.clipHeight);
 
-            svg.append("path")
-                .attr("fill", color)
-                .attr("d", arc)
-                .attr("transform", "translate(130,100)")
+                                var centerTx = centerTranslation();
 
-            $scope.value = current;
+                                var arcs = svg.append('g')
+                                        .attr('class', 'arc')
+                                        .attr('transform', centerTx);
 
+                                arcs.selectAll('path')
+                                        .data(tickData)
+                                    .enter().append('path')
+                                        .attr('fill', function(d, i) {
+                                            return config.arcColorFn(d * i);
+                                        })
+                                        .attr('d', arc);
+
+                                var lg = svg.append('g')
+                                        .attr('class', 'label')
+                                        .attr('transform', centerTx);
+                                lg.selectAll('text')
+                                        .data(ticks)
+                                    .enter().append('text')
+                                        .attr('transform', function(d) {
+                                            var ratio = scale(d);
+                                            var newAngle = config.minAngle + (ratio * range);
+                                            return 'rotate(' +newAngle +') translate(0,' +(config.labelInset - r) +')';
+                                        })
+                                        .text(config.labelFormat);
+
+                                var lineData = [ [config.pointerWidth / 2, 0], 
+                                                [0, -pointerHeadLength],
+                                                [-(config.pointerWidth / 2), 0],
+                                                [0, config.pointerTailLength],
+                                                [config.pointerWidth / 2, 0] ];
+                                var pointerLine = d3.svg.line().interpolate('monotone');
+                                var pg = svg.append('g').data([lineData])
+                                        .attr('class', 'pointer')
+                                        .attr('transform', centerTx);
+
+                                pointer = pg.append('path')
+                                    .attr('d', pointerLine/*function(d) { return pointerLine(d) +'Z';}*/ )
+                                    .attr('transform', 'rotate(' +config.minAngle +')');
+
+                                update(newValue === undefined ? 0 : newValue);
+                            },
+                            update = function(newValue, newConfiguration) {
+                                if ( newConfiguration  !== undefined) {
+                                    configure(newConfiguration);
+                                }
+                                var ratio = scale(newValue);
+                                var newAngle = config.minAngle + (ratio * range);
+                                pointer.transition()
+                                    .duration(config.transitionMs)
+                                    .ease('elastic')
+                                    .attr('transform', 'rotate(' +newAngle +')');
+                            };
+
+                        that.configure = configure;
+
+                        that.isRendered = isRendered;
+                       
+                        that.render = render;
+                        
+                        that.update = update;
+
+                        configure(configuration);
+                        
+                        return that;
+                    };
+                
+                powerGauge = gauge();
+                powerGauge.render();
+
+                $scope.$watch('data', function (aft, bef) {
+                    powerGauge.update(459);
+                });
+ 
+            }, 0)           
         }
     }
-})
+});
 
 
 

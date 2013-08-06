@@ -209,7 +209,7 @@ ul, ol{
 path.line {
     fill: none;
     stroke: #b8b3ff;
-    stroke-width: 1.5px;
+    stroke-width: 2px;
 }
 
 path.area {
@@ -229,4 +229,17 @@ text.subtitle{
         max-height:100%;
         max-width: 100%;
     }
+}
+
+/* Gauge */
+g.pointer {
+    fill: #e85116;
+    stroke: #b64011;
+}
+    
+g.label text {
+    text-anchor: middle;
+    font-size: 14px;
+    font-weight: bold;
+    fill: #666;
 }
