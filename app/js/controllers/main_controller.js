@@ -32,6 +32,12 @@ angular.module('Dashboard.Controllers', [])
             console.log(err);
         });
 
+    }
+])
+
+.controller('NavCtrl', ['$scope', '$rootScope',
+    function($scope, $rootScope) {
+        
         // Lock / Unlock draggable
         $scope.lock = function() {
             $rootScope.gridster.disable();

@@ -15,7 +15,7 @@ angular.module('Dashboard.Tags', [])
                 widget_margins: [5, 5], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
                 min_cols: 12
-                // draggable: {handle: '.handle'}
+                // draggable: {handle: '.handle'} // Only class 'handle' allows dragging
             }).data('gridster');
             $rootScope.gridster.disable();
             $rootScope.locked = true;

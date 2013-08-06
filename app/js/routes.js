@@ -32,6 +32,9 @@ var DashboardApp = angular.module('Dashboard', [
             redirectTo: '/404'
         });
 
+        // Removes hash from url
+        // can cause strange behavior
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>
         // $locationProvider.html5Mode(true);
     }
 ]);
