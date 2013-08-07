@@ -106,13 +106,16 @@ angular.module('Dashboard.Admin', [])
             for(i = 0; i < $scope.template1.length; i++) {
                 dir1[$scope.template1[i].key] = $scope.template1[i].value;
             };
-
-            for(i = 0; i < $scope.template2.length; i++) {
-                dir2[$scope.template2[i].key] = $scope.template2[i].value;
-            };
-
             $scope.realWidget.content.templates[temp1] = dir1;
-            $scope.realWidget.content.templates[temp2] = dir2;
+
+            console.log('temp2', temp2);
+            
+            if (temp2 != undefined || temp2 != null ) {
+                for(i = 0; i < $scope.template2.length; i++) {
+                    dir2[$scope.template2[i].key] = $scope.template2[i].value;
+                };
+                $scope.realWidget.content.templates[temp2] = dir2;
+            }
 
             console.log($scope.realWidget);
 
@@ -127,6 +130,8 @@ angular.module('Dashboard.Admin', [])
 
 .controller('UpdateCtrl', ['$scope', '$http', '$location', 'Admin', 'Sources', 'Widgets',
     function($scope, $http, $location, Admin, Sources, Widgets) {
+        $scope.updateSource = false;
+        $scope.updateTemplates = false;
 
         // List of possible templates
         // >>>>>>>>>>>>>>>>>>>>>>>>>>
