@@ -284,67 +284,144 @@ angular.module('Dashboard.Charts', [])
     }
 })
 
-// Gauge
-// .directive('gauge', function() {
-//     return {
-//         restrict: 'E',
-//         replace: true,
-//         scope: {
-//             templates: '@',
-//             data: '@'
-//         },
-//         templateUrl: "templates/gauge.html",
-//         controller: function($scope, $element) {
-//             var sData = JSON.parse($scope.data),
-//                 tmpls = JSON.parse($scope.templates);
+.directive('clock', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+        },
+        controller: function($scope, $element) {
+            var fields;
 
-//             var svg = d3.select($element[0]).append("svg");
-//             var pi = Math.PI;
+            fields = function() {
+                var currentTime, hour, minute, second;
+                currentTime = new Date();
+                second = currentTime.getSeconds();
+                minute = currentTime.getMinutes() + second / 60;
+                hour = currentTime.getHours() + minute / 60;
+                return data = [
+                    {
+                        "unit": "seconds",
+                        "numeric": second
+                    },
+                    {
+                        "unit": "minutes",
+                        "numeric": minute
+                    },
+                    {
+                        "unit": "hours",
+                        "numeric": hour
+                    }
+                ];
+            };
 
-//             var min = parseFloat(tmpls.gauge.min);
-//             var max = parseFloat(tmpls.gauge.max);
-//             var current = sData[0].value.data.value;
+            var width, height, offSetX, offSetY, pi, scaleSecs, scaleMins, scaleHours;
+            width = 300;
+            height = 300;
+            offSetX = 125;
+            offSetY = 100;
 
-//             // No higher/lower than max/min
-//             if (current > max) {
-//                 current = max;
-//             }
-//             if (current < min) {
-//                 current = min;
-//             }
+            pi = Math.PI;
+            scaleSecs = d3.scale.linear().domain([0, 59 + 999/1000]).range([0, 2 * pi]);
+            scaleMins = d3.scale.linear().domain([0, 59 + 59/60]).range([0, 2 * pi]);
+            scaleHours = d3.scale.linear().domain([0, 59 + 59/60]).range([0, 2 * pi]);
 
-//             // Color Scheme
-//             var prct = ((current / max) * 100),
-//                 color = undefined;
+            var vis, clockGroup;
 
-//             if (prct < 34) {
-//                 color = "#3c9b33";
-//             } else if (prct > 66) {
-//                 color = "#aa3f38"
-//             } else {
-//                 color = "#c2bb48"
-//             }
+            vis = d3.select($element[0])
+                .append("svg:svg")
+                .attr("width", width)
+                .attr("height", height);
 
-//             // Calculate draw angle
-//             var drawAng = (((current * 180) / max) - 90);
+            clockGroup = vis.append("svg:g")
+                .attr("transform", "translate(" + offSetX + "," + offSetY + ")");
 
-//             var arc = d3.svg.arc()
-//                 .innerRadius(50)
-//                 .outerRadius(90)
-//                 .startAngle(-90 * (pi/180))
-//                 .endAngle(drawAng * (pi/180))
+            clockGroup.append("svg:circle")
+                .attr("r", 80).attr("fill", "none")
+                .attr("class", "clock outercircle")
+                .attr("stroke", "black")
+                .attr("stroke-width", 2);
 
-//             svg.append("path")
-//                 .attr("fill", color)
-//                 .attr("d", arc)
-//                 .attr("transform", "translate(130,100)")
+            clockGroup.append("svg:circle")
+                .attr("r", 4)
+                .attr("fill", "black")
+                .attr("class", "clock innercircle");
 
-//             $scope.value = current;
+            var render;
 
-//         }
-//     }
-// })
+            render = function(data) {
+                var hourArc, minuteArc, secondArc;
 
+                clockGroup.selectAll(".clockhand").remove();
+
+                secondArc = d3.svg.arc()
+                    .innerRadius(0)
+                    .outerRadius(70)
+                    .startAngle(function(d) {
+                        return scaleSecs(d.numeric);
+                    })
+                    .endAngle(function(d) {
+                        return scaleSecs(d.numeric);
+                    });
+
+                minuteArc = d3.svg.arc()
+                    .innerRadius(0)
+                    .outerRadius(70)
+                    .startAngle(function(d) {
+                        return scaleMins(d.numeric);
+                    })
+                    .endAngle(function(d) {
+                        return scaleMins(d.numeric);
+                    });
+
+                hourArc = d3.svg.arc()
+                    .innerRadius(0)
+                    .outerRadius(50)
+                    .startAngle(function(d) {
+                        return scaleHours(d.numeric % 12);
+                    })
+                    .endAngle(function(d) {
+                        return scaleHours(d.numeric % 12);
+                    });
+
+                clockGroup.selectAll(".clockhand")
+                    .data(data)
+                    .enter()
+                    .append("svg:path")
+                    .attr("d", function(d) {
+                        if (d.unit === "seconds") {
+                            return secondArc(d);
+                        } else if (d.unit === "minutes") {
+                            return minuteArc(d);
+                        } else if (d.unit === "hours") {
+                            return hourArc(d);
+                        }
+                    })
+                    .attr("class", "clockhand")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", function(d) {
+                        if (d.unit === "seconds") {
+                            return 2;
+                        } else if (d.unit === "minutes") {
+                            return 3;
+                        } else if (d.unit === "hours") {
+                            return 3;
+                        }
+                    })
+                    .attr("fill", "none");
+            };
+
+            setInterval(function() {
+                var data;
+                data = fields();
+                return render(data);
+            }, 1000);
+
+        } // Controller
+    }; // return
+}) // directive
+
+//Gauge directive
 .directive('gauge', function() {
     return {
         restrict: 'E',
@@ -521,6 +598,3 @@ angular.module('Dashboard.Charts', [])
         }
     }
 });
-
-
-
