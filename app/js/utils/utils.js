@@ -1,6 +1,6 @@
 angular.module('Dashboard.Utils', [])
 
-.factory('sortDate', function($rootScope) {
+.factory('sortDate', function() {
     // todo 
     // .filter('',  function() {
     // return function (data) {

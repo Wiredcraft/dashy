@@ -25,6 +25,7 @@ angular.module('Dashboard.Admin', [])
             },
             "picture": {},
             "gauge": {},
+            "clock": {},
             "countdown": {
                 "startdate": 0,
                 "enddate": 0
@@ -154,6 +155,7 @@ angular.module('Dashboard.Admin', [])
             },
             "picture": {},
             "gauge": {},
+            "clock": {},
             "countdown": {
                 "startdate": 0,
                 "enddate": 0
