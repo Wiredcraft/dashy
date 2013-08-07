@@ -1,3 +1,6 @@
 #!/bin/bash
 
-echo "This does nothing at the moment."
+echo "Installing modules..."
+npm install
+echo "Starting server..."
+npm start

@@ -44,7 +44,7 @@ angular.module('Dashboard.Admin', [])
         $scope.template1 = [];
         $scope.template2 = [];
 
-        $scope.template1Option = function(template1) {
+        $scope.template1Add = function(template1) {
             $scope.template1.push({"key": template1.key, "value": template1.value});
             template1.key = "", template1.value = "";
         }
@@ -52,7 +52,7 @@ angular.module('Dashboard.Admin', [])
             $scope.template1.splice(index, 1);
         }
 
-        $scope.template2Option = function(template2) {
+        $scope.template2Add = function(template2) {
             $scope.template2.push({"key": template2.key, "value": template2.value});
             template2.key = "", template2.value = "";
         }
@@ -93,8 +93,6 @@ angular.module('Dashboard.Admin', [])
             // >>>>>>>>>>>>>>>>>>>>
             if ($scope.randomID === false) {
                 $scope.realWidget._id = widget._id;
-                console.log('false')
-                console.log(widget._id)
             }
 
             // Check Source Value
@@ -161,6 +159,10 @@ angular.module('Dashboard.Admin', [])
             }
         }
 
+        // Get list of useable datasources
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        $scope.sources = Sources.getSources();
+
         // Get widget ID
         // >>>>>>>>>>>>>
         var id = $location.hash();
@@ -170,13 +172,10 @@ angular.module('Dashboard.Admin', [])
         // >>>>>>>>>>>>>>>>>>>>>>
         Widgets.getWidgetById(thisId).then(function(data) {
             $scope.widget = data;
-            console.log(data.content.title);
+            $scope.widget.config.source = data.config.source;
+            // console.log(data.config.source);
             $scope.thisTitle = data.content.title;
         });
-
-        // Get list of useable datasources
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        $scope.sources = Sources.getSources();
 
         // Template Options
         // >>>>>>>>>>>>>>>>
