@@ -24,7 +24,6 @@
             Update Source
         </label>
             <select class='span' ng-model='widget.config.source' required ng-show='updateSource'>
-                <option disabled value='pick'>Pick one...</option>
                 <option value=''>None</option>
                 <option ng-repeat='item in sources' value='{{item.id}}'>{{item.id}}</option>
             </select>
@@ -36,11 +35,11 @@
         </label>
             <select class='span' ng-model='options.template1' required ng-show='updateTemplates'>
                 <option disabled value=''>Pick one...</option>
-                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+                <option ng-repeat='item in dbWidgets' value='{{item.template}}'>{{item.template}}</option>
             </select>
             <select class='span' ng-model='options.template2' ng-show='updateTemplates'>
                 <option value='undefined'>No Change</option>
-                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+                <option ng-repeat='item in dbWidgets' value='{{item.template}}'>{{item.template}}</option>
             </select>
 
         <label class="checkbox" ng-show='updateTemplates'>

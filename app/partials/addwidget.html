@@ -31,11 +31,11 @@
         <label>Templates</label>
             <select class='span' ng-model='options.template1' required>
                 <option disabled value=''>Pick one...</option>
-                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+                <option ng-repeat='item in dbWidgets' value='{{item.template}}'>{{item.template}}</option>
             </select>
             <select class='span' ng-model='options.template2'>
                 <option value=''>None (I only want 1 template)</option>
-                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+                <option ng-repeat='item in dbWidgets' value='{{item.template}}'>{{item.template}}</option>
             </select>
 
         <div ng-show='options.template1'> 
@@ -106,6 +106,13 @@ Widget
                         </a>
                     </div>
                 </li>
+            </ul>
+        </div>
+
+        <div>
+            <ul ng-repeat="template in dbWidgets">
+                <li><strong>{{template.template}}</strong></li>
+                <li ng-repeat="(key, value) in template.options track by $id($index)">{{key}} : {{value}}</li>
             </ul>
         </div>
 

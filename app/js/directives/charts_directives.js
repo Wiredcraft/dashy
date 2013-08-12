@@ -24,7 +24,7 @@ angular.module('Dashboard.Charts', [])
                             return x(d.value.date); 
                         })
                         .y(function(d) { 
-                            return y(d.value.amount); 
+                            return y(d.value.amount);
                         }),
                     area = d3.svg.area()
                         .x(function(d) {
@@ -39,7 +39,7 @@ angular.module('Dashboard.Charts', [])
                 angular.forEach(axisData, function(data, index, source){
                     var target = data.value;
 
-                    target.date = parseDate(target.date);
+                    target.date = parseDate(target.time);
                     target.amount = +target.data.value.toFixed(); //target.amount
                 });
 
@@ -142,7 +142,7 @@ angular.module('Dashboard.Charts', [])
             
             angular.forEach(sData, function(data, index, source) {
                 var target = data.value;
-                target.date = parseDate(target.date);
+                target.date = parseDate(target.time);
             });
             
             // Order Information by date
@@ -231,7 +231,7 @@ angular.module('Dashboard.Charts', [])
 
             // Show status icons if builds, img if not
             $scope.builds = false;
-            if (sData[0].value.status !== undefined) {
+            if (sData[0].value.data.status !== undefined) {
                 $scope.builds = true;
             };
 
@@ -276,7 +276,7 @@ angular.module('Dashboard.Charts', [])
         templateUrl: 'templates/picture.html',
         controller: function($scope, $element) {
             var sData = JSON.parse($scope.data),
-                image = sData[0].value.image;
+                image = sData[0].value.data.image;
 
             $scope.imageUrl = image;
 

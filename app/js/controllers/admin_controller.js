@@ -2,43 +2,19 @@ angular.module('Dashboard.Admin', [])
 
 .controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
     function($scope, $http, Admin, Sources) {
-        $scope.randomID = true;
-
-        // List of possible templates
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>
-        $scope.dbWidgets = {
-            "linechart": {
-                "points": 0
-            },
-            "delta": {},
-            "gauge": {
-                "min": 0,
-                "max": 0,
-            },
-            "sum": {
-                "append": "1",
-                "prepend": "2",
-                "subtitle": "3"
-            },
-            "list": {
-                "limit": 0
-            },
-            "picture": {},
-            "gauge": {},
-            "clock": {},
-            "countdown": {
-                "startdate": 0,
-                "enddate": 0
-            },
-            "announcement": {
-                "announcement": "",
-                "subtitle": ""
-            }
-        }
+        $scope.randomID = true; // CouchDB will provide an ID if true
 
         // Get list of useable datasources
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        $scope.sources = Sources.getSources();
+        Sources.getSources().then(function(data) {
+            $scope.sources = data;
+        });
+
+        // Get templates in /js/config/config.json
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        Sources.getTemplates().then(function(data) {
+            $scope.dbWidgets = data;
+        });
 
         // Template Options
         // >>>>>>>>>>>>>>>>
@@ -123,7 +99,6 @@ angular.module('Dashboard.Admin', [])
             // POST to Database
             // >>>>>>>>>>>>>>>>
             Admin.addWidget($scope.realWidget);
-
         };
 
     }
@@ -134,41 +109,17 @@ angular.module('Dashboard.Admin', [])
         $scope.updateSource = false;
         $scope.updateTemplates = false;
 
-        // List of possible templates
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>
-        $scope.dbWidgets = {
-            "linechart": {
-                "points": 0
-            },
-            "delta": {},
-            "gauge": {
-                "min": 0,
-                "max": 0,
-            },
-            "sum": {
-                "append": "",
-                "prepend": "",
-                "subtitle": ""
-            },
-            "list": {
-                "limit": 0
-            },
-            "picture": {},
-            "gauge": {},
-            "clock": {},
-            "countdown": {
-                "startdate": 0,
-                "enddate": 0
-            },
-            "announcement": {
-                "announcement": "",
-                "subtitle": ""
-            }
-        }
-
         // Get list of useable datasources
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        $scope.sources = Sources.getSources();
+        Sources.getSources().then(function(data) {
+            $scope.sources = data;
+        });
+
+        // Get templates in /js/config/config.json
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        Sources.getTemplates().then(function(data) {
+            $scope.dbWidgets = data;
+        });
 
         // Get widget ID
         // >>>>>>>>>>>>>

@@ -43,7 +43,7 @@ angular.module('Dashboard.Models', [])
         });
 
         return deferred.promise;
-    }
+    };
 
     return Widgets;
 }])
@@ -56,6 +56,18 @@ angular.module('Dashboard.Models', [])
         var deferred = $q.defer();
 
         $http.get(apiUrl).success(function(data) {
+            deferred.resolve(data);
+        }).error(function(err) {
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+    };
+
+    Sources.getTemplates = function() {
+        var deferred = $q.defer();
+
+        $http.get('/js/config/config.json').success(function(data) {
             deferred.resolve(data);
         }).error(function(err) {
             deferred.reject(err);

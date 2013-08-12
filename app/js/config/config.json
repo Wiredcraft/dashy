@@ -1,0 +1,55 @@
+[
+    {
+        "template": "linechart",
+        "options": {
+            "points": "number"
+        }
+    },
+    {
+        "template": "delta",
+        "options": {}
+    },
+    {
+        "template": "gauge",
+        "options": {
+            "min": "number",
+            "max": "number"
+        }
+    },
+    {
+        "template": "sum",
+        "options": {
+            "append": "text",
+            "prepend": "text",
+            "subtitle": "text"
+        }
+    },
+    {
+        "template": "list",
+        "options": {
+            "limit": "number"
+        }
+    },
+    {
+        "template": "picture",
+        "options": {}
+    },
+    {
+        "template": "clock",
+        "options": {}
+    },
+    {
+        "template": "countdown",
+        "options": {
+            "startdate": "date",
+            "enddate": "date"
+        }
+    },
+    {
+        "template": "announcement",
+        "options": {
+            "announcement": "text",
+            "subtitle": "text"
+        }
+    }
+]

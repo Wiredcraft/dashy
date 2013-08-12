@@ -11,9 +11,9 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.date && doc.data) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'date' : doc.date,
+                                'time' : doc.time,
                                 'data' : doc.data
                             });
                         }
@@ -34,12 +34,10 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.title && doc.time && doc.user && doc.img) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'title' : doc.title,
                                 'time' : doc.time,
-                                'user' : doc.user,
-                                'img' : doc.img
+                                'data' : doc.data
                             });
                         }
                     }
@@ -59,10 +57,10 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.title && doc.status) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'title' : doc.title,
-                                'status' : doc.status
+                                'time' : doc.time,
+                                'data' : doc.data
                             });
                         }
                     }
@@ -82,10 +80,10 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.title && doc.image) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'title' : doc.title,
-                                'image' : doc.image
+                                'time' : doc.time,
+                                'data' : doc.data
                             });
                         }
                     }
