@@ -1,8 +1,8 @@
 angular.module('Dashboard.Controllers', [])
 
 // Main controller
-.controller('MainAppCtrl', ['$scope', 'Widgets', '$rootScope',
-    function($scope, Widgets, $rootScope) {
+.controller('MainAppCtrl', ['$scope', 'Widgets', '$rootScope', '$document',
+    function($scope, Widgets, $rootScope, $document) {
 
         // get widget's info
         var getWidgetData = function () {
@@ -30,6 +30,20 @@ angular.module('Dashboard.Controllers', [])
             getWidgetData();
         }, function(err) {
             console.log(err);
+        });
+
+        // Press 'L' to un/lock dragging
+        $document.keydown(function(e) {
+            console.log(e.keyCode);
+            if (e.keyCode === 76) {
+                if($rootScope.locked === false) {
+                    $rootScope.gridster.disable();
+                    $rootScope.locked = true;
+                } else if($rootScope.locked === true) {
+                    $rootScope.gridster.enable();
+                    $rootScope.locked = false;
+                }                
+            }
         });
 
     }
