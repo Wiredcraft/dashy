@@ -67,7 +67,7 @@ angular.module('Dashboard.Models', [])
     Sources.getTemplates = function() {
         var deferred = $q.defer();
 
-        $http.get('/js/config/config2.json').success(function(data) {
+        $http.get('/js/config/config.json').success(function(data) {
             deferred.resolve(data);
         }).error(function(err) {
             deferred.reject(err);

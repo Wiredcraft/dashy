@@ -1,53 +1,28 @@
 [
     {
-        "template": "linechart",
-        "options": {
+        "linechart": {
             "points": "number"
-        }
-    },
-    {
-        "template": "delta",
-        "options": {}
-    },
-    {
-        "template": "gauge",
-        "options": {
+        },
+        "delta": {},
+        "gauge": {
             "min": "number",
             "max": "number"
-        }
-    },
-    {
-        "template": "sum",
-        "options": {
+        },
+        "sum": {
             "append": "text",
             "prepend": "text",
             "subtitle": "text"
-        }
-    },
-    {
-        "template": "list",
-        "options": {
+        },
+        "list": {
             "limit": "number"
-        }
-    },
-    {
-        "template": "picture",
-        "options": {}
-    },
-    {
-        "template": "clock",
-        "options": {}
-    },
-    {
-        "template": "countdown",
-        "options": {
+        },
+        "picture": {},
+        "clock": {},
+        "countdown": {
             "startdate": "date",
             "enddate": "date"
-        }
-    },
-    {
-        "template": "announcement",
-        "options": {
+        },
+        "announcement": {
             "announcement": "text",
             "subtitle": "text"
         }
