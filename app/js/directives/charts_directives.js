@@ -284,6 +284,7 @@ angular.module('Dashboard.Charts', [])
     }
 })
 
+// Clock directive
 .directive('clock', function() {
     return {
         restrict: 'E',

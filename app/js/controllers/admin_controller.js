@@ -13,8 +13,10 @@ angular.module('Dashboard.Admin', [])
         // Get templates in /js/config/config.json
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         Sources.getTemplates().then(function(data) {
-            $scope.dbWidgets = data;
+            $scope.dbWidgets = data[0];
         });
+
+
 
         // Template Options
         // >>>>>>>>>>>>>>>>
@@ -84,9 +86,8 @@ angular.module('Dashboard.Admin', [])
                 dir1[$scope.template1[i].key] = $scope.template1[i].value;
             };
             $scope.realWidget.content.templates[temp1] = dir1;
-
-            console.log('temp2', temp2);
             
+            // If only 1 template, don't add 2nd as undefined
             if (temp2 != undefined || temp2 != null ) {
                 for(i = 0; i < $scope.template2.length; i++) {
                     dir2[$scope.template2[i].key] = $scope.template2[i].value;
