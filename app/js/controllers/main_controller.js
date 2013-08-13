@@ -34,7 +34,7 @@ angular.module('Dashboard.Controllers', [])
 
         // Press 'L' to un/lock dragging
         $document.keydown(function(e) {
-            console.log(e.keyCode);
+            // console.log(e.keyCode);
             if (e.keyCode === 76) {
                 if($rootScope.locked === false) {
                     $rootScope.gridster.disable();

@@ -35,11 +35,11 @@
         </label>
             <select class='span' ng-model='options.template1' required ng-show='updateTemplates'>
                 <option disabled value=''>Pick one...</option>
-                <option ng-repeat='item in dbWidgets' value='{{item.template}}'>{{item.template}}</option>
+                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
             <select class='span' ng-model='options.template2' ng-show='updateTemplates'>
                 <option value='undefined'>No Change</option>
-                <option ng-repeat='item in dbWidgets' value='{{item.template}}'>{{item.template}}</option>
+                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
 
         <label class="checkbox" ng-show='updateTemplates'>
@@ -47,21 +47,29 @@
             <i class='icon-trash'></i> Remove 2nd Template?
         </label>
 
-        <div ng-show='options.template1'>
+        <!-- Template 1 Options -->
+        <div ng-show='options.template1'> 
             <label>{{options.template1}} Options</label>
-                <input class='span' type='text' ng-model='template1.key' placeholder='Option Name' required>
-                <div class='input-append'>
-                    <input class='span' type='text' ng-model='template1.value' placeholder='Option Value' required>
-                    <button class='btn' ng-click='template1Option(template1)'>Add</button>
+                <select class='span' ng-model='template1.key'>
+                    <option value=''>Choose option</option>
+                    <option ng-repeat='(key, value) in dbWidgets[options.template1] track by $id($index)' value='{{key}}'>{{key}}</option>
+                </select>
+                <div ng-show='template1.key' class='input-append'>
+                    <input class='span' type='{{dbWidgets[options.template1][template1.key]}}' ng-model='template1.value' placeholder='Enter value'>
+                    <button class='btn' ng-click='template1Add(template1)'>Add</button>
                 </div>
         </div>
 
-        <div ng-show='options.template2'>
+        <!-- Template 2 Options -->
+        <div ng-show="options.template2">
             <label>{{options.template2}} Options</label>
-                <input class='span' type='text' ng-model='template2.key' placeholder='Option Name' required>
-                <div class='input-append'>
-                    <input class='span' type='text' ng-model='template2.value' placeholder='Option Value' required>
-                    <button class='btn' ng-click='template2Option(template2)'>Add</button>
+                <select class='span' ng-model='template2.key'>
+                    <option value=''>Choose option</option>
+                    <option ng-repeat='(key, value) in dbWidgets[options.template2] track by $id($index)' value='{{key}}'>{{key}}</option>
+                </select>
+                <div ng-show='template2.key' class='input-append'>
+                    <input class='span' type='{{dbWidgets[options.template2][template2.key]}}' ng-model='template2.value' placeholder='Enter Value'>
+                    <button class='btn' ng-click='template2Add(template2)'>Add</button>
                 </div>
         </div>
 

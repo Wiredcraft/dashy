@@ -110,18 +110,6 @@ angular.module('Dashboard.Admin', [])
         $scope.updateSource = false;
         $scope.updateTemplates = false;
 
-        // Get list of useable datasources
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        Sources.getSources().then(function(data) {
-            $scope.sources = data;
-        });
-
-        // Get templates in /js/config/config.json
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        Sources.getTemplates().then(function(data) {
-            $scope.dbWidgets = data;
-        });
-
         // Get widget ID
         // >>>>>>>>>>>>>
         var id = $location.hash();
@@ -131,9 +119,21 @@ angular.module('Dashboard.Admin', [])
         // >>>>>>>>>>>>>>>>>>>>>>
         Widgets.getWidgetById(thisId).then(function(data) {
             $scope.widget = data;
-            $scope.widget.config.source = data.config.source;
-            // console.log(data.config.source);
+            // $scope.widget.config.source = data.config.source;
+            console.log(data.config.source);
             $scope.thisTitle = data.content.title;
+        });
+
+        // Get list of useable datasources
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        Sources.getSources().then(function(data) {
+            $scope.sources = data;
+        });
+
+        // Get templates in /js/config/config.json
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        Sources.getTemplates().then(function(data) {
+            $scope.dbWidgets = data[0];
         });
 
         // Template Options
@@ -141,16 +141,21 @@ angular.module('Dashboard.Admin', [])
         $scope.template1 = [];
         $scope.template2 = [];
 
-        $scope.template1Option = function(template1) {
+        $scope.template1Add = function(template1) {
             $scope.template1.push({"key": template1.key, "value": template1.value});
             template1.key = "", template1.value = "";
         }
+        $scope.template1Remove = function(index) {
+            $scope.template1.splice(index, 1);
+        }
 
-        $scope.template2Option = function(template2) {
+        $scope.template2Add = function(template2) {
             $scope.template2.push({"key": template2.key, "value": template2.value});
             template2.key = "", template2.value = "";
         }
-
+        $scope.template2Remove = function(index) {
+            $scope.template2.splice(index, 1);
+        }
 
         // Update Function
         // >>>>>>>>>>>>>>>
