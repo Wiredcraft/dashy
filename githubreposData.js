@@ -1,4 +1,19 @@
-function randomInt (min, max) {
+var dates = [
+	"1-May-12",
+	"2-May-12",
+	"3-May-12",
+	"4-May-12",
+	"5-May-12",
+	"6-May-12",
+	"7-May-12",
+	"8-May-12",
+	"9-May-12",
+	"10-May-12",
+	"11-May-12",
+	"12-May-12",
+]
+
+function randomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -38,3 +53,8 @@ var req = http.request(options, function(res) {
 // req.write(dataString);
 // req.end();
 
+setInterval(function() {
+
+
+
+}, 1000)
