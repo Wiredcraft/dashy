@@ -1,0 +1,75 @@
+#!/bin/bash
+
+echo "Setting up CouchDB for Dashy..."
+
+echo "Adding Databases..."
+curl -X PUT http://127.0.0.1:5984/widgets
+curl -X PUT http://127.0.0.1:5984/sources
+curl -X PUT http://127.0.0.1:5984/builds
+curl -X PUT http://127.0.0.1:5984/commits
+curl -X PUT http://127.0.0.1:5984/pictures
+curl -X PUT http://127.0.0.1:5984/githubrepos
+echo "Databases added."
+
+echo "Posting database views..."
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{"_id": "_design/widgets","language": "javascript","views": {"all": {"map": "function (doc) {if (doc.content && doc.config && doc.layout) {emit(doc._rev,{'content' :doc.content,'config' : doc.config,'layout' : doc.layout});}}"}}}'
+curl -X POST http://127.0.0.1:5984/sources -H "Content-Type: application/json" -d '{"_id": "_design/sources","language": "javascript","views": {"all": {"map": "function (doc) {if (doc.name) {emit(doc._rev,{'name' :doc.name});}}"}}}'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{"_id": "_design/source","language": "javascript","views": {"all": {"map": "function (doc) {if (doc.time && doc.data) {emit(doc._rev,{'time' : doc.time,'data' : doc.data});}}"}}}'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{"_id": "_design/source","language": "javascript","views": {"all": {"map": "function (doc) {if (doc.time && doc.data) {emit(doc._rev,{'time' : doc.time,'data' : doc.data});}}"}}}'
+curl -X POST http://127.0.0.1:5984/pictures -H "Content-Type: application/json" -d '{"_id": "_design/source","language": "javascript","views": {"all": {"map": "function (doc) {if (doc.time && doc.data) {emit(doc._rev,{'time' : doc.time,'data' : doc.data});}}"}}}'
+curl -X POST http://127.0.0.1:5984/githubrepos -H "Content-Type: application/json" -d '{"_id": "_design/source","language": "javascript","views": {"all": {"map": "function (doc) {if (doc.time && doc.data) {emit(doc._rev,{'time' : doc.time,'data' : doc.data});}}"}}}'
+echo "Views complete."
+
+echo "Posting Widget Data..."
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":""},"content":{"title":"Announcements!","templates":{"announcement":{"announcement":"Finish that Super Awesome Secret Project","subtitle":""},"countdown":{"startdate":"20130717","enddate":"20131231"}}},"layout":{"data-row":1,"data-col":3,"data-sizex":4,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"builds"},"content":{"title":"Builds","templates":{"list":{}}},"layout":{"data-row":1,"data-col":1,"data-sizex":2,"data-sizey":6} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"commits"},"content":{"title":"GitHub Commits","templates":{"list":{}}},"layout":{"data-row":3,"data-col":3,"data-sizex":2,"data-sizey":4} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"Internet Speed","templates":{"gauge":{"max":800,"min":0}}},"layout":{"data-row":5,"data-col":5,"data-sizex":2,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"pictures"},"content":{"title":"Latest Pic","templates":{"picture":{}}},"layout":{"data-row":3,"data-col":5,"data-sizex":2,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"wiredcraft values","templates":{"delta":{"prepend":"","append":""},"sum":{"prepend":"","append":"K","subtitle":"visitors"}}},"layout":{"data-row":1,"data-col":11,"data-sizex":2,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"devo.ps values","templates":{"sum":{"prepend":"","append":"K","subtitle":"visitors"},"delta":{}}},"layout":{"data-row":3,"data-col":11,"data-sizex":2,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"mailchimp values","templates":{"sum":{"prepend":"","append":"K","subtitle":"visitors"},"delta":{}}},"layout":{"data-row":5,"data-col":11,"data-sizex":2,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"wiredcraft.com metrics","templates":{"linechart":{"points":7}}},"layout":{"data-row":1,"data-col":7,"data-sizex":4,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"devo.ps metrics","templates":{"linechart":{"points":7}}},"layout":{"data-row":3,"data-col":7,"data-sizex":4,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"MailChimp Stats","templates":{"linechart":{"points":7}}},"layout":{"data-row":5,"data-col":7,"data-sizex":4,"data-sizey":2} }'
+echo "Widget Data Complete."
+
+echo "Posting Sources Data..."
+curl -X POST http://127.0.0.1:5984/sources -H "Content-Type: application/json" -d '{ "_id":"builds", "name": "builds" }'
+curl -X POST http://127.0.0.1:5984/sources -H "Content-Type: application/json" -d '{ "_id":"commits", "name": "commits" }'
+curl -X POST http://127.0.0.1:5984/sources -H "Content-Type: application/json" -d '{ "_id":"githubrepos", "name": "githubrepos" }'
+curl -X POST http://127.0.0.1:5984/sources -H "Content-Type: application/json" -d '{ "_id":"pictures", "name": "pictures" }'
+echo "Sources Complete."
+
+echo "Posting Builds Data..."
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/borat", "title": "borat", "status": "pass", "message": "Build Successful"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/dashy", "title": "dashy", "status": "pass", "message": "Build Successful"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/embarq", "title": "Embarq", "status": "fail", "message": "Build Failed"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/devo.ps", "title": "devo.ps", "status": "pass", "message": "Build Successful"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/moleskin", "title": "Moleskin", "status": "fail", "message": "Build Failed"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/shanghaios.org", "title": "ShanghaiOS.org", "status": "pass", "message": "Build Successful"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/wiredcraft.com", "title": "wiredcraft.com", "status": "fail", "message": "Build Failed"} }'
+curl -X POST http://127.0.0.1:5984/builds -H "Content-Type: application/json" -d '{ "time": "1234567890", "data": {"repository": "http://github.com/wiredcraft/AppNap", "title": "AppNap", "status": "pass", "message": "Build Successful"} }'
+echo "Builds Complete."
+
+echo "Posting Commits Data..."
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2013-05-14T21:34:49Z", "data": {"user": "Jamesford", "title": "Super Commit!", "image": "https://secure.gravatar.com/avatar/cfdfd092fdad6be1a2d80bdbea98d9ead=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2013-06-14T09:34:49Z", "data": {"user": "Jamesford", "title": "Test Commit", "image": "https://secure.gravatar.com/avatar/cfdfd092fdad6be1a2d80bdbea98d9ead=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2013-04-14T21:34:49Z", "data": {"user": "Jamesford", "title": "Awesome Commit", "image": "https://secure.gravatar.com/avatar/cfdfd092fdad6be1a2d80bdbea98d9ead=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2013-02-27T04:02:33Z", "data": {"user": "frankdou", "title": "Franks Commit!", "image": "https://secure.gravatar.com/avatar/26c5aee074ac63ffff6b37ee8892ea33?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2013-07-12T07:22:20Z", "data": {"user": "frankdou", "title": "Recent Commit", "image": "https://secure.gravatar.com/avatar/26c5aee074ac63ffff6b37ee8892ea33?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2012-12-04T19:21:59Z", "data": {"user": "Borat", "title": "Borat Too, Vanilla face", "image": "https://secure.gravatar.com/avatar/18a9f462bd7774941b521c8bc071fe24?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+curl -X POST http://127.0.0.1:5984/commits -H "Content-Type: application/json" -d '{ "time": "2012-11-30T11:11:11Z", "data": {"user": "Sterling Archer", "title": "Dangerzone!!", "image": "https://secure.gravatar.com/avatar/a777586ddf06117bf63b2b77e12eae89?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"} }'
+echo "Commits Complete."
+
+echo "Posting Pictures Data..."
+curl -X POST http://127.0.0.1:5984/pictures -H "Content-Type: application/json" -d '{ "time": "2013-06-14T09:34:49Z", "data": {"title": "A Cool Pic", "image": "http://img.timeinc.net/time/daily/2007/0701/360_borat_lebanon0109.jpg"} }'
+curl -X POST http://127.0.0.1:5984/pictures -H "Content-Type: application/json" -d '{ "time": "2013-06-15T07:49:35Z", "data": {"title": "Borat", "image": "http://www.film.com/wp-content/uploads/2012/05/Sacha-Baron-Cohen-borat-django-unchained-tarantino.png"} }'
+echo "Pictures Complete."
+
+echo "Executing Nodejs script for githubrepos data..."
+nodejs install/githubreposData.js
+echo "githubrepos Complete."
+
+echo "================================"
+echo "CouchDB has been setup for Dashy!"
