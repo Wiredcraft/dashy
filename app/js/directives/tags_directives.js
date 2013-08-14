@@ -69,6 +69,8 @@ angular.module('Dashboard.Tags', [])
                 $element.replaceWith($compile(sHtml)($scope));
             }
 
+            console.log($scope.data)
+
             $scope.$watch('data', function (aft, bef) {
                 if (aft) {
                     gridWidget();

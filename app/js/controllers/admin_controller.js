@@ -2,7 +2,6 @@ angular.module('Dashboard.Admin', [])
 
 .controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
     function($scope, $http, Admin, Sources) {
-        $scope.randomID = true; // CouchDB will provide an ID if true
 
         // Get list of useable datasources
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -15,8 +14,6 @@ angular.module('Dashboard.Admin', [])
         Sources.getTemplates().then(function(data) {
             $scope.dbWidgets = data[0];
         });
-
-
 
         // Template Options
         // >>>>>>>>>>>>>>>>
