@@ -22,7 +22,7 @@
         </label>
             <select class='span' ng-model='widget.config.source' required ng-show='updateSource'>
                 <option value=''>None</option>
-                <option ng-repeat='item in sources' value='{{item.id}}'>{{item.id}}</option>
+                <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
             </select>
 
         <!-- Templates -->
