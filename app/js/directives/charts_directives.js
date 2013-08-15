@@ -11,47 +11,58 @@ angular.module('Dashboard.Charts', [])
         },
         controller: function($scope, $element, $timeout) {
             $timeout(function () {
-                var axisData = JSON.parse($scope.data),
-                    width = $element.width(),
-                    height = $element.height(),
-                    parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
-                    x = d3.time.scale().range([0, width]),
-                    y = d3.scale.linear().range([height, 0]),
-                    xAxis = d3.svg.axis().scale(x).orient("bottom"),
-                    yAxis = d3.svg.axis().scale(y).orient("left"),
-                    line = d3.svg.line()
-                        .x(function(d) { 
-                            return x(d.value.date); 
-                        })
-                        .y(function(d) { 
-                            return y(d.value.amount);
-                        }),
-                    area = d3.svg.area()
-                        .x(function(d) {
-                            return x(d.value.date);
-                        })
-                        .y0(height)
-                        .y1(function(d) {
-                            return y(d.value.amount);
-                        }),
-                    svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
+                var linechart = function() {
+                    // Remove old graph, replace with new graph
+                    angular.element($element[0]).children().remove();
 
-                angular.forEach(axisData, function(data, index, source){
-                    var target = data.value;
+                    var axisData = JSON.parse($scope.data),
+                        width = $element.width(),
+                        height = $element.height(),
+                        parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
+                        x = d3.time.scale().range([0, width]),
+                        y = d3.scale.linear().range([height, 0]),
+                        xAxis = d3.svg.axis().scale(x).orient("bottom"),
+                        yAxis = d3.svg.axis().scale(y).orient("left"),
+                        line = d3.svg.line()
+                            .x(function(d) { 
+                                return x(d.value.date); 
+                            })
+                            .y(function(d) { 
+                                return y(d.value.amount);
+                            }),
+                        area = d3.svg.area()
+                            .x(function(d) {
+                                return x(d.value.date);
+                            })
+                            .y0(height)
+                            .y1(function(d) {
+                                return y(d.value.amount);
+                            }),
+                        svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
 
-                    target.date = parseDate(target.time);
-                    target.amount = +target.data.value.toFixed(); //target.amount
-                });
+                    
 
-                // sort by date, its important, linechart need
-                axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
+                    angular.forEach(axisData, function(data, index, source){
+                        var target = data.value;
 
-                x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
-                y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
+                        target.date = parseDate(target.time);
+                        target.amount = +target.data.value.toFixed(); //target.amount
+                    });
 
-                // line
-                svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
-                svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
+                    // sort by date, its important, linechart need
+                    axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
+
+                    x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
+                    y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
+
+                    // line
+                    svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
+                    svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
+                }
+
+                $scope.$watch('data', function (aft, bef) {
+                    linechart();
+                }, true);
 
             }, 0)
         }
@@ -137,42 +148,49 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/delta.html',
         controller: function($scope, $element) {
-            var sData = JSON.parse($scope.data),
-                parseDate = d3.time.format("%d-%b-%y").parse; // Correct time formatting
-            
-            angular.forEach(sData, function(data, index, source) {
-                var target = data.value;
-                target.date = parseDate(target.time);
-            });
-            
-            // Order Information by date
-            sData.sort(function(a, b) { return a['value']['date'] - b['value']['date'] });
+            var delta = function() {
+                var sData = JSON.parse($scope.data),
+                    parseDate = d3.time.format("%d-%b-%y").parse; // Correct time formatting
+                
+                angular.forEach(sData, function(data, index, source) {
+                    var target = data.value;
+                    target.date = parseDate(target.time);
+                });
+                
+                // Order Information by date
+                sData.sort(function(a, b) { return a['value']['date'] - b['value']['date'] });
 
-            var base = sData[0].value.data.value,
-                length = sData.length - 1,
-                current = sData[length].value.data.value,
-                diff = ((current / base) * 100);
+                var base = sData[0].value.data.value,
+                    length = sData.length - 1,
+                    current = sData[length].value.data.value,
+                    diff = ((current / base) * 100);
 
-            var status;
-            if (diff > 100) {
-                dir = "⬆";
-                status = 'up';
-            } else if (diff === 100) {
-                dir = "="
-                status = 'equal'
-            } else {
-                dir = "⬇";
-                status = 'down'
+                var status;
+                if (diff > 100) {
+                    dir = "⬆";
+                    status = 'up';
+                } else if (diff === 100) {
+                    dir = "="
+                    status = 'equal'
+                } else {
+                    dir = "⬇";
+                    status = 'down'
+                }
+
+                diff = diff - 100;
+                diff = diff.toFixed();
+
+                $scope.delta = {
+                    'difference' : diff + "%",
+                    'direction' : dir,
+                    'status' : status
+                }                
             }
 
-            diff = diff - 100;
-            diff = diff.toFixed();
+            $scope.$watch('data', function (aft, bef) {
+                delta();
+            }, true); 
 
-            $scope.delta = {
-                'difference' : diff + "%",
-                'direction' : dir,
-                'status' : status
-            }
         }
     };
 })
@@ -188,20 +206,27 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/sum.html',
         controller: function($scope, $element, $timeout, Number) {
-            var sData = JSON.parse($scope.data),
-                tmpls = JSON.parse($scope.templates),
-                append = tmpls.sum.append,
-                prepend = tmpls.sum.prepend,
-                sub = tmpls.sum.subtitle,
-                total = 0;
+            var sum = function() {
+                var sData = JSON.parse($scope.data),
+                    tmpls = JSON.parse($scope.templates),
+                    append = tmpls.sum.append,
+                    prepend = tmpls.sum.prepend,
+                    sub = tmpls.sum.subtitle,
+                    total = 0;
 
-            angular.forEach(sData, function(data, index, source){
-                total += data.value.data.value;
-            });
+                angular.forEach(sData, function(data, index, source){
+                    total += data.value.data.value;
+                });
 
-            total = Number(total, prepend, append);
-            $scope.sum = total;
-            $scope.sub = sub;
+                total = Number(total, prepend, append);
+                $scope.sum = total;
+                $scope.sub = sub;
+            }
+
+            $scope.$watch('data', function (aft, bef) {
+                sum();
+            }, true);
+
         }
     };
 })
@@ -243,8 +268,6 @@ angular.module('Dashboard.Charts', [])
                     $scope.list = array;
                 }
             };
-
-            list();
 
             $scope.$watch('data', function() {
                 list();
@@ -289,8 +312,6 @@ angular.module('Dashboard.Charts', [])
 
                 $scope.imageUrl = image;
             }
-
-            picture();
 
             $scope.$watch('data', function() {
                 picture();
@@ -584,10 +605,11 @@ angular.module('Dashboard.Charts', [])
                 powerGauge = gauge();
                 powerGauge.render();
 
+                // Need to add sort by time!!
                 $scope.$watch('data', function (aft, bef) {
-                    var sData = JSON.parse(aft)
+                    var sData = JSON.parse(aft);
                     var x = sData.length - 1;
-                    powerGauge.update(sData[x].value.data.value)
+                    powerGauge.update(sData[x].value.data.value);
                 }, true);
 
             }, 0)           
