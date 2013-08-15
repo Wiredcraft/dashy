@@ -7,7 +7,6 @@ angular.module('Dashboard.Controllers', [])
         // get widget's info
         var getWidgetData = function () {
             angular.forEach($scope.widgets, function (widget, index) {
-                console.log('getWidgetData');
                 var source = widget.value.config.source;
                 // for countdown widget we dont need couchdb source
                 if (angular.isObject(source)) {

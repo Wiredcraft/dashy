@@ -62,7 +62,6 @@ angular.module('Dashboard.Tags', [])
                 sHtml += '<section class="widget-body number-widget">';
                 // Add directives to section
                 angular.forEach(oDirective, function (directive, directiveName) {
-                    console.log(directive, directiveName);
                     sHtml += '<' + directiveName + ' data="{{data}}" templates="{{templates}}"></' + directiveName + '>';
                 });
                 // End Section

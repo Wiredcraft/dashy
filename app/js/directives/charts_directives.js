@@ -283,10 +283,18 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/picture.html',
         controller: function($scope, $element) {
-            var sData = JSON.parse($scope.data),
+            var picture = function() {
+                var sData = JSON.parse($scope.data),
                 image = sData[0].value.data.image;
 
-            $scope.imageUrl = image;
+                $scope.imageUrl = image;
+            }
+
+            picture();
+
+            $scope.$watch('data', function() {
+                picture();
+            }, true);
 
         }
     }
@@ -439,8 +447,8 @@ angular.module('Dashboard.Charts', [])
                                 pointerTailLength        : 5,
                                 pointerHeadLengthPercent : 0.9,
                                 
-                                minValue                 : tmpls.min || 0,
-                                maxValue                 : tmpls.max || 1000,
+                                minValue                 : tmpls.gauge.min || 0,
+                                maxValue                 : tmpls.gauge.max || 1000,
 
                                 minAngle                 : -90,
                                 maxAngle                 : 90, 
@@ -572,19 +580,15 @@ angular.module('Dashboard.Charts', [])
                         
                         return that;
                     };
-                
+
                 powerGauge = gauge();
                 powerGauge.render();
 
-                setInterval(function() {
-                    var num = Math.random() * 1000;
-                    powerGauge.update(num);
-                }, 5000);
-
                 $scope.$watch('data', function (aft, bef) {
-                    var num = Math.random() * 1000;
-                    powerGauge.update(num);
-                });
+                    var sData = JSON.parse(aft)
+                    var x = sData.length - 1;
+                    powerGauge.update(sData[x].value.data.value)
+                }, true);
 
             }, 0)           
         }
