@@ -1,16 +1,21 @@
 ##Install these first!
-NPM & Grunt must be installed, Ruby must be installed for the compass gem.
 
-Compass -	`gem update && gem install compass`
+NodeJS & CouchDB
+
+Dev - Grunt must be installed, Ruby must be installed for the compass gem.
+Compass - `gem update && gem install compass`
 
 
 ##Start it up
+Read INSTALL.md for latest installation instructions
+
 1. Clone the repo
 2. `cd` into repo
 3. `npm install`
+4. `./install/dashr`
 4. `npm start`
 5. Go to `http://localhost:4000/`
-6. Optional: Open a new terminal window and run grunt when working on css
+6. Dev: Open a new terminal window and run grunt when working on css
 
 
 ##Known Bugs + To Do
@@ -90,18 +95,18 @@ In order to add a new datasource to the widget, you must first define it in the 
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.date && doc.amount) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'date' : doc.date,
-                                'amount' : doc.amount
+                                'time' : doc.time,
+                                'data' : doc.data
                             });
                         }
                     }
                 }
             },
-            // for basic validate at router side
+            // for basic validation at router side
             validate : function (oData) {
-                if (oData && oData.name && oData.status) {
+                if (oData && oData.time && oData.data) {
                     return false;
                 } else {
                     return true;
@@ -115,8 +120,10 @@ Now `http://apiUrl.com/githubrepos` will retrun an array of objects. Each one lo
 		id: "5520d3749727a68339b7eac5ff02b955",
 		key: "1-02ae2b48cd8ec63984f323ec0846c086",
 		value: {
-			date: "28-Mar-12",
-			amount: 617.62
+			time: "28-Mar-12",
+			data: {
+				value: 582.13
+			}
 		}
 	}
         
@@ -125,9 +132,6 @@ It is recommended that this be the first thing you do as this will create the Co
 
 `Needs verification` - To change the design/view at a later time you must manually add it into CouchDB yourself.
 
-
-##Install Script
-The install script is now very out-dated and will be updated soon. Once updated this section will detail the script's abilities.
 
 ##CouchDB
 Names of Databases in use:
