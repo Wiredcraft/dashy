@@ -47,6 +47,7 @@ angular.module('Dashboard.Tags', [])
         },
         controller: function($rootScope, $scope, $element, $compile) {
             // add widget element to gridster
+
             var gridWidget = function () {
                 var oLayout = JSON.parse($scope.layout);
                 $rootScope.gridster.add_widget($element.parent(), oLayout['data-sizex'], oLayout['data-sizey'], oLayout['data-col'], oLayout['data-row']);
@@ -68,8 +69,6 @@ angular.module('Dashboard.Tags', [])
                 // Complete
                 $element.replaceWith($compile(sHtml)($scope));
             }
-
-            console.log($scope.data)
 
             $scope.$watch('data', function (aft, bef) {
                 if (aft) {

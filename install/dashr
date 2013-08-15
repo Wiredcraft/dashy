@@ -68,7 +68,7 @@ curl -X POST http://127.0.0.1:5984/pictures -H "Content-Type: application/json" 
 echo "Pictures Complete."
 
 echo "Executing Nodejs script for githubrepos data..."
-nodejs install/githubreposData.js
+node install/githubreposData.js || nodejs install/githubreposData.js
 echo "githubrepos Complete."
 
 echo "================================"

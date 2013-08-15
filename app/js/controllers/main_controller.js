@@ -25,7 +25,6 @@ angular.module('Dashboard.Controllers', [])
         // get widget list info
         Widgets.getWidgetList().then(function(data) {
             $scope.widgets = data;
-            
             // get widget's info
             getWidgetData();
         }, function(err) {
