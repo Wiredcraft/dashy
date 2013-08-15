@@ -217,30 +217,38 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/list.html',
         controller: function($scope, $element, $timeout) {
-            var sData = JSON.parse($scope.data),
+            var list = function() {
+                var sData = JSON.parse($scope.data),
                 tmpls = JSON.parse($scope.templates).list,
                 nLimit = parseInt(tmpls.limit);
 
-            var array = [];
-            angular.forEach(sData, function(data, index) {
-                if (data.value.time !== undefined) {
-                    data.value.time = moment(data.value.time).fromNow();
-                };
-                array.push(data.value);
-            });
+                var array = [];
+                angular.forEach(sData, function(data, index) {
+                    if (data.value.time !== undefined) {
+                        data.value.time = moment(data.value.time).fromNow();
+                    };
+                    array.push(data.value);
+                });
 
-            // Show status icons if builds, img if not
-            $scope.builds = false;
-            if (sData[0].value.data.status !== undefined) {
-                $scope.builds = true;
+                // Show status icons if builds, img if not
+                $scope.builds = false;
+                if (sData[0].value.data.status !== undefined) {
+                    $scope.builds = true;
+                };
+
+                // Data into scope
+                if (nLimit) {   // if has limit attr
+                    $scope.list = array.splice(0, nLimit);
+                } else {
+                    $scope.list = array;
+                }
             };
 
-            // Data into scope
-            if (nLimit) {   // if has limit attr
-                $scope.list = array.splice(0, nLimit);
-            } else {
-                $scope.list = array;
-            }
+            list();
+
+            $scope.$watch('data', function() {
+                list();
+            }, true);
 
         }
     }

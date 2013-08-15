@@ -62,6 +62,7 @@ angular.module('Dashboard.Tags', [])
                 sHtml += '<section class="widget-body number-widget">';
                 // Add directives to section
                 angular.forEach(oDirective, function (directive, directiveName) {
+                    console.log(directive, directiveName);
                     sHtml += '<' + directiveName + ' data="{{data}}" templates="{{templates}}"></' + directiveName + '>';
                 });
                 // End Section
@@ -70,9 +71,12 @@ angular.module('Dashboard.Tags', [])
                 $element.replaceWith($compile(sHtml)($scope));
             }
 
+            // Setup placement of widgets on load
+            gridWidget();
+
+            // Setup data on widgets as new data is pulled
             $scope.$watch('data', function (aft, bef) {
                 if (aft) {
-                    gridWidget();
                     dynamicDirective();
                 }
             });

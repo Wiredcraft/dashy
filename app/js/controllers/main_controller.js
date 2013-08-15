@@ -7,6 +7,7 @@ angular.module('Dashboard.Controllers', [])
         // get widget's info
         var getWidgetData = function () {
             angular.forEach($scope.widgets, function (widget, index) {
+                console.log('getWidgetData');
                 var source = widget.value.config.source;
                 // for countdown widget we dont need couchdb source
                 if (angular.isObject(source)) {
@@ -30,6 +31,11 @@ angular.module('Dashboard.Controllers', [])
         }, function(err) {
             console.log(err);
         });
+
+        // Pull all data from couchdb every XXXXms
+        setInterval(function() {
+            getWidgetData()
+        }, 5000)
 
         // Press 'L' to un/lock dragging
         $document.keydown(function(e) {
