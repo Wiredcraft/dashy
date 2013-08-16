@@ -17,8 +17,8 @@ var DashboardApp = angular.module('Dashboard', [
 
     // utils
     'Dashboard.Utils'
-]).config(['$routeProvider',
-    function($routeProvider) {
+]).config(['$routeProvider', '$locationProvider',
+    function($routeProvider, $locationProvider) {
         $routeProvider.when('/', {
             templateUrl: 'partials/layout.html',
             controller: 'MainAppCtrl'
@@ -31,6 +31,11 @@ var DashboardApp = angular.module('Dashboard', [
         }).otherwise({
             redirectTo: '/404'
         });
+
+        // Removes hash from url
+        // HTML5 mode also conflicts with API
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // $locationProvider.html5Mode(true).hashPrefix('!');
     }
 ]);
 

@@ -15,9 +15,10 @@ angular.module('Dashboard.Tags', [])
                 widget_margins: [5, 5], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
                 min_cols: 12
-                // draggable: {handle: '.handle'}
+                // draggable: {handle: '.handle'} // Only class 'handle' allows dragging
             }).data('gridster');
-            // $rootScope.gridster.disable();
+            $rootScope.gridster.disable();
+            $rootScope.locked = true;
 
             $scope.updateWidget = function(id, rev) {
                 $location.path('update').hash(id);
@@ -46,6 +47,7 @@ angular.module('Dashboard.Tags', [])
         },
         controller: function($rootScope, $scope, $element, $compile) {
             // add widget element to gridster
+
             var gridWidget = function () {
                 var oLayout = JSON.parse($scope.layout);
                 $rootScope.gridster.add_widget($element.parent(), oLayout['data-sizex'], oLayout['data-sizey'], oLayout['data-col'], oLayout['data-row']);
@@ -68,9 +70,12 @@ angular.module('Dashboard.Tags', [])
                 $element.replaceWith($compile(sHtml)($scope));
             }
 
+            // Setup placement of widgets on load
+            gridWidget();
+
+            // Setup data on widgets as new data is pulled
             $scope.$watch('data', function (aft, bef) {
                 if (aft) {
-                    gridWidget();
                     dynamicDirective();
                 }
             });

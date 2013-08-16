@@ -2,13 +2,13 @@
 <html lang="en" ng-app="Dashboard">
 <head>
     <meta charset="utf-8">
-    <title>Dashboard</title>
+    <title>Dashy</title>
     <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.gridster.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <body>
-    <ng-include src="'partials/header.html'"></ng-include>
+    <ng-include ng-controller="NavCtrl" src="'partials/header.html'"></ng-include>
     <ng-view></ng-view>
 
     <!-- lib -->
@@ -44,5 +44,8 @@
 
     <!-- utils -->
     <script src="js/utils/utils.js"></script>
+
+    <!-- Config -->
+    <script src="js/config/config.json"></script>
 </body>
 </html>

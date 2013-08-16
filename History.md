@@ -1,4 +1,45 @@
-n.n.n / 2013-08-02 
+
+0.1.0 / 2013-08-16 
+==================
+
+ * documentation update
+ * Update README.md
+ * updating dashr install script
+ * updating feature for all template/directives
+ * list, picture, gauge updating live from couchdb
+ * basic updating implemented on list template
+ * commenting exampleWorker.js code
+ * updating controllers & add INSTALL.md
+ * working on builds worker & updating dashr and controllers
+ * removed duplicate files
+ * clean up
+ * finishing install script
+ * prepare install files, forgot to commit changes
+ * preparing install files
+ * starting cleanup & working on install script(s)
+ * Updating admin update widget ui. Using ST3 Git package to commit.
+ * clean  up
+ * updating add widget ui. Template options loading from config.
+ * Press "L" to lock or unlock dragging
+ * updating for all data time-series
+ * working on minor changes for better UX
+ * added clock widget
+ * disable HTML5 mode, use hashbang mode
+ * Improved update UI, and add UI. Elements not in use are now hidden.
+ * hide options form  until template is chosen
+ * rename to Dashy
+ * testing $locationProvider & html5 mode vs hashbang mode
+ * updating widget adding, updating and the navbar
+ * page-header uses NavCtrl
+ * remove admin_directives, update add widget, add lock/unlock button, css fixes.
+ * Use first gauge directive again with updates from app.devo.ps
+ * removing old linechart directive
+ * linechart fill display fix
+ * updating charts directives for new data format #51
+ * cleanup & adding to readme
+
+
+0.0.2 / 2013-08-02 
 ==================
 
  * clean up for v0.0.2 release
@@ -49,7 +90,7 @@ n.n.n / 2013-08-02
  * first commit for dashboard
  * first commit
 
-n.n.n / 2013-07-29 
+0.0.1 / 2013-07-29 
 ==================
 
  * updating documentation

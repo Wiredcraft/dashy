@@ -1,8 +1,22 @@
 <header id="top-bar"> 
     <div class="inner"> 
         <div id="branding"> 
-            <a href="/"> Dashboard </a> 
+            <a href="/"> Dashy </a> 
         </div>
-        <a id="add-widget" class="btn" href="/#/add">Add widget</a>
+        <a class="btn navbtn" ng-click="add()">
+            Add widget
+        </a>
+
+        <a class="btn navbtn" ng-hide="locked" ng-click="lock()">
+            <i class="icon-unlock-alt icon-large"></i>
+        </a>
+
+        <a class="btn navbtn" ng-show="locked" ng-click="unlock()">
+            <i class="icon-lock icon-large"></i>
+        </a>
+
+        <a class="btn navbtn" ng-click="refresh()">
+            <i class="icon-refresh icon-large"></i>
+        </a>
     </div>
 </header>

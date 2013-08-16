@@ -1,58 +1,74 @@
 <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
 
-<h2 class='offset1'><i class='icon-wrench'></i> Updating Widget - ID : {{thisId}}</h2>
+<h2 class='offset1'><i class='icon-wrench'></i> Updating Widget: <span ng-bind="thisTitle"><i class="icon-spinner icon-spin"></i></span></h2>
 
-<hr class='span12' />
+<hr />
 
 <div class="row-fluid">
     <div class="span3 offset1">
 
     <form name='form' novalidate>
 
-        <label>ID</label>
-            <input class='span' type='text' ng-model='widget._id' disabled>
-
         <label>Refresh</label>
             <input class='span' type='number' ng-model='widget.config.refresh' required>
-
-        <label>Source</label>
-            <select class='span' ng-model='widget.config.source' required>
-                <option disabled value='pick'>Pick one...</option>
-                <option value=''>None</option>
-                <option ng-repeat='item in sources' value='{{item.id}}'>{{item.id}}</option>
-            </select>
 
         <label>Title</label>
             <input class='span' type='text' ng-model='widget.content.title' required>
 
-        <label>Templates</label>
-            <select class='span' ng-model='options.template1' required>
+        <!-- Source -->
+        <label class="checkbox">
+            <input type="checkbox" ng-model='updateSource'>
+            Update Source
+        </label>
+            <select class='span' ng-model='widget.config.source' required ng-show='updateSource'>
+                <option value=''>None</option>
+                <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
+            </select>
+
+        <!-- Templates -->
+        <label class="checkbox">
+            <input type="checkbox" ng-model='updateTemplates'>
+            Update Templates
+        </label>
+            <select class='span' ng-model='options.template1' required ng-show='updateTemplates'>
                 <option disabled value=''>Pick one...</option>
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
-            <select class='span' ng-model='options.template2'>
-                <option value='undefined'>None (I only want 1 template)</option>
+            <select class='span' ng-model='options.template2' ng-show='updateTemplates'>
+                <option value='undefined'>No Change</option>
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
 
-        <label class="checkbox">
+        <label class="checkbox" ng-show='updateTemplates'>
             <input type="checkbox" ng-model='options.remove'>
             <i class='icon-trash'></i> Remove 2nd Template?
         </label>
 
-        <label>{{options.template1}} Options</label>
-            <input class='span' type='text' ng-model='template1.key' placeholder='Option Name' required>
-            <div class='input-append'>
-                <input class='span' type='text' ng-model='template1.value' placeholder='Option Value' required>
-                <button class='btn' ng-click='template1Option(template1)'>Add</button>
-            </div>
+        <!-- Template 1 Options -->
+        <div ng-show='options.template1'> 
+            <label>{{options.template1}} Options</label>
+                <select class='span' ng-model='template1.key'>
+                    <option value=''>Choose option</option>
+                    <option ng-repeat='(key, value) in dbWidgets[options.template1] track by $id($index)' value='{{key}}'>{{key}}</option>
+                </select>
+                <div ng-show='template1.key' class='input-append'>
+                    <input class='span' type='{{dbWidgets[options.template1][template1.key]}}' ng-model='template1.value' placeholder='Enter value'>
+                    <button class='btn' ng-click='template1Add(template1)'>Add</button>
+                </div>
+        </div>
 
-        <label>{{options.template2}} Options</label>
-            <input class='span' type='text' ng-model='template2.key' placeholder='Option Name' required>
-            <div class='input-append'>
-                <input class='span' type='text' ng-model='template2.value' placeholder='Option Value' required>
-                <button class='btn' ng-click='template2Option(template2)'>Add</button>
-            </div>
+        <!-- Template 2 Options -->
+        <div ng-show="options.template2">
+            <label>{{options.template2}} Options</label>
+                <select class='span' ng-model='template2.key'>
+                    <option value=''>Choose option</option>
+                    <option ng-repeat='(key, value) in dbWidgets[options.template2] track by $id($index)' value='{{key}}'>{{key}}</option>
+                </select>
+                <div ng-show='template2.key' class='input-append'>
+                    <input class='span' type='{{dbWidgets[options.template2][template2.key]}}' ng-model='template2.value' placeholder='Enter Value'>
+                    <button class='btn' ng-click='template2Add(template2)'>Add</button>
+                </div>
+        </div>
 
         <label>Layout</label>
             <input class='span' type='number' ng-model='widget.layout["data-row"]' placeholder='Row Position' required>
@@ -75,15 +91,38 @@ Widget
 {{widget | json}}
 </pre>
 
-<label>{{options.template1}} Options</label>
-<pre>
-{{template1 | json}}
-</pre>
+        <div class='optionsList span4' ng-show='options.template1'>
+            <ul>
+                <li>{{options.template1}} Options</li>
+                <li ng-repeat="item in template1">
+                    Option: {{item.key}}
+                    <br />
+                    Value: {{item.value}}
+                    <div class='action'>
+                        <a href="" ng-click="template1Remove($index)">
+                            <i class='icon-remove icon-large'></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-<label>{{options.template2}} Options</label>
-<pre>
-{{template2 | json}}
-</pre>
+        <div class='optionsList span4' ng-show='options.template2'>
+            <ul>
+                <li>{{options.template2}} Options</li>
+                <li ng-repeat="item in template2">
+                    Option: {{item.key}}
+                    <br />
+                    Value: {{item.value}}
+                    <div class='action'>
+                        <a href="" ng-click="template2Remove($index)">
+                            <i class='icon-remove icon-large'></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
 </div>

@@ -11,10 +11,10 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.date && doc.amount) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'date' : doc.date,
-                                'amount' : doc.amount
+                                'time' : doc.time,
+                                'data' : doc.data
                             });
                         }
                     }
@@ -34,12 +34,10 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.title && doc.time && doc.user && doc.img) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'title' : doc.title,
                                 'time' : doc.time,
-                                'user' : doc.user,
-                                'img' : doc.img
+                                'data' : doc.data
                             });
                         }
                     }
@@ -59,10 +57,33 @@ module.exports = {
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.title && doc.status) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'title' : doc.title,
-                                'status' : doc.status
+                                'time' : doc.time,
+                                'data' : doc.data
+                            });
+                        }
+                    }
+                }
+            },
+            // for basic validate at router side
+            validate : function (oData) {
+                if (oData && oData.time && oData.data) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
+        pictures: {
+            // couchdb view content
+            viewDocContent : {
+                all : {
+                    map : function(doc) {
+                        if (doc.time && doc.data) {
+                            emit(doc._rev,{
+                                'time' : doc.time,
+                                'data' : doc.data
                             });
                         }
                     }
@@ -77,15 +98,15 @@ module.exports = {
                 }
             }
         },
-        pictures: {
-            // couchdb view content
+        internet: {
+            //couchdb view content
             viewDocContent : {
                 all : {
                     map : function(doc) {
-                        if (doc.title && doc.image) {
+                        if (doc.time && doc.data) {
                             emit(doc._rev,{
-                                'title' : doc.title,
-                                'image' : doc.image
+                                'time' : doc.time,
+                                'data' : doc.data
                             });
                         }
                     }
@@ -93,7 +114,7 @@ module.exports = {
             },
             // for basic validate at router side
             validate : function (oData) {
-                if (oData && oData.name && oData.status) {
+                if (oData && oData.time && oData.value) {
                     return false;
                 } else {
                     return true;
