@@ -20,7 +20,7 @@ Read INSTALL.md for latest installation instructions
 
 ##Known Bugs + To Do
 
-Can be found [here](https://hackpad.com/Dashy-jjdu6nzpWnk)
+Can be found [here](https://hackpad.com/Dashy-jjdu6nzpWnk) (hackpad.com)
 
 
 ##API

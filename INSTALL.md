@@ -11,3 +11,5 @@ CouchDB on port `5984` (default), Dashy runs on `4000`
 4. `$ ./install/dashr`
 5. `$ npm start`
 6. `GOTO: http://127.0.0.1:4000`
+
+To see live updating, you can run the example worker (`node workers/exampleWorker.js`) which will update the builds database on CouchDB and Dashy will update to reflect this change. It's also heavily commented to function as a guide to help you create your own workers.

@@ -67,6 +67,7 @@ getData(function(data) {
 		var seconds = date.getSeconds();
 
 		// Format the time to how Dashy likes it
+		// "yyyy-MM-ddTHH:mm:ssZ"
 		var time = "" + year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "Z";
 
 		// Create new data object
