@@ -18,7 +18,8 @@ angular.module('Dashboard.Charts', [])
                     var axisData = JSON.parse($scope.data),
                         width = $element.width(),
                         height = $element.height(),
-                        parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
+                        // parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
+                        parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse, // date format like "2013-08-14T19:23:45Z" 
                         x = d3.time.scale().range([0, width]),
                         y = d3.scale.linear().range([height, 0]),
                         xAxis = d3.svg.axis().scale(x).orient("bottom"),
@@ -40,7 +41,6 @@ angular.module('Dashboard.Charts', [])
                             }),
                         svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
 
-                    
 
                     angular.forEach(axisData, function(data, index, source){
                         var target = data.value;
