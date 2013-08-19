@@ -81,7 +81,18 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/countdown.html',
         controller: function($scope, $element, $timeout) {
-            var oDate = JSON.parse($scope.templates).countdown,
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "countdown") {
+                    tmpls = data.options;
+                    refresh = data.refresh
+                }
+            });
+
+            // Widget logic
+            var oDate = tmpls,
                 timer = function () {
                     countdown();
                     $timeout(timer, 1000);
@@ -206,12 +217,22 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/sum.html',
         controller: function($scope, $element, $timeout, Number) {
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "sum") {
+                    tmpls = data.options;
+                    refresh = data.refresh
+                }
+            });
+
+            // Widget Logic
             var sum = function() {
                 var sData = JSON.parse($scope.data),
-                    tmpls = JSON.parse($scope.templates),
-                    append = tmpls.sum.append,
-                    prepend = tmpls.sum.prepend,
-                    sub = tmpls.sum.subtitle,
+                    append = tmpls.append,
+                    prepend = tmpls.prepend,
+                    sub = tmpls.subtitle,
                     total = 0;
 
                 angular.forEach(sData, function(data, index, source){
@@ -242,9 +263,19 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/list.html',
         controller: function($scope, $element, $timeout) {
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "list") {
+                    tmpls = data.options;
+                    refresh = data.refresh
+                }
+            });
+
+            // Widget Logic
             var list = function() {
                 var sData = JSON.parse($scope.data),
-                tmpls = JSON.parse($scope.templates).list,
                 nLimit = parseInt(tmpls.limit),
                 parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
@@ -292,9 +323,19 @@ angular.module('Dashboard.Charts', [])
         },
         templateUrl: 'templates/announcement.html',
         controller: function($scope, $element) {
-            var sData = JSON.parse($scope.templates).announcement;
-            $scope.announcement = sData.announcement;
-            $scope.sub = sData.subtitle;     
+            // Loop through content, find countdown options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "announcement") {
+                    tmpls = data.options;
+                    refresh = data.refresh
+                }
+            });
+
+            // Widget Logic
+            $scope.announcement = tmpls.announcement;
+            $scope.sub = tmpls.subtitle;     
         }
     };
 })
@@ -457,6 +498,16 @@ angular.module('Dashboard.Charts', [])
         },
         controller: function($scope, $element, $timeout) {
             $timeout(function () {
+                // Loop through content, find countdown options
+                var templates = JSON.parse($scope.templates);
+                var tmpls, refresh;
+                angular.forEach(templates, function(data, index) {
+                    if(data.template === "gauge") {
+                        tmpls = data.options;
+                        refresh = data.refresh
+                    }
+                });
+
                 var powerGauge,
                     sData = JSON.parse($scope.data),
                     tmpls = JSON.parse($scope.templates),
@@ -472,8 +523,8 @@ angular.module('Dashboard.Charts', [])
                                 pointerTailLength        : 5,
                                 pointerHeadLengthPercent : 0.9,
                                 
-                                minValue                 : tmpls.gauge.min || 0,
-                                maxValue                 : tmpls.gauge.max || 1000,
+                                minValue                 : tmpls.min || 0,
+                                maxValue                 : tmpls.max || 1000,
 
                                 minAngle                 : -90,
                                 maxAngle                 : 90, 

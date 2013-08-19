@@ -4,6 +4,13 @@ angular.module('Dashboard.Formatters', [])
 
     return function(n, prepend, append) {
 
+        if(prepend == undefined){
+            prepend = "";
+        }
+        if(append == undefined){
+            append = "";
+        }
+
         n = n.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //Comma formatting
 
         if (append === 'M' || append === 'm') {

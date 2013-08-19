@@ -50,7 +50,7 @@ angular.module('Dashboard.Tags', [])
 
             var gridWidget = function () {
                 var oLayout = JSON.parse($scope.layout);
-                $rootScope.gridster.add_widget($element.parent(), oLayout['data-sizex'], oLayout['data-sizey'], oLayout['data-col'], oLayout['data-row']);
+                $rootScope.gridster.add_widget($element.parent(), oLayout['width'], oLayout['height'], oLayout['column'], oLayout['row']);
             }
             
             // dynamic create chart directive
@@ -61,7 +61,8 @@ angular.module('Dashboard.Tags', [])
                 // Start Section
                 sHtml += '<section class="widget-body number-widget">';
                 // Add directives to section
-                angular.forEach(oDirective, function (directive, directiveName) {
+                angular.forEach(oDirective, function (data, index) {
+                    var directiveName = data.template;
                     sHtml += '<' + directiveName + ' data="{{data}}" templates="{{templates}}"></' + directiveName + '>';
                 });
                 // End Section
