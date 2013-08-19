@@ -245,12 +245,14 @@ angular.module('Dashboard.Charts', [])
             var list = function() {
                 var sData = JSON.parse($scope.data),
                 tmpls = JSON.parse($scope.templates).list,
-                nLimit = parseInt(tmpls.limit);
+                nLimit = parseInt(tmpls.limit),
+                parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
                 var array = [];
                 angular.forEach(sData, function(data, index) {
                     if (data.value.time !== undefined) {
-                        data.value.time = moment(data.value.time).fromNow();
+                        data.value.data.since = moment(data.value.time).fromNow();
+                        data.value.time = parseDate(data.value.time);
                     };
                     array.push(data.value);
                 });
@@ -260,6 +262,8 @@ angular.module('Dashboard.Charts', [])
                 if (sData[0].value.data.status !== undefined) {
                     $scope.builds = true;
                 };
+
+                array.sort(function (x, y) { return y['time'] - x['time'] })
 
                 // Data into scope
                 if (nLimit) {   // if has limit attr
