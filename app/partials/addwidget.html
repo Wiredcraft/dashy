@@ -9,8 +9,8 @@
 
     <form name='form' novalidate>
 
-        <label>Refresh</label>
-            <input class='span' type='number' ng-model='widget.config.refresh' required>
+        <label>Title</label>
+            <input class='span' type='text' ng-model='widget.config.title' required>
 
         <label>Source</label>
             <select class='span' ng-model='widget.config.source' required>
@@ -18,9 +18,6 @@
                 <option value=''>None</option>
                 <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
             </select>
-
-        <label>Title</label>
-            <input class='span' type='text' ng-model='widget.content.title' required>
 
         <label>Templates</label>
             <select class='span' ng-model='options.template1' required>
@@ -59,10 +56,10 @@
         </div>
 
         <label>Layout</label>
-            <input class='span' type='number' ng-model='widget.layout["data-row"]' placeholder='Row Position' required>
-            <input class='span' type='number' ng-model='widget.layout["data-col"]' placeholder='Column Position' required>
-            <input class='span' type='number' ng-model='widget.layout["data-sizex"]' placeholder='Width Size' required>
-            <input class='span' type='number' ng-model='widget.layout["data-sizey"]' placeholder='Height Size' required>
+            <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
+            <input class='span' type='number' ng-model='widget.layout.column' placeholder='Column Position' required>
+            <input class='span' type='number' ng-model='widget.layout.width' placeholder='Width Size' required>
+            <input class='span' type='number' ng-model='widget.layout.height' placeholder='Height Size' required>
 
         <button class='btn btn-primary btn-block btn-large' ng-click='addWidget(widget, options)'>
             <i class='icon-ok'></i> 

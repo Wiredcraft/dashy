@@ -50,18 +50,16 @@ angular.module('Dashboard.Admin', [])
             // >>>>>>>>>>>>>>>>
             $scope.realWidget = {
                 "config": {
-                    "refresh": widget.config.refresh,
-                    "source": widget.config.source,
+                    "title": widget.config.title,
+                    "source": widget.config.source
                 },
-                "content": {
-                    "title": widget.content.title,
-                    "templates": {}
-                },
+                "content": [
+                ],
                 "layout": {
-                    "data-row": widget.layout["data-row"],
-                    "data-col": widget.layout["data-col"],
-                    "data-sizex": widget.layout["data-sizex"],
-                    "data-sizey": widget.layout["data-sizey"]
+                    "row": widget.layout.row,
+                    "column": widget.layout.column,
+                    "width": widget.layout.width,
+                    "height": widget.layout.height
                 }
             }
 
@@ -116,8 +114,6 @@ angular.module('Dashboard.Admin', [])
         // >>>>>>>>>>>>>>>>>>>>>>
         Widgets.getWidgetById(thisId).then(function(data) {
             $scope.widget = data;
-            // $scope.widget.config.source = data.config.source;
-            console.log(data.config.source);
             $scope.thisTitle = data.content.title;
         });
 

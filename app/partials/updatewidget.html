@@ -9,11 +9,8 @@
 
     <form name='form' novalidate>
 
-        <label>Refresh</label>
-            <input class='span' type='number' ng-model='widget.config.refresh' required>
-
         <label>Title</label>
-            <input class='span' type='text' ng-model='widget.content.title' required>
+            <input class='span' type='text' ng-model='widget.config.title' required>
 
         <!-- Source -->
         <label class="checkbox">
@@ -71,10 +68,10 @@
         </div>
 
         <label>Layout</label>
-            <input class='span' type='number' ng-model='widget.layout["data-row"]' placeholder='Row Position' required>
-            <input class='span' type='number' ng-model='widget.layout["data-col"]' placeholder='Column Position' required>
-            <input class='span' type='number' ng-model='widget.layout["data-sizex"]' placeholder='Width Size' required>
-            <input class='span' type='number' ng-model='widget.layout["data-sizey"]' placeholder='Height Size' required>
+            <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
+            <input class='span' type='number' ng-model='widget.layout.column' placeholder='Column Position' required>
+            <input class='span' type='number' ng-model='widget.layout.width' placeholder='Width Size' required>
+            <input class='span' type='number' ng-model='widget.layout.height' placeholder='Height Size' required>
 
         <button class='btn btn-success btn-block btn-large' ng-click='updateWidget(widget, options)'>
             <i class='icon-refresh icon-spin'></i> 
