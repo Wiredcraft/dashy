@@ -1,7 +1,7 @@
 angular.module('Dashboard.Admin', [])
 
-.controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
-    function($scope, $http, Admin, Sources) {
+.controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources', '$location',
+    function($scope, $http, Admin, Sources, $location) {
         // Define widget & content
         // >>>>>>>>>>>>>>>>>>>>>>>
         $scope.widget = {config: {}, content: [],layout: {}};
@@ -47,7 +47,9 @@ angular.module('Dashboard.Admin', [])
 
             // POST to Database
             // >>>>>>>>>>>>>>>>
-            Admin.addWidget($scope.widget);
+            Admin.addWidget($scope.widget).then(function(data) {
+                $location.path('');
+            });
         };
 
     }
@@ -111,7 +113,9 @@ angular.module('Dashboard.Admin', [])
 
             // PUT update to db
             // >>>>>>>>>>>>>>>>
-            Admin.updateWidget(id, widget);
+            Admin.updateWidget(id, widget).then(function(data) {
+                $location.path('');
+            });
         };
 
     }

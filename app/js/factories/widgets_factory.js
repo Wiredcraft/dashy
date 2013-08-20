@@ -88,7 +88,6 @@ angular.module('Dashboard.Models', [])
 
         $http.post(apiUrl, data).success(function(response) {
             deferred.resolve(data);
-            console.log(response);
         }).error(function(err) {
             deferred.reject(err);
         });
@@ -101,7 +100,6 @@ angular.module('Dashboard.Models', [])
 
         $http.delete(apiUrl + id).success(function(data) {
             deferred.resolve(data);
-            console.log(data);
         }).error(function(err) {
             deferred.reject(err);
         });
@@ -114,7 +112,6 @@ angular.module('Dashboard.Models', [])
 
         $http.put(apiUrl + id, data).success(function(data) {
             deferred.resolve(data);
-            console.log(data);
         }).error(function(err) {
             deferred.reject(err);
         });
