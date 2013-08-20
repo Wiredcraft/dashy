@@ -161,15 +161,14 @@ angular.module('Dashboard.Charts', [])
         controller: function($scope, $element) {
             var delta = function() {
                 var sData = JSON.parse($scope.data),
-                    parseDate = d3.time.format("%d-%b-%y").parse; // Correct time formatting
+                    parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse; // Correct time formatting
                 
-                angular.forEach(sData, function(data, index, source) {
-                    var target = data.value;
-                    target.date = parseDate(target.time);
+                angular.forEach(sData, function(data, index) {
+                    data.value.time = parseDate(data.value.time);
                 });
 
                 // Order Information by date
-                sData.sort(function(a, b) { return a['value']['date'] - b['value']['date'] });
+                sData.sort(function(a, b) { return a['value']['time'] - b['value']['time'] });
 
                 var base = sData[0].value.data.value,
                     length = sData.length - 1,
