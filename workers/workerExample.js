@@ -60,8 +60,8 @@ getData(function(data) {
 		// Get the time this data changed
 		var date = new Date()
 		var year = date.getFullYear();
-		var month = date.getDate();
-		var day = date.getDay();
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
 		var seconds = date.getSeconds();
