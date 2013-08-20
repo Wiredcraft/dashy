@@ -167,7 +167,7 @@ angular.module('Dashboard.Charts', [])
                     var target = data.value;
                     target.date = parseDate(target.time);
                 });
-                
+
                 // Order Information by date
                 sData.sort(function(a, b) { return a['value']['date'] - b['value']['date'] });
 
@@ -262,7 +262,7 @@ angular.module('Dashboard.Charts', [])
             data: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout) {
+        controller: function($scope, $element, $timeout, sortTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh;
@@ -352,9 +352,13 @@ angular.module('Dashboard.Charts', [])
         templateUrl: 'templates/picture.html',
         controller: function($scope, $element) {
             var picture = function() {
-                var sData = JSON.parse($scope.data),
+                var sData = JSON.parse($scope.data)
+                angular.forEach(sData, function(data) {
+                    var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                    data.value.time = parseDate(data.value.time);
+                });
+                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
                 image = sData[0].value.data.image;
-
                 $scope.imageUrl = image;
             }
 
@@ -510,7 +514,6 @@ angular.module('Dashboard.Charts', [])
 
                 var powerGauge,
                     sData = JSON.parse($scope.data),
-                    tmpls = JSON.parse($scope.templates),
                     gauge = function(configuration) {
                         var that = {},
                             config = {
@@ -663,8 +666,12 @@ angular.module('Dashboard.Charts', [])
                 // Need to add sort by time!!
                 $scope.$watch('data', function (aft, bef) {
                     var sData = JSON.parse(aft);
-                    var x = sData.length - 1;
-                    powerGauge.update(sData[x].value.data.value);
+                    angular.forEach(sData, function(data) {
+                        var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                        data.value.time = parseDate(data.value.time);
+                    });
+                    sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
+                    powerGauge.update(sData[0].value.data.value);
                 }, true);
 
             }, 0)           

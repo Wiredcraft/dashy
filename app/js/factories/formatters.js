@@ -27,3 +27,15 @@ angular.module('Dashboard.Formatters', [])
     };
 
 })
+
+.factory('sortTime', function() {
+
+    return function(data, ascending) {
+        if(ascending == true) {
+            data.sort(function(x, y) { return x['time'] - y['time'] })    
+        } else {
+            data.sort(function(x, y) { return y['time'] - x['time'] })
+        }  
+
+    }
+})

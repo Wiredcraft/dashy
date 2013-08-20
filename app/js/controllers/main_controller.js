@@ -34,7 +34,7 @@ angular.module('Dashboard.Controllers', [])
         // Pull all data from couchdb every XXXXms
         setInterval(function() {
             getWidgetData()
-        }, 5000)
+        }, 8192)
 
         // Press 'L' to un/lock dragging
         $document.keydown(function(e) {
