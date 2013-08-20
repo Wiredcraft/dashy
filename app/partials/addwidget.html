@@ -14,8 +14,8 @@
 
         <label><strong>Source</strong></label>
             <select class='span' ng-model='widget.config.source' required>
-                <option disabled value='pick'>Pick one...</option>
-                <option value=''>None</option>
+                <option disabled value=''>Pick one...</option>
+                <option value='none'>None</option>
                 <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
             </select>
 
@@ -39,7 +39,27 @@
                 <label>{{key}}</label>
                     <input class='span' type='{{value}}' ng-model='content.options[key]'></input>
             </div>
-            <button class='btn btn-primary' ng-click='contentAdd(content)'>Add</button>
+            <button class='btn btn-primary btn-block' ng-click='contentAdd(content)'>Add</button>
+
+        <label ng-show='widget.content'><strong>Current Content</strong></label>
+            <div class='optionsList'>
+                <ul>
+                    <li ng-repeat="item in widget.content">
+                        Template: {{item.template}}
+                        <br />
+                        Type: {{item.type}}
+                        <br />
+                        Refresh: {{item.refresh}}
+                        <br />
+                        Options: {{item.options}}
+                        <div class='action'>
+                            <a href="" ng-click="contentRemove($index)">
+                                <i class='icon-remove icon-large'></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
         <label><strong>Layout</strong></label>
             <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
@@ -61,39 +81,6 @@ Widget
 <pre>
 {{widget | json}}
 </pre>
-
-        <div class='optionsList span4' ng-show='options.template1'>
-            <ul>
-                <li>{{options.template1}} Options</li>
-                <li ng-repeat="item in template1">
-                    Option: {{item.key}}
-                    <br />
-                    Value: {{item.value}}
-                    <div class='action'>
-                        <a href="" ng-click="template1Remove($index)">
-                            <i class='icon-remove icon-large'></i>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class='optionsList span4' ng-show='options.template2'>
-            <ul>
-                <li>{{options.template2}} Options</li>
-                <li ng-repeat="item in template2">
-                    Option: {{item.key}}
-                    <br />
-                    Value: {{item.value}}
-                    <div class='action'>
-                        <a href="" ng-click="template2Remove($index)">
-                            <i class='icon-remove icon-large'></i>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
     </div>
 
 </div>
