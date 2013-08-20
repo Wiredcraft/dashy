@@ -9,59 +9,45 @@
 
     <form name='form' novalidate>
 
-        <label>Title</label>
+        <label><strong>Title</strong></label>
             <input class='span' type='text' ng-model='widget.config.title' required>
 
-        <label>Source</label>
+        <label><strong>Source</strong></label>
             <select class='span' ng-model='widget.config.source' required>
                 <option disabled value='pick'>Pick one...</option>
                 <option value=''>None</option>
                 <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
             </select>
 
-        <label>Templates</label>
-            <select class='span' ng-model='options.template1' required>
+        <label><strong>Add Content</strong></label>
+            <label class="radio inline">
+                <input type="radio" name="optionsRadios" value="data" ng-model='content.type'>
+                Source Data
+            </label>
+            <label class="radio inline">
+                <input type="radio" name="optionsRadios" value="static" ng-model='content.type'>
+                Static Data
+            </label>
+            <label>Template</label>
+            <select class='span' ng-model='content.template' required>
                 <option disabled value=''>Pick one...</option>
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
-            <select class='span' ng-model='options.template2'>
-                <option value=''>None (I only want 1 template)</option>
-                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
-            </select>
+            <label>Refresh</label>
+                <input class='span' type="number" ng-model='content.refresh'>
+            <div ng-repeat='(key, value) in dbWidgets[content.template] track by $id($index)'>
+                <label>{{key}}</label>
+                    <input class='span' type='{{value}}' ng-model='content.options[key]'></input>
+            </div>
+            <button class='btn btn-primary' ng-click='contentAdd(content)'>Add</button>
 
-        <!-- Template 1 Options -->
-        <div ng-show='options.template1'> 
-            <label>{{options.template1}} Options</label>
-                <select class='span' ng-model='template1.key'>
-                    <option value=''>Choose option</option>
-                    <option ng-repeat='(key, value) in dbWidgets[options.template1] track by $id($index)' value='{{key}}'>{{key}}</option>
-                </select>
-                <div ng-show='template1.key' class='input-append'>
-                    <input class='span' type='{{dbWidgets[options.template1][template1.key]}}' ng-model='template1.value' placeholder='Enter value'>
-                    <button class='btn' ng-click='template1Add(template1)'>Add</button>
-                </div>
-        </div>
-
-        <!-- Template 2 Options -->
-        <div ng-show="options.template2">
-            <label>{{options.template2}} Options</label>
-                <select class='span' ng-model='template2.key'>
-                    <option value=''>Choose option</option>
-                    <option ng-repeat='(key, value) in dbWidgets[options.template2] track by $id($index)' value='{{key}}'>{{key}}</option>
-                </select>
-                <div ng-show='template2.key' class='input-append'>
-                    <input class='span' type='{{dbWidgets[options.template2][template2.key]}}' ng-model='template2.value' placeholder='Enter Value'>
-                    <button class='btn' ng-click='template2Add(template2)'>Add</button>
-                </div>
-        </div>
-
-        <label>Layout</label>
+        <label><strong>Layout</strong></label>
             <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
             <input class='span' type='number' ng-model='widget.layout.column' placeholder='Column Position' required>
             <input class='span' type='number' ng-model='widget.layout.width' placeholder='Width Size' required>
             <input class='span' type='number' ng-model='widget.layout.height' placeholder='Height Size' required>
 
-        <button class='btn btn-primary btn-block btn-large' ng-click='addWidget(widget, options)'>
+        <button class='btn btn-primary btn-block btn-large' ng-click='addWidget(widget)'>
             <i class='icon-ok'></i> 
             Add Widget
         </button>

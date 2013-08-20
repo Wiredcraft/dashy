@@ -2,6 +2,11 @@ angular.module('Dashboard.Admin', [])
 
 .controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources',
     function($scope, $http, Admin, Sources) {
+        // Define widget & content
+        // >>>>>>>>>>>>>>>>>>>>>>>
+        $scope.widget = {config: {}, content: [],layout: {}};
+        $scope.content = {"type": "data"};
+        $scope.content.options = {};
 
         // Get list of useable datasources
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -15,86 +20,36 @@ angular.module('Dashboard.Admin', [])
             $scope.dbWidgets = data[0];
         });
 
-        // Template Options
+        // Content Options
         // >>>>>>>>>>>>>>>>
-        $scope.template1 = [];
-        $scope.template2 = [];
+        $scope.contentAdd = function(content) {
+            $scope.widget.content.push({
+                "type": content.type,
+                "refresh": content.refresh,
+                "template": content.template,
+                "options": content.options
+            });
+            $scope.content = {"type": "data"}
+            $scope.content.options = {};
+        }
 
-        $scope.template1Add = function(template1) {
-            $scope.template1.push({"key": template1.key, "value": template1.value});
-            template1.key = "", template1.value = "";
-        }
-        $scope.template1Remove = function(index) {
-            $scope.template1.splice(index, 1);
-        }
-
-        $scope.template2Add = function(template2) {
-            $scope.template2.push({"key": template2.key, "value": template2.value});
-            template2.key = "", template2.value = "";
-        }
-        $scope.template2Remove = function(index) {
-            $scope.template2.splice(index, 1);
-        }
+        // $scope.template1Remove = function(index) {
+        //     $scope.template1.splice(index, 1);
+        // }
 
         // Add widget function
         // >>>>>>>>>>>>>>>>>>>
-        $scope.widget = {_id:"", config: {}, content: {},layout: {}};
-        $scope.realWidget;
-        $scope.addWidget = function(widget, options){
-            var temp1 = options.template1;
-            var temp2 = options.template2;
-            var dir1 = {};
-            var dir2 = {};
-
-            // Construct Widget
-            // >>>>>>>>>>>>>>>>
-            $scope.realWidget = {
-                "config": {
-                    "title": widget.config.title,
-                    "source": widget.config.source
-                },
-                "content": [
-                ],
-                "layout": {
-                    "row": widget.layout.row,
-                    "column": widget.layout.column,
-                    "width": widget.layout.width,
-                    "height": widget.layout.height
-                }
-            }
-
-            // Add ID if not random
-            // >>>>>>>>>>>>>>>>>>>>
-            if ($scope.randomID === false) {
-                $scope.realWidget._id = widget._id;
-            }
-
+        $scope.addWidget = function(widget){
             // Check Source Value
             // >>>>>>>>>>>>>>>>>>
             if(widget.config.source == undefined) {
-                $scope.realWidget.config.source = " ";
+                $scope.widget.config.source = " ";
             }
-
-            // Prepare Template Options
-            // >>>>>>>>>>>>>>>>>>>>>>>>
-            for(i = 0; i < $scope.template1.length; i++) {
-                dir1[$scope.template1[i].key] = $scope.template1[i].value;
-            };
-            $scope.realWidget.content.templates[temp1] = dir1;
-            
-            // If only 1 template, don't add 2nd as undefined
-            if (temp2 != undefined || temp2 != null ) {
-                for(i = 0; i < $scope.template2.length; i++) {
-                    dir2[$scope.template2[i].key] = $scope.template2[i].value;
-                };
-                $scope.realWidget.content.templates[temp2] = dir2;
-            }
-
-            console.log($scope.realWidget);
 
             // POST to Database
             // >>>>>>>>>>>>>>>>
-            Admin.addWidget($scope.realWidget);
+            console.log($scope.widget)
+            Admin.addWidget($scope.widget);
         };
 
     }
