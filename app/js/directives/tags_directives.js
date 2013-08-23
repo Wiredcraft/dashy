@@ -47,7 +47,6 @@ angular.module('Dashboard.Tags', [])
         },
         controller: function($rootScope, $scope, $element, $compile) {
             // add widget element to gridster
-
             var gridWidget = function () {
                 var oLayout = JSON.parse($scope.layout);
                 $rootScope.gridster.add_widget($element.parent(), oLayout['width'], oLayout['height'], oLayout['column'], oLayout['row']);
@@ -71,12 +70,10 @@ angular.module('Dashboard.Tags', [])
                 $element.replaceWith($compile(sHtml)($scope));
             }
 
-            // Setup placement of widgets on load
-            gridWidget();
-
-            // Setup data on widgets as new data is pulled
+            // Setup placement of widgets and add templates on load
             $scope.$watch('data', function (aft, bef) {
                 if (aft) {
+                    gridWidget();
                     dynamicDirective();
                 }
             });

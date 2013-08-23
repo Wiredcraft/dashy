@@ -252,7 +252,7 @@ angular.module('Dashboard.Charts', [])
             data: '@'
         },
         templateUrl: 'templates/sum.html',
-        controller: function($scope, $element, $timeout, Number) {
+        controller: function($scope, $element, $timeout, Number, Widgets) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, attr;
