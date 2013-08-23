@@ -26,6 +26,7 @@ angular.module('Dashboard.Admin', ['ui.bootstrap'])
             $scope.widget.content.push({
                 "type": content.type,
                 "refresh": content.refresh,
+                "dataKey": content.dataKey,
                 "template": content.template,
                 "options": content.options
             });
@@ -92,6 +93,7 @@ angular.module('Dashboard.Admin', ['ui.bootstrap'])
             $scope.widget.content.push({
                 "type": content.type,
                 "refresh": content.refresh,
+                "dataKey": content.dataKey,
                 "template": content.template,
                 "options": content.options
             });

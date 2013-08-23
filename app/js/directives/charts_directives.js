@@ -7,10 +7,24 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@'
+            data: '@',
+            templates: '@'
         },
         controller: function($scope, $element, $timeout) {
             $timeout(function () {
+                // Loop through content, find countdown options
+                var templates = JSON.parse($scope.templates);
+                var tmpls, refresh, attr;
+                angular.forEach(templates, function(data, index) {
+                    if(data.template === "linechart") {
+                        tmpls = data.options;
+                        refresh = data.refresh;
+                        if(data.dataKey) {
+                            attr = data.dataKey;
+                        }
+                    }
+                });
+
                 var linechart = function() {
                     // Remove old graph, replace with new graph
                     angular.element($element[0]).children().remove();
@@ -41,12 +55,15 @@ angular.module('Dashboard.Charts', [])
                             }),
                         svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
 
-
                     angular.forEach(axisData, function(data, index, source){
                         var target = data.value;
-
+                        if (target.data[attr]) { // If data object uses custom key
+                            target.amount = +target.data[attr];
+                            target.amount.toFixed();
+                        } else { // If data object uses value
+                            target.amount = +target.data.value.toFixed(); //target.amount
+                        }
                         target.date = parseDate(target.time);
-                        target.amount = +target.data.value.toFixed(); //target.amount
                     });
 
                     // sort by date, its important, linechart need

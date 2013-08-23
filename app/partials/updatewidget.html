@@ -40,6 +40,8 @@
             </select>
             <label>Refresh</label>
                 <input class='span' type="number" ng-model='content.refresh'>
+            <label>Data Key</label>
+                <input class='span' type="text" ng-model='content.dataKey'>
             <div ng-repeat='(key, value) in dbWidgets[content.template] track by $id($index)'>
                 <label>{{key}}</label>
                     <input class='span' type='{{value}}' ng-model='content.options[key]'></input>
