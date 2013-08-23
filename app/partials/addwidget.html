@@ -9,6 +9,7 @@
 
     <form name='form' novalidate>
 
+        <!-- Title & Source -->
         <label><strong>Title</strong></label>
             <input class='span' type='text' ng-model='widget.config.title' required>
 
@@ -19,6 +20,7 @@
                 <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
             </select>
 
+        <!-- Add Content -->
         <label><strong>Add Content</strong></label>
             <label class="radio inline">
                 <input type="radio" name="optionsRadios" value="data" ng-model='content.type'>
@@ -28,21 +30,27 @@
                 <input type="radio" name="optionsRadios" value="static" ng-model='content.type'>
                 Static Data
             </label>
+            
             <label>Template</label>
             <select class='span' ng-model='content.template' required>
                 <option disabled value=''>Pick one...</option>
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
+            
             <label>Refresh</label>
                 <input class='span' type="number" ng-model='content.refresh'>
-            <label>Data Key</label>
-                <input class='span' type="text" ng-model='content.dataKey'>
+            
+            <label ng-hide="content.type === 'static'">Data Key</label>
+                <input ng-hide="content.type === 'static'" class='span' type="text" ng-model='content.dataKey' placeholder="if not using default value">
+            
             <div ng-repeat='(key, value) in dbWidgets[content.template] track by $id($index)'>
                 <label>{{key}}</label>
                     <input class='span' type='{{value}}' ng-model='content.options[key]'></input>
             </div>
+            
             <button class='btn btn-primary btn-block' ng-click='contentAdd(content)'>Add</button>
 
+        <!-- Display Added Content -->
         <label ng-show='widget.content'><strong>Current Content</strong></label>
             <div class='optionsList'>
                 <ul>
@@ -63,6 +71,7 @@
                 </ul>
             </div>
 
+        <!-- Layout -->
         <label><strong>Layout</strong></label>
             <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
             <input class='span' type='number' ng-model='widget.layout.column' placeholder='Column Position' required>

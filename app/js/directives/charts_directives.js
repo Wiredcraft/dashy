@@ -12,7 +12,7 @@ angular.module('Dashboard.Charts', [])
         },
         controller: function($scope, $element, $timeout) {
             $timeout(function () {
-                // Loop through content, find countdown options
+                // Loop through content, find linechart options
                 var templates = JSON.parse($scope.templates);
                 var tmpls, refresh, attr;
                 angular.forEach(templates, function(data, index) {
@@ -177,9 +177,24 @@ angular.module('Dashboard.Charts', [])
         templateUrl: 'templates/delta.html',
         controller: function($scope, $element) {
             var delta = function() {
+                // Get delta options
+                var templates = JSON.parse($scope.templates);
+                var tmpls, refresh, attr;
+                angular.forEach(templates, function(data, index) {
+                    if(data.template === "delta") {
+                        tmpls = data.options;
+                        refresh = data.refresh;
+                        if(data.dataKey) {
+                            attr = data.dataKey;
+                        }
+                    }
+                });
+
+                // Parse data to json
                 var sData = JSON.parse($scope.data),
                     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse; // Correct time formatting
                 
+                // format time
                 angular.forEach(sData, function(data, index) {
                     data.value.time = parseDate(data.value.time);
                 });
@@ -187,11 +202,16 @@ angular.module('Dashboard.Charts', [])
                 // Order Information by date
                 sData.sort(function(a, b) { return a['value']['time'] - b['value']['time'] });
 
-                var base = sData[0].value.data.value,
+                // Custom defined key?
+                if(attr) {key = attr} else {key = 'value'}
+
+                // Get first and last value
+                var base = sData[0].value.data[key],
                     length = sData.length - 1,
-                    current = sData[length].value.data.value,
+                    current = sData[length].value.data[key],
                     diff = ((current / base) * 100);
 
+                // Determine status
                 var status;
                 if (diff > 100) {
                     dir = "⬆";
@@ -203,10 +223,10 @@ angular.module('Dashboard.Charts', [])
                     dir = "⬇";
                     status = 'down'
                 }
-
                 diff = diff - 100;
                 diff = diff.toFixed();
 
+                // Place data into scope
                 $scope.delta = {
                     'difference' : diff + "%",
                     'direction' : dir,
@@ -235,26 +255,35 @@ angular.module('Dashboard.Charts', [])
         controller: function($scope, $element, $timeout, Number) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
-            var tmpls, refresh;
+            var tmpls, refresh, attr;
             angular.forEach(templates, function(data, index) {
                 if(data.template === "sum") {
                     tmpls = data.options;
-                    refresh = data.refresh
+                    refresh = data.refresh;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
                 }
             });
 
             // Widget Logic
             var sum = function() {
+                // Data -> JSON, set vars.
                 var sData = JSON.parse($scope.data),
                     append = tmpls.append,
                     prepend = tmpls.prepend,
                     sub = tmpls.subtitle,
                     total = 0;
 
+                // If custom key
+                if(attr) {key = attr;} else {key = 'value'}
+
+                // Addition is fun!
                 angular.forEach(sData, function(data, index, source){
-                    total += data.value.data.value;
+                    total += data.value.data[key];
                 });
 
+                // Set data to scope
                 total = Number(total, prepend, append);
                 $scope.sum = total;
                 $scope.sub = sub;
@@ -281,11 +310,14 @@ angular.module('Dashboard.Charts', [])
         controller: function($scope, $element, $timeout, sortTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
-            var tmpls, refresh;
+            var tmpls, refresh, attr;
             angular.forEach(templates, function(data, index) {
                 if(data.template === "list") {
                     tmpls = data.options;
-                    refresh = data.refresh
+                    refresh = data.refresh;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
                 }
             });
 
@@ -294,6 +326,8 @@ angular.module('Dashboard.Charts', [])
                 var sData = JSON.parse($scope.data),
                 nLimit = parseInt(tmpls.limit),
                 parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+
+                if(attr) {key = attr;} else {key = 'value'}
 
                 var array = [];
                 angular.forEach(sData, function(data, index) {
