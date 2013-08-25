@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import logging
 
 from getpass import getpass
@@ -9,21 +10,20 @@ from collections import namedtuple
 import requests
 import github
 
-'''
 
+'''
 Running instructions:
- - install requirements: pip install requests PyGithub
- - run: python github_commit_watcher.py
- 
+ -  Install requirements: pip install requests PyGithub
+ -  Run: python github_commit_watcher.py
+ -  Type in username and password of a github user when asked.
 '''
-
 
 #  Settings:
 DATABASE_URL = 'http://127.0.0.1:5984/commit_list'
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 DEFAULT_FETCH_DAYS = 2  # Used when there are no previous entries in the db
 INTERVAL = 120 # How many seconds to sleep between next check
-ORGANIZATIONS = ['wiredcraft', 'devo-ps']
+ORGANIZATIONS = ['devo-ps', 'wiredcraft']
 
                        
 '''
@@ -69,10 +69,10 @@ def fetch_last_timestamp():
 def fetch_commits_since(timestamp, gh):
     commit_list = []
     for org in ORGANIZATIONS:
-        org = gh.get_organization(org)
         event_counter = 0
-        for event in org.get_events():
-            if event.created_at < timestamp:
+        org_obj = gh.get_organization(org)
+        for event in gh.get_user().get_organization_events(org_obj):
+            if event.created_at <= timestamp:
                 logging.debug('Timestamp passed after %s events.'%(event_counter,))
                 break 
             
@@ -101,7 +101,7 @@ def get_username_and_password():
     return username, password
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     
     username, password = get_username_and_password()
     
@@ -124,7 +124,8 @@ def main():
             if commits:
                 last_timestamp = datetime.strptime(commits[0].time, TIMESTAMP_FORMAT)
         except:
-            logger.exception("Exception when fetching commits.")
+            logging.exception("Exception when fetching commits.")
+            # continuing
             
         time.sleep(INTERVAL)
     
