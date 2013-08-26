@@ -7,7 +7,6 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@',
             templates: '@'
         },
         controller: function($scope, $element, $timeout, Widgets) {
@@ -30,7 +29,6 @@ angular.module('Dashboard.Charts', [])
                     // Remove old graph, replace with new graph
                     angular.element($element[0]).children().remove();
 
-                    // var axisData = JSON.parse($scope.data),
                     var axisData = data,
                         width = $element.width(),
                         height = $element.height(),
@@ -100,7 +98,6 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@',
             templates: '@'
         },
         templateUrl: 'templates/countdown.html',
@@ -178,27 +175,27 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@',
             templates: '@'
         },
         templateUrl: 'templates/delta.html',
-        controller: function($scope, $element) {
-            var delta = function() {
-                // Get delta options
-                var templates = JSON.parse($scope.templates);
-                var tmpls, refresh, attr;
-                angular.forEach(templates, function(data, index) {
-                    if(data.template === "delta") {
-                        tmpls = data.options;
-                        refresh = data.refresh;
-                        if(data.dataKey) {
-                            attr = data.dataKey;
-                        }
+        controller: function($scope, $element, Widgets) {
+            // Get delta options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "delta") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
                     }
-                });
+                }
+            });
 
+            var delta = function(data) {
                 // Parse data to json
-                var sData = JSON.parse($scope.data),
+                var sData = data,
                     parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse; // Correct time formatting
                 
                 // format time
@@ -241,9 +238,14 @@ angular.module('Dashboard.Charts', [])
                 }                
             }
 
-            $scope.$watch('data', function (aft, bef) {
-                delta();
-            }, true); 
+            Widgets.getWidgetData(source).then(function(data) {
+                delta(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    delta(data);
+                })
+            }, refresh)
 
         }
     };
@@ -255,8 +257,7 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/sum.html',
         controller: function($scope, $element, $timeout, Number, Widgets) {
@@ -267,6 +268,7 @@ angular.module('Dashboard.Charts', [])
                 if(data.template === "sum") {
                     tmpls = data.options;
                     refresh = data.refresh;
+                    source = data.source;
                     if(data.dataKey) {
                         attr = data.dataKey;
                     }
@@ -274,9 +276,9 @@ angular.module('Dashboard.Charts', [])
             });
 
             // Widget Logic
-            var sum = function() {
+            var sum = function(data) {
                 // Data -> JSON, set vars.
-                var sData = JSON.parse($scope.data),
+                var sData = data,
                     append = tmpls.append,
                     prepend = tmpls.prepend,
                     sub = tmpls.subtitle,
@@ -296,9 +298,14 @@ angular.module('Dashboard.Charts', [])
                 $scope.sub = sub;
             }
 
-            $scope.$watch('data', function (aft, bef) {
-                sum();
-            }, true);
+            Widgets.getWidgetData(source).then(function(data) {
+                sum(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    sum(data);
+                })
+            }, refresh)
 
         }
     };
@@ -310,11 +317,10 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout, sortTime) {
+        controller: function($scope, $element, $timeout, Widgets) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, attr;
@@ -322,6 +328,7 @@ angular.module('Dashboard.Charts', [])
                 if(data.template === "list") {
                     tmpls = data.options;
                     refresh = data.refresh;
+                    source = data.source;
                     if(data.dataKey) {
                         attr = data.dataKey;
                     }
@@ -329,8 +336,8 @@ angular.module('Dashboard.Charts', [])
             });
 
             // Widget Logic
-            var list = function() {
-                var sData = JSON.parse($scope.data),
+            var list = function(data) {
+                var sData = data,
                 nLimit = parseInt(tmpls.limit),
                 parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
@@ -353,7 +360,7 @@ angular.module('Dashboard.Charts', [])
 
                 array.sort(function (x, y) { return y['time'] - x['time'] })
 
-                // Data into scope
+                //data into scope
                 if (nLimit) {   // if has limit attr
                     $scope.list = array.splice(0, nLimit);
                 } else {
@@ -361,9 +368,14 @@ angular.module('Dashboard.Charts', [])
                 }
             };
 
-            $scope.$watch('data', function() {
-                list();
-            }, true);
+            Widgets.getWidgetData(source).then(function(data) {
+                // list(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    // list(data);
+                })
+            }, refresh)
 
         }
     }
@@ -375,8 +387,7 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/announcement.html',
         controller: function($scope, $element) {
@@ -403,13 +414,26 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/picture.html',
-        controller: function($scope, $element) {
-            var picture = function() {
-                var sData = JSON.parse($scope.data)
+        controller: function($scope, $element, Widgets) {
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "picture") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
+                }
+            });
+
+            var picture = function(data) {
+                var sData = data;
                 angular.forEach(sData, function(data) {
                     var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
                     data.value.time = parseDate(data.value.time);
@@ -419,9 +443,15 @@ angular.module('Dashboard.Charts', [])
                 $scope.imageUrl = image;
             }
 
-            $scope.$watch('data', function() {
-                picture();
-            }, true);
+            Widgets.getWidgetData(source).then(function(data) {
+                picture(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    picture(data);
+                })
+            }, refresh)
+
 
         }
     }
@@ -557,20 +587,24 @@ angular.module('Dashboard.Charts', [])
             data: '@',
             templates: '@'
         },
-        controller: function($scope, $element, $timeout) {
+        controller: function($scope, $element, $timeout, Widgets) {
             $timeout(function () {
                 // Loop through content, find countdown options
                 var templates = JSON.parse($scope.templates);
-                var tmpls, refresh;
+                var tmpls, refresh, source, attr;
                 angular.forEach(templates, function(data, index) {
                     if(data.template === "gauge") {
                         tmpls = data.options;
-                        refresh = data.refresh
+                        refresh = data.refresh;
+                        source = data.source;
+                        if(data.dataKey) {
+                            attr = data.dataKey;
+                        }
                     }
                 });
 
                 var powerGauge,
-                    sData = JSON.parse($scope.data),
+                    // sData = JSON.parse($scope.data),
                     gauge = function(configuration) {
                         var that = {},
                             config = {
@@ -720,16 +754,24 @@ angular.module('Dashboard.Charts', [])
                 powerGauge = gauge();
                 powerGauge.render();
 
-                // Need to add sort by time!!
-                $scope.$watch('data', function (aft, bef) {
-                    var sData = JSON.parse(aft);
-                    angular.forEach(sData, function(data) {
+                Widgets.getWidgetData(source).then(function(data) {
+                    angular.forEach(data, function(data) {
                         var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
                         data.value.time = parseDate(data.value.time);
                     });
-                    sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
-                    powerGauge.update(sData[0].value.data.value);
-                }, true);
+                    data.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
+                    powerGauge.update(data[0].value.data.value);
+                })
+                setInterval(function() {
+                    Widgets.getWidgetData(source).then(function(data) {
+                        angular.forEach(data, function(data) {
+                            var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                            data.value.time = parseDate(data.value.time);
+                        });
+                        data.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
+                        powerGauge.update(data[0].value.data.value);
+                   })
+                }, refresh)
 
             }, 0)           
         }
