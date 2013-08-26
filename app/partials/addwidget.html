@@ -13,13 +13,6 @@
         <label><strong>Title</strong></label>
             <input class='span' type='text' ng-model='widget.config.title' required>
 
-        <label><strong>Source</strong></label>
-            <select class='span' ng-model='widget.config.source' required>
-                <option disabled value=''>Pick one...</option>
-                <option value='none'>None</option>
-                <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
-            </select>
-
         <!-- Add Content -->
         <label><strong>Add Content</strong></label>
             <label class="radio inline">
@@ -37,6 +30,13 @@
                 <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
             </select>
             
+            <label>Source</label>
+                <select class='span' type='text' ng-model='content.source'>
+                    <option disabled value=''>Pick one...</option>
+                    <option value='none'>None</option>
+                    <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
+                </select>
+
             <label>Refresh</label>
                 <input class='span' type="number" ng-model='content.refresh'>
             
@@ -58,6 +58,8 @@
                         Template: {{item.template}}
                         <br />
                         Type: {{item.type}}
+                        <br />
+                        Source: {{item.source}}
                         <br />
                         Refresh: {{item.refresh}}
                         <br />

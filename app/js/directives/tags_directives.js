@@ -42,7 +42,6 @@ angular.module('Dashboard.Tags', [])
         restrict: 'E',
         scope: {
             templates: '@',
-            data: '@',
             layout : '@'
         },
         controller: function($rootScope, $scope, $element, $compile) {
@@ -71,7 +70,7 @@ angular.module('Dashboard.Tags', [])
             }
 
             // Setup placement of widgets and add templates on load
-            $scope.$watch('data', function (aft, bef) {
+            $scope.$watch('templates', function (aft, bef) {
                 if (aft) {
                     gridWidget();
                     dynamicDirective();

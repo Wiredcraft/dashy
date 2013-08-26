@@ -10,26 +10,28 @@ angular.module('Dashboard.Charts', [])
             data: '@',
             templates: '@'
         },
-        controller: function($scope, $element, $timeout) {
+        controller: function($scope, $element, $timeout, Widgets) {
             $timeout(function () {
                 // Loop through content, find linechart options
                 var templates = JSON.parse($scope.templates);
-                var tmpls, refresh, attr;
+                var tmpls, refresh, source, attr;
                 angular.forEach(templates, function(data, index) {
                     if(data.template === "linechart") {
                         tmpls = data.options;
                         refresh = data.refresh;
+                        source = data.source;
                         if(data.dataKey) {
                             attr = data.dataKey;
                         }
                     }
                 });
 
-                var linechart = function() {
+                var linechart = function(data) {
                     // Remove old graph, replace with new graph
                     angular.element($element[0]).children().remove();
 
-                    var axisData = JSON.parse($scope.data),
+                    // var axisData = JSON.parse($scope.data),
+                    var axisData = data,
                         width = $element.width(),
                         height = $element.height(),
                         // parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
@@ -77,9 +79,14 @@ angular.module('Dashboard.Charts', [])
                     svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
                 }
 
-                $scope.$watch('data', function (aft, bef) {
-                    linechart();
-                }, true);
+                Widgets.getWidgetData(source).then(function(data) {
+                    linechart(data);
+                })
+                setInterval(function() {
+                    Widgets.getWidgetData(source).then(function(data) {
+                        linechart(data);
+                    })
+                }, refresh)
 
             }, 0)
         }

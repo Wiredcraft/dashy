@@ -25,6 +25,7 @@ angular.module('Dashboard.Admin', ['ui.bootstrap'])
         $scope.contentAdd = function(content) {
             $scope.widget.content.push({
                 "type": content.type,
+                "source": content.source,
                 "refresh": content.refresh,
                 "dataKey": content.dataKey,
                 "template": content.template,
@@ -92,6 +93,7 @@ angular.module('Dashboard.Admin', ['ui.bootstrap'])
         $scope.contentAdd = function(content) {
             $scope.widget.content.push({
                 "type": content.type,
+                "source": content.source,
                 "refresh": content.refresh,
                 "dataKey": content.dataKey,
                 "template": content.template,
