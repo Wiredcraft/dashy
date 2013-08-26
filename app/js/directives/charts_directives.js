@@ -337,6 +337,9 @@ angular.module('Dashboard.Charts', [])
 
             // Widget Logic
             var list = function(data) {
+                //
+                console.log(data);
+                //
                 var sData = data,
                 nLimit = parseInt(tmpls.limit),
                 parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
@@ -369,7 +372,7 @@ angular.module('Dashboard.Charts', [])
             };
 
             Widgets.getWidgetData(source).then(function(data) {
-                // list(data);
+                list(data);
             })
             setInterval(function() {
                 Widgets.getWidgetData(source).then(function(data) {
