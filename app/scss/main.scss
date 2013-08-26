@@ -126,35 +126,37 @@ ul, ol{
                 margin-top: 10px;
                 font-weight: bold;
                 background: rgb(39, 39, 39);
-                span{
-                    padding: 0 25px;
+                div{
                     float: left;
                     display: inline-block;
                     height: 50px;
                     &.fail{
+                        padding: 0 25px;
                         background: #F5001D;
                     }
                     &.pass{
+                        padding: 0 25px;
                         background: #2dd700;
                     }
+                }
+                h3 {
+                    font-size: 15px;
+                    font-weight: bolder;
+                    margin-left: 55px;
+                    position: relative;
+                }
+                p {
+                    font-size: 14px;
+                    font-weight: lighter;
+                    margin-left: 55px;
+                    position: relative;
                 }
                 img{
                     display: block;
                     float:left;
                     width: 50px;
                     height: 50px;
-                }
-                .title{
-                    margin-left: 55px;
-                }
-                .time{
-                    margin-left: 55px;
-                    font-weight: normal;
-                }
-                .stat{
-                    margin-left: 55px;
-                    font-weight: normal;
-                    font-size: 15px;
+                    z-index: 50;
                 }
             }
         }

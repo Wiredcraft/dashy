@@ -263,7 +263,7 @@ angular.module('Dashboard.Charts', [])
         controller: function($scope, $element, $timeout, Number, Widgets) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
-            var tmpls, refresh, attr;
+            var tmpls, refresh, source, attr;
             angular.forEach(templates, function(data, index) {
                 if(data.template === "sum") {
                     tmpls = data.options;
@@ -320,10 +320,10 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout, Widgets) {
+        controller: function($scope, $element, $timeout, $compile, Widgets) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
-            var tmpls, refresh, attr;
+            var tmpls, refresh, source, attr;
             angular.forEach(templates, function(data, index) {
                 if(data.template === "list") {
                     tmpls = data.options;
@@ -337,48 +337,47 @@ angular.module('Dashboard.Charts', [])
 
             // Widget Logic
             var list = function(data) {
-                //
-                console.log(data);
-                //
-                var sData = data,
+                var sData = [];
+                $scope.list = [];   
+
+                sData = data,
                 nLimit = parseInt(tmpls.limit),
                 parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
                 if(attr) {key = attr;} else {key = 'value'}
 
-                var array = [];
+                $scope.class='error'; // error by default
+
+                // Parse Date
                 angular.forEach(sData, function(data, index) {
-                    if (data.value.time !== undefined) {
-                        data.value.data.since = moment(data.value.time).fromNow();
-                        data.value.time = parseDate(data.value.time);
-                    };
-                    array.push(data.value);
+                    data.value.since = moment(data.value.time, 'YYYY-MM-DDThh:mm:ssZ').fromNow();
+                    data.value.time = parseDate(data.value.time);
                 });
 
-                // Show status icons if builds, img if not
-                $scope.builds = false;
-                if (sData[0].value.data.status !== undefined) {
-                    $scope.builds = true;
-                };
+                // Most recent at top
+                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });                
 
-                array.sort(function (x, y) { return y['time'] - x['time'] })
-
-                //data into scope
-                if (nLimit) {   // if has limit attr
-                    $scope.list = array.splice(0, nLimit);
-                } else {
-                    $scope.list = array;
+                if(sData[0].value.data.image) {
+                    // Append image tag to html templave div element;
+                    $scope.class = 'image';
                 }
+
+                angular.forEach(sData, function(data, index) {
+                    $scope.list.push(data);
+                });
             };
 
+            // Start widget
             Widgets.getWidgetData(source).then(function(data) {
                 list(data);
             })
-            setInterval(function() {
-                Widgets.getWidgetData(source).then(function(data) {
-                    // list(data);
-                })
-            }, refresh)
+
+            // Keep widget updated
+            // setInterval(function() {
+            //     Widgets.getWidgetData(source).then(function(data) {
+            //         list(data);
+            //     })
+            // }, refresh)
 
         }
     }
@@ -423,7 +422,7 @@ angular.module('Dashboard.Charts', [])
         controller: function($scope, $element, Widgets) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
-            var tmpls, refresh, attr;
+            var tmpls, refresh, source, attr;
             angular.forEach(templates, function(data, index) {
                 if(data.template === "picture") {
                     tmpls = data.options;

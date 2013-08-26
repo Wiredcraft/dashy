@@ -1,9 +1,7 @@
 <ul class='list'>
-    <li ng-repeat='item in list'>
-        <span ng-show='builds' class='{{item.data.status}} status'></span>
-        <img ng-hide='builds' src="{{item.data.image}}" />
-        <p class='title'>{{item.data.title}}</p>
-        <p ng-hide='builds' class='time'>{{item.data.since}}</p>
-        <p ng-show='builds' class='stat'>{{item.data.status | upperCase}}</p>
-    </li>
+	<li ng-repeat='item in list'>
+		<div class='{{item.value.data.status || class}}' ng-bind-html-unsafe="img"></div>
+		<h3>{{item.value.data.title}}</h3>
+		<p>{{item.value.since}}</p>
+	</li>
 </ul>
