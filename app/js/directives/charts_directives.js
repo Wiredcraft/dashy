@@ -357,11 +357,12 @@ angular.module('Dashboard.Charts', [])
                 // Most recent at top
                 sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });                
 
+                // If data has img info, use it!
                 if(sData[0].value.data.image) {
-                    // Append image tag to html templave div element;
                     $scope.class = 'image';
                 }
 
+                // Slap data into the scope
                 angular.forEach(sData, function(data, index) {
                     $scope.list.push(data);
                 });
@@ -373,11 +374,11 @@ angular.module('Dashboard.Charts', [])
             })
 
             // Keep widget updated
-            // setInterval(function() {
-            //     Widgets.getWidgetData(source).then(function(data) {
-            //         list(data);
-            //     })
-            // }, refresh)
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    list(data);
+                })
+            }, refresh)
 
         }
     }
