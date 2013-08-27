@@ -614,8 +614,7 @@ angular.module('Dashboard.Charts', [])
                 var iR = (width/2) - 50;
                 var oR = (width/2) - 10;
 
-                var cur_color = 'limegreen';
-                var new_color, hold;
+                var color = '#b8b3ff';
 
                 var max = 180,
                     min = 0,
@@ -637,13 +636,13 @@ angular.module('Dashboard.Charts', [])
                 // Append background arc to svg
                 var background = svg.append("path")
                     .datum({endAngle: 90 * (pi/180)})
-                    .style("fill", "#ddd")
+                    .style("fill", "rgba(184, 179, 255, 0.1)")
                     .attr("d", arc);
 
                 // Append foreground arc to svg
                 var foreground = svg.append("path")
                     .datum({endAngle: -90 * (pi/180)})
-                    .style("fill", cur_color)
+                    .style("fill", color)
                     .attr("d", arc);
 
                 // Display Max value
@@ -651,6 +650,7 @@ angular.module('Dashboard.Charts', [])
                     .attr("transform", "translate("+ (iR + ((oR - iR)/2)) +",15)") // Set between inner and outer Radius
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
+                    .style("fill", "grey")
                     .text(max)
 
                 // Display Min value
@@ -658,6 +658,7 @@ angular.module('Dashboard.Charts', [])
                     .attr("transform", "translate("+ -(iR + ((oR - iR)/2)) +",15)") // Set between inner and outer Radius
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
+                    .style("fill", "grey")
                     .text(min)
 
                 // Display Current value
@@ -665,6 +666,7 @@ angular.module('Dashboard.Charts', [])
                     .attr("transform", "translate(0,"+ -(iR/4) +")") // Push up from center 1/4 of innerRadius
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
+                    .style("fill", "rgb(211, 212, 212)")
                     .style("font-size", "50")
                     .text(current)
 
@@ -674,15 +676,6 @@ angular.module('Dashboard.Charts', [])
                     var num = Math.random() * 180;
                     var numPi = Math.floor(num - 89) * (pi/180);
 
-                    // Get new color
-                    if(num >= 121) {
-                        new_color = 'red';
-                    } else if(num >= 61) {
-                        new_color = 'orange';
-                    } else {
-                        new_color = 'limegreen';
-                    }
-
                     // Text transition
                     current.transition()
                         .text(Math.floor(num));
@@ -690,12 +683,7 @@ angular.module('Dashboard.Charts', [])
                     // Arc Transition
                     foreground.transition()
                         .duration(750)
-                        .styleTween("fill", function() { return d3.interpolate(new_color, cur_color); })
                         .call(arcTween, numPi);
-
-                    // Set colors for next transition
-                    hold = cur_color; cur_color = new_color; new_color = hold;
-
                 }, 1500); // Repeat every 1.5s
 
                 // Update animation
