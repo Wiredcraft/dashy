@@ -631,7 +631,7 @@ angular.module('Dashboard.Charts', [])
                     .attr("width", width)
                     .attr("height", height)
                     .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 1.5 + ")")
+                    .attr("transform", "translate(" + width / 2 + "," + height / 1.4 + ")")
 
                 // Append background arc to svg
                 var background = svg.append("path")
@@ -663,7 +663,6 @@ angular.module('Dashboard.Charts', [])
 
                 // Display Current value
                 var current = svg.append("text")
-                    .attr("transform", "translate(0,"+ -(iR/4) +")") // Push up from center 1/4 of innerRadius
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
                     .style("fill", "rgb(211, 212, 212)")
