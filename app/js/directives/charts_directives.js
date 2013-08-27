@@ -614,7 +614,7 @@ angular.module('Dashboard.Charts', [])
                 var iR = (width/2) - 50;
                 var oR = (width/2) - 10;
 
-                var color = '#b8b3ff';
+                var color = 'rgba(184, 179, 255, 1)';
 
                 var max = 180,
                     min = 0,
