@@ -707,6 +707,7 @@ angular.module('Dashboard.Charts', [])
                         }
                     }
                 });
+                var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
                 // Set Up
                 var pi = Math.PI,
@@ -771,9 +772,19 @@ angular.module('Dashboard.Charts', [])
                     .style("font-size", "50")
                     .text(current)
 
-                var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                // Animation function
+                function arcTween(transition, newAngle) {
+                  transition.attrTween("d", function(d) {
+                    var interpolate = d3.interpolate(d.endAngle, newAngle);
+                    return function(t) {
+                      d.endAngle = interpolate(t);
+                      return arc(d);
+                    };
+                  });
+                }
 
-                var gaugeUpdate = function(x) {
+                // Update logic
+                function gaugeUpdate(x) {
                     angular.forEach(x, function(data, key){
                         data.value.time = parseDate(data.value.time);
                     });
@@ -804,18 +815,6 @@ angular.module('Dashboard.Charts', [])
                         gaugeUpdate(data);
                     })
                 }, refresh)
-
-                // Update animation
-                function arcTween(transition, newAngle) {
-                  transition.attrTween("d", function(d) {
-                    var interpolate = d3.interpolate(d.endAngle, newAngle);
-                    return function(t) {
-                      d.endAngle = interpolate(t);
-                      return arc(d);
-                    };
-                  });
-                }
-
 
             }, 0);
         }
