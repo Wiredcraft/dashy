@@ -706,10 +706,6 @@ angular.module('Dashboard.Charts', [])
                         }
                     }
                 });
-                // var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
-                
-                // var test = parseTime(); // factory method
-                // console.log(test);
                 
                 // Set Up
                 var pi = Math.PI,
