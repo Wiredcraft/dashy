@@ -118,35 +118,14 @@ angular.module('Dashboard.Charts', [])
             var graph,
                 maxSize = 20,
                 pointName = 'Value',
-                isCreate = false;
+                parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
-            // init graph function
+            // Graph Initialize function
             var init = function (aData) {
-                // for new graph to use
-                var series = [],
-                    seriesData = [],
-                    palette = new Rickshaw.Color.Palette({ scheme: 'spectrum14' });
+                // select rickshaw color palette
+                var palette = new Rickshaw.Color.Palette({ scheme: 'spectrum14' });
 
-                // // dynamic create teh series stuff for creating graphs
-                // angular.forEach(aData, function(oVal, index) {
-                //     var aData = oVal['datapoints'];
-
-                //     // control time period
-                //     if(aData.length > maxSize) {
-                //         aData = aData.slice(aData.length - maxSize);
-                //     }
-
-                //     // seriesData init
-                //     seriesData[index] = oVal['datapoints']
-
-                //     // dynamically create the series
-                //     series.push({
-                //         color: palette.color(), // line color
-                //         data: seriesData[index], // related data pos
-                //         name: oVal['target'] // description
-                //     });
-                // });
-
+                // Graph Options
                 graph = new Rickshaw.Graph({
                     element: $element[0],
                     renderer: 'area',
@@ -159,50 +138,33 @@ angular.module('Dashboard.Charts', [])
                     }]
                 });
 
-                // hover effects
-                var hoverDetail = new Rickshaw.Graph.HoverDetail({
-                    graph: graph
-                });
+                // Hover Effect
+                // var hoverDetail = new Rickshaw.Graph.HoverDetail({
+                //     graph: graph
+                // });
 
+                // Display X Axis
                 var xAxis = new Rickshaw.Graph.Axis.Time({
                     graph: graph
                 });
 
+                // Display Y Axis
                 var yAxis = new Rickshaw.Graph.Axis.Y({
                     graph: graph
                 });
 
+                // Render All
                 graph.render();
 
                 // xAxis.render();
-
                 // yAxis.render();
-
-                // update create status
-                isCreate = true;
             }
-
-            var updateGraphData = function(series, aft) {
-                angular.forEach(aft, function(aData, index) {
-                    if(series.name == aData.target) {
-                        angular.forEach(aData['datapoints'], function(oData, key) {
-                            // push data
-                            series.data.push(oData);
-                            // delete old data, control the time period
-                            if(series.data.length >= maxSize) {
-                                series.data.shift()
-                            }
-                        });
-                    }
-                });
-            }
-
-            var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
             var formatData = function(x) {
                 var y = [];
                 angular.forEach(x, function(data, index) {
-                    data.value.time = parseDate(data.value.time).getTime();
+                    time = parseDate(data.value.time).getTime();
+                    data.value.time = time / 1000; // Rickshaw uses s not ms
                     y.push({ 'x': data.value.time, 'y': data.value.data.value });
                 });
                 y.sort(function(a, z) { return a['x'] - z['x'] });
@@ -215,8 +177,18 @@ angular.module('Dashboard.Charts', [])
             // Initialize Chart
             Widgets.getWidgetData(source).then(function(data) {
                 data = formatData(data);
-                init(data)
+                init(data);
             });
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    var upData = formatData(data);
+                    angular.forEach(graph.series, function(series, index) {
+                        series.data = upData
+                    });
+                    graph.update();
+                })
+            }, refresh)
+
         }
     }
 })
@@ -746,8 +718,8 @@ angular.module('Dashboard.Charts', [])
 
                 var color = 'rgba(184, 179, 255, 1)';
 
-                var max = 180,
-                    min = 0,
+                var max = tmpls.max || 100, // get max possible or make 100 (for percents)
+                    min = tmpls.min || 0, // get min or 0 for default
                     current = 0;
 
                 // Arc Defaults
@@ -776,7 +748,7 @@ angular.module('Dashboard.Charts', [])
                     .attr("d", arc);
 
                 // Display Max value
-                var max = svg.append("text")
+                var maxText = svg.append("text")
                     .attr("transform", "translate("+ (iR + ((oR - iR)/2)) +",15)") // Set between inner and outer Radius
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
@@ -784,7 +756,7 @@ angular.module('Dashboard.Charts', [])
                     .text(max)
 
                 // Display Min value
-                var min = svg.append("text")
+                var minText = svg.append("text")
                     .attr("transform", "translate("+ -(iR + ((oR - iR)/2)) +",15)") // Set between inner and outer Radius
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
@@ -799,21 +771,39 @@ angular.module('Dashboard.Charts', [])
                     .style("font-size", "50")
                     .text(current)
 
-                // Update every x seconds
-                setInterval(function() {
-                    // Get value
-                    var num = Math.random() * 180;
-                    var numPi = Math.floor(num - 89) * (pi/180);
+                var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
 
-                    // Text transition
+                var gaugeUpdate = function(x) {
+                    angular.forEach(x, function(data, key){
+                        data.value.time = parseDate(data.value.time);
+                    });
+                    x.sort(function(a, z) { return z['value']['time'] - a['value']['time'] });
+                    cVal = x[0].value.data.value;
+                    gVal = ((cVal * 180) / max);
+                    gVal = (gVal - 90) * (pi/180);
+
+                    // If value too large, only animate to full gauge, not over
+                    if(gVal > 1.5707963267948966) { gVal = 1.5707963267948966 };
+                    
+                    // Update Gauge
                     current.transition()
-                        .text(Math.floor(num));
-
-                    // Arc Transition
+                        .text(cVal)
                     foreground.transition()
-                        .duration(750)
-                        .call(arcTween, numPi);
-                }, 1500); // Repeat every 1.5s
+                        .duration(700)
+                        .call(arcTween, gVal);
+                    return;
+                }
+
+                // Start widget
+                Widgets.getWidgetData(source).then(function(data) {
+                    gaugeUpdate(data);
+                })
+                // Widget updating
+                setInterval(function() {
+                    Widgets.getWidgetData(source).then(function(data) {
+                        gaugeUpdate(data);
+                    })
+                }, refresh)
 
                 // Update animation
                 function arcTween(transition, newAngle) {
