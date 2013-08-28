@@ -797,11 +797,11 @@ angular.module('Dashboard.Charts', [])
                     if(gVal > 1.5707963267948966) { gVal = 1.5707963267948966 };
                     
                     // Update Gauge
-                    current.transition()
-                        .text(cVal)
                     foreground.transition()
                         .duration(700)
-                        .call(arcTween, gVal);
+                        .call(arcTween, gVal)
+                    current.transition()
+                        .text(cVal)
                     return;
                 }
 
