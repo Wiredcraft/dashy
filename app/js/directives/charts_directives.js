@@ -2,93 +2,223 @@
 angular.module('Dashboard.Charts', [])
 
 // linechart directive
+// .directive('linechart', function() {
+//     return {
+//         restrict: 'E',
+//         replace: true,
+//         scope: {
+//             templates: '@'
+//         },
+//         controller: function($scope, $element, $timeout, Widgets) {
+//             $timeout(function () {
+//                 // Loop through content, find linechart options
+//                 var templates = JSON.parse($scope.templates);
+//                 var tmpls, refresh, source, attr;
+//                 angular.forEach(templates, function(data, index) {
+//                     if(data.template === "linechart") {
+//                         tmpls = data.options;
+//                         refresh = data.refresh;
+//                         source = data.source;
+//                         if(data.dataKey) {
+//                             attr = data.dataKey;
+//                         }
+//                     }
+//                 });
+
+//                 var linechart = function(data) {
+//                     // Remove old graph, replace with new graph
+//                     angular.element($element[0]).children().remove();
+
+//                     var axisData = data,
+//                         width = $element.width(),
+//                         height = $element.height(),
+//                         // parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
+//                         parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse, // date format like "2013-08-14T19:23:45Z" 
+//                         x = d3.time.scale().range([0, width]),
+//                         y = d3.scale.linear().range([height, 0]),
+//                         xAxis = d3.svg.axis().scale(x).orient("bottom"),
+//                         yAxis = d3.svg.axis().scale(y).orient("left"),
+//                         line = d3.svg.line()
+//                             .x(function(d) { 
+//                                 return x(d.value.date); 
+//                             })
+//                             .y(function(d) { 
+//                                 return y(d.value.amount);
+//                             }),
+//                         area = d3.svg.area()
+//                             .x(function(d) {
+//                                 return x(d.value.date);
+//                             })
+//                             .y0(height)
+//                             .y1(function(d) {
+//                                 return y(d.value.amount);
+//                             }),
+//                         svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
+
+//                     angular.forEach(axisData, function(data, index, source){
+//                         var target = data.value;
+//                         if (target.data[attr]) { // If data object uses custom key
+//                             target.amount = +target.data[attr];
+//                             target.amount.toFixed();
+//                         } else { // If data object uses value
+//                             target.amount = +target.data.value.toFixed(); //target.amount
+//                         }
+//                         target.date = parseDate(target.time);
+//                     });
+
+//                     // sort by date, its important, linechart need
+//                     axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
+
+//                     x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
+//                     y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
+
+//                     // line
+//                     svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
+//                     svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
+//                 }
+
+//                 Widgets.getWidgetData(source).then(function(data) {
+//                     linechart(data);
+//                 })
+//                 setInterval(function() {
+//                     Widgets.getWidgetData(source).then(function(data) {
+//                         linechart(data);
+//                     })
+//                 }, refresh)
+
+//             }, 0)
+//         }
+//     };
+// })
+
+//Rickshaw Chart
 .directive('linechart', function() {
     return {
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@'
+            templates: '@',
+            data: '@'
         },
         controller: function($scope, $element, $timeout, Widgets) {
-            $timeout(function () {
-                // Loop through content, find linechart options
-                var templates = JSON.parse($scope.templates);
-                var tmpls, refresh, source, attr;
-                angular.forEach(templates, function(data, index) {
-                    if(data.template === "linechart") {
-                        tmpls = data.options;
-                        refresh = data.refresh;
-                        source = data.source;
-                        if(data.dataKey) {
-                            attr = data.dataKey;
-                        }
+            //Loop through content, find linechart options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "linechart") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
                     }
+                }
+            });
+
+            var graph,
+                maxSize = 20,
+                pointName = 'Value',
+                isCreate = false;
+
+            // init graph function
+            var init = function (aData) {
+                // for new graph to use
+                var series = [],
+                    seriesData = [],
+                    palette = new Rickshaw.Color.Palette({ scheme: 'spectrum14' });
+
+                // // dynamic create teh series stuff for creating graphs
+                // angular.forEach(aData, function(oVal, index) {
+                //     var aData = oVal['datapoints'];
+
+                //     // control time period
+                //     if(aData.length > maxSize) {
+                //         aData = aData.slice(aData.length - maxSize);
+                //     }
+
+                //     // seriesData init
+                //     seriesData[index] = oVal['datapoints']
+
+                //     // dynamically create the series
+                //     series.push({
+                //         color: palette.color(), // line color
+                //         data: seriesData[index], // related data pos
+                //         name: oVal['target'] // description
+                //     });
+                // });
+
+                graph = new Rickshaw.Graph({
+                    element: $element[0],
+                    renderer: 'area',
+                    width: $element.width(),
+                    height: $element.height(),
+                    series: [{
+                        color: palette.color(),
+                        data: aData,
+                        name: pointName
+                    }]
                 });
 
-                var linechart = function(data) {
-                    // Remove old graph, replace with new graph
-                    angular.element($element[0]).children().remove();
+                // hover effects
+                var hoverDetail = new Rickshaw.Graph.HoverDetail({
+                    graph: graph
+                });
 
-                    var axisData = data,
-                        width = $element.width(),
-                        height = $element.height(),
-                        // parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
-                        parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse, // date format like "2013-08-14T19:23:45Z" 
-                        x = d3.time.scale().range([0, width]),
-                        y = d3.scale.linear().range([height, 0]),
-                        xAxis = d3.svg.axis().scale(x).orient("bottom"),
-                        yAxis = d3.svg.axis().scale(y).orient("left"),
-                        line = d3.svg.line()
-                            .x(function(d) { 
-                                return x(d.value.date); 
-                            })
-                            .y(function(d) { 
-                                return y(d.value.amount);
-                            }),
-                        area = d3.svg.area()
-                            .x(function(d) {
-                                return x(d.value.date);
-                            })
-                            .y0(height)
-                            .y1(function(d) {
-                                return y(d.value.amount);
-                            }),
-                        svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
+                var xAxis = new Rickshaw.Graph.Axis.Time({
+                    graph: graph
+                });
 
-                    angular.forEach(axisData, function(data, index, source){
-                        var target = data.value;
-                        if (target.data[attr]) { // If data object uses custom key
-                            target.amount = +target.data[attr];
-                            target.amount.toFixed();
-                        } else { // If data object uses value
-                            target.amount = +target.data.value.toFixed(); //target.amount
-                        }
-                        target.date = parseDate(target.time);
-                    });
+                var yAxis = new Rickshaw.Graph.Axis.Y({
+                    graph: graph
+                });
 
-                    // sort by date, its important, linechart need
-                    axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
+                graph.render();
 
-                    x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
-                    y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
+                // xAxis.render();
 
-                    // line
-                    svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
-                    svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
+                // yAxis.render();
+
+                // update create status
+                isCreate = true;
+            }
+
+            var updateGraphData = function(series, aft) {
+                angular.forEach(aft, function(aData, index) {
+                    if(series.name == aData.target) {
+                        angular.forEach(aData['datapoints'], function(oData, key) {
+                            // push data
+                            series.data.push(oData);
+                            // delete old data, control the time period
+                            if(series.data.length >= maxSize) {
+                                series.data.shift()
+                            }
+                        });
+                    }
+                });
+            }
+
+            var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+
+            var formatData = function(x) {
+                var y = [];
+                angular.forEach(x, function(data, index) {
+                    data.value.time = parseDate(data.value.time).getTime();
+                    y.push({ 'x': data.value.time, 'y': data.value.data.value });
+                });
+                y.sort(function(a, z) { return a['x'] - z['x'] });
+                if(y.length >= maxSize) {
+                    y = y.slice(y.length - maxSize);
                 }
+                return y;
+            }
 
-                Widgets.getWidgetData(source).then(function(data) {
-                    linechart(data);
-                })
-                setInterval(function() {
-                    Widgets.getWidgetData(source).then(function(data) {
-                        linechart(data);
-                    })
-                }, refresh)
-
-            }, 0)
+            // Initialize Chart
+            Widgets.getWidgetData(source).then(function(data) {
+                data = formatData(data);
+                init(data)
+            });
         }
-    };
+    }
 })
 
 
@@ -320,7 +450,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout, $compile, Widgets) {
+        controller: function($scope, $element, $timeout, $compile, Widgets, SortTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -355,7 +485,7 @@ angular.module('Dashboard.Charts', [])
                 });
 
                 // Most recent at top
-                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });                
+                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
 
                 // If data has img info, use it!
                 // BUG WITH IMAGES HERE!!! TO FIX (list template <img> commented out for now)

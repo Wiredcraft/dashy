@@ -210,15 +210,10 @@ ul, ol{
 }
 
 /*line chart*/
-path.line {
-    fill: none;
-    stroke: #b8b3ff;
-    stroke-width: 2px;
-}
-
-path.area {
+/*path.area {
     fill: rgba(184, 179, 255, 0.1);
 }
+*/
 
 /* sum */
 text.subtitle{
@@ -233,27 +228,6 @@ text.subtitle{
         max-height:100%;
         max-width: 100%;
     }
-}
-
-/* Gauge */
-
-
-.gauge {
-    bottom: 0;
-    left: 10%;
-    position: absolute;
-}
-
-g.pointer {
-    fill: #e85116;
-    stroke: #b64011;
-}
-    
-g.label text {
-    text-anchor: middle;
-    font-size: 14px;
-    font-weight: bold;
-    fill: #666;
 }
 
 /* Admin Interface */
