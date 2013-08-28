@@ -28,16 +28,12 @@ angular.module('Dashboard.Formatters', [])
 
 })
 
-.factory('SortTime', function() {
+.factory('parseTime', function() {
 
-    return function(data, ascending) {
-        if(ascending == true) {
-            data.sort(function(x, y) { return x['time'] - y['time'] })    
-        } else {
-            data.sort(function(x, y) { return y['time'] - x['time'] })
-        }
-
-        return data
+    return function(time) {
+        var parse = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+        var x = parse(time);
+        return x;
 
     }
 })

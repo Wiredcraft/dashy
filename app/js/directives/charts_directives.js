@@ -422,7 +422,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout, $compile, Widgets, SortTime) {
+        controller: function($scope, $element, $timeout, $compile, Widgets) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -475,7 +475,6 @@ angular.module('Dashboard.Charts', [])
             Widgets.getWidgetData(source).then(function(data) {
                 list(data);
             })
-
             // Keep widget updated
             setInterval(function() {
                 Widgets.getWidgetData(source).then(function(data) {
@@ -692,7 +691,7 @@ angular.module('Dashboard.Charts', [])
         scope: {
             templates: '@'
         },
-        controller: function($scope, $element, $timeout, Widgets) {
+        controller: function($scope, $element, $timeout, Widgets, parseTime) {
             $timeout(function() {
                 // Loop through content, find gauge options
                 var templates = JSON.parse($scope.templates);
@@ -707,8 +706,11 @@ angular.module('Dashboard.Charts', [])
                         }
                     }
                 });
-                var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
-
+                // var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                
+                // var test = parseTime(); // factory method
+                // console.log(test);
+                
                 // Set Up
                 var pi = Math.PI,
                     width = $element.width(),
@@ -786,7 +788,7 @@ angular.module('Dashboard.Charts', [])
                 // Update logic
                 function gaugeUpdate(x) {
                     angular.forEach(x, function(data, key){
-                        data.value.time = parseDate(data.value.time);
+                        data.value.time = parseTime(data.value.time);
                     });
                     x.sort(function(a, z) { return z['value']['time'] - a['value']['time'] });
                     cVal = x[0].value.data.value;
