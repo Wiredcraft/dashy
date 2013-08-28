@@ -9,7 +9,7 @@ angular.module('Dashboard.Charts', [])
 //         scope: {
 //             templates: '@'
 //         },
-//         controller: function($scope, $element, $timeout, Widgets) {
+//         controller: function($scope, $element, $timeout, Widgets, parseTime) {
 //             $timeout(function () {
 //                 // Loop through content, find linechart options
 //                 var templates = JSON.parse($scope.templates);
@@ -32,8 +32,6 @@ angular.module('Dashboard.Charts', [])
 //                     var axisData = data,
 //                         width = $element.width(),
 //                         height = $element.height(),
-//                         // parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
-//                         parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse, // date format like "2013-08-14T19:23:45Z" 
 //                         x = d3.time.scale().range([0, width]),
 //                         y = d3.scale.linear().range([height, 0]),
 //                         xAxis = d3.svg.axis().scale(x).orient("bottom"),
@@ -63,7 +61,7 @@ angular.module('Dashboard.Charts', [])
 //                         } else { // If data object uses value
 //                             target.amount = +target.data.value.toFixed(); //target.amount
 //                         }
-//                         target.date = parseDate(target.time);
+//                         target.date = parseTime(target.time);
 //                     });
 
 //                     // sort by date, its important, linechart need
@@ -100,7 +98,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@',
             data: '@'
         },
-        controller: function($scope, $element, $timeout, Widgets) {
+        controller: function($scope, $element, $timeout, Widgets, parseTime) {
             //Loop through content, find linechart options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -117,8 +115,7 @@ angular.module('Dashboard.Charts', [])
 
             var graph,
                 maxSize = 20,
-                pointName = 'Value',
-                parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                pointName = 'Value';
 
             // Graph Initialize function
             var init = function (aData) {
@@ -163,7 +160,7 @@ angular.module('Dashboard.Charts', [])
             var formatData = function(x) {
                 var y = [];
                 angular.forEach(x, function(data, index) {
-                    time = parseDate(data.value.time).getTime();
+                    time = parseTime(data.value.time).getTime();
                     data.value.time = time / 1000; // Rickshaw uses s not ms
                     y.push({ 'x': data.value.time, 'y': data.value.data.value });
                 });
@@ -280,7 +277,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/delta.html',
-        controller: function($scope, $element, Widgets) {
+        controller: function($scope, $element, Widgets, parseTime) {
             // Get delta options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -297,12 +294,11 @@ angular.module('Dashboard.Charts', [])
 
             var delta = function(data) {
                 // Parse data to json
-                var sData = data,
-                    parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse; // Correct time formatting
+                var sData = data;
                 
                 // format time
                 angular.forEach(sData, function(data, index) {
-                    data.value.time = parseDate(data.value.time);
+                    data.value.time = parseTime(data.value.time);
                 });
 
                 // Order Information by date
@@ -422,7 +418,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout, $compile, Widgets) {
+        controller: function($scope, $element, $timeout, $compile, Widgets, parseTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -443,8 +439,7 @@ angular.module('Dashboard.Charts', [])
                 $scope.list = [];   
 
                 sData = data,
-                nLimit = parseInt(tmpls.limit),
-                parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                nLimit = parseInt(tmpls.limit);
 
                 if(attr) {key = attr;} else {key = 'value'}
 
@@ -453,7 +448,7 @@ angular.module('Dashboard.Charts', [])
                 // Parse Date
                 angular.forEach(sData, function(data, index) {
                     data.value.since = moment(data.value.time, 'YYYY-MM-DDThh:mm:ssZ').fromNow();
-                    data.value.time = parseDate(data.value.time);
+                    data.value.time = parseTime(data.value.time);
                 });
 
                 // Most recent at top
@@ -522,7 +517,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/picture.html',
-        controller: function($scope, $element, Widgets) {
+        controller: function($scope, $element, Widgets, parseTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -540,8 +535,7 @@ angular.module('Dashboard.Charts', [])
             var picture = function(data) {
                 var sData = data;
                 angular.forEach(sData, function(data) {
-                    var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
-                    data.value.time = parseDate(data.value.time);
+                    data.value.time = parseTime(data.value.time);
                 });
                 sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
                 image = sData[0].value.data.image;
