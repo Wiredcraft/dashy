@@ -1,10 +1,12 @@
 <ul>
+    <!-- Include Widget Modal -->
+    <ng-include src="'partials/updateModal.html'"></ng-include>
     <li class="widget" ng-repeat="widget in widgets">
         <header>
             <h1>{{widget.value.config.title}}</h1>
 
             <span>
-                <button ng-click='updateWidget(widget.id, widget.key)'>
+                <button ng-click='open(widget.id, widget.key)'>
                     <i class='icon-wrench icon-large'></i>
                 </button>
                 <button ng-click='deleteWidget(widget.id)'>
@@ -19,3 +21,4 @@
         </widget>
     </li>
 </ul>
+

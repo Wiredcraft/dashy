@@ -1,97 +1,75 @@
-<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+<form name='form' novalidate>
+    <!-- Title -->
+    <label><strong>Title</strong></label>
+        <input class='span' type='text' ng-model='widget.config.title' required>
 
-<h2 class='offset1'><i class='icon-wrench'></i> Updating Widget: <span ng-bind="thisTitle"><i class="icon-spinner icon-spin"></i></span></h2>
-
-<hr />
-
-<div class="row-fluid">
-    <div class="span3 offset1">
-
-    <form name='form' novalidate>
-
-        <!-- Title -->
-        <label><strong>Title</strong></label>
-            <input class='span' type='text' ng-model='widget.config.title' required>
-
-        <!-- Add Content -->
-        <label><strong>Add Content</strong></label>
-            <label class="radio inline">
-                <input type="radio" name="optionsRadios" value="data" ng-model='content.type'>
-                Source Data
-            </label>
-            <label class="radio inline">
-                <input type="radio" name="optionsRadios" value="static" ng-model='content.type'>
-                Static Data
-            </label>
-            
-            <label>Template</label>
-            <select class='span' ng-model='content.template' required>
+    <!-- Add Content -->
+    <label><strong>Add Content</strong></label>
+        <label class="radio inline">
+            <input type="radio" name="optionsRadios" value="data" ng-model='content.type'>
+            Source Data
+        </label>
+        <label class="radio inline">
+            <input type="radio" name="optionsRadios" value="static" ng-model='content.type'>
+            Static Data
+        </label>
+        
+        <label>Template</label>
+        <select class='span' ng-model='content.template' required>
+            <option disabled value=''>Pick one...</option>
+            <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+        </select>
+        
+        <label>Source</label>
+            <select class='span' type='text' ng-model='content.source'>
                 <option disabled value=''>Pick one...</option>
-                <option ng-repeat='(key, value) in dbWidgets' value='{{key}}'>{{key}}</option>
+                <option value='none'>None</option>
+                <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
             </select>
-            
-            <label>Source</label>
-                <select class='span' type='text' ng-model='content.source'>
-                    <option disabled value=''>Pick one...</option>
-                    <option value='none'>None</option>
-                    <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
-                </select>
 
-            <label>Refresh</label>
-                <input class='span' type="number" ng-model='content.refresh'>
-            
-            <label ng-hide="content.type === 'static'">Data Key</label>
-                <input ng-hide="content.type === 'static'" class='span' type="text" ng-model='content.dataKey' placeholder="if not using default value">
-            
-            <div ng-repeat='(key, value) in dbWidgets[content.template] track by $id($index)'>
-                <label>{{key}}</label>
-                    <input class='span' type='{{value}}' ng-model='content.options[key]'></input>
-            </div>
-            
-            <button class='btn btn-primary btn-block' ng-click='contentAdd(content)'>Add</button>
+        <label>Refresh</label>
+            <input class='span' type="number" ng-model='content.refresh'>
+        
+        <label ng-hide="content.type === 'static'">Data Key</label>
+            <input ng-hide="content.type === 'static'" class='span' type="text" ng-model='content.dataKey' placeholder="if not using default value">
+        
+        <div ng-repeat='(key, value) in dbWidgets[content.template] track by $id($index)'>
+            <label>{{key}}</label>
+                <input class='span' type='{{value}}' ng-model='content.options[key]'></input>
+        </div>
+        
+        <button class='btn btn-primary btn-block' ng-click='contentAdd(content)'>Add</button>
 
-        <!-- Display Added Content -->
-        <label ng-show='widget.content'><strong>Current Content</strong></label>
-            <div class='optionsList'>
-                <ul>
-                    <li ng-repeat="item in widget.content">
-                        Template: {{item.template}}
-                        <br />
-                        Type: {{item.type}}
-                        <br />
-                        Refresh: {{item.refresh}}
-                        <br />
-                        Options: {{item.options}}
-                        <div class='action'>
-                            <a href="" ng-click="contentRemove($index)">
-                                <i class='icon-remove icon-large'></i>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+    <!-- Display Added Content -->
+    <label ng-show='widget.content'><strong>Current Content</strong></label>
+        <div class='optionsList'>
+            <ul>
+                <li ng-repeat="item in widget.content">
+                    Template: {{item.template}}
+                    <br />
+                    Type: {{item.type}}
+                    <br />
+                    Refresh: {{item.refresh}}
+                    <br />
+                    Options: {{item.options}}
+                    <div class='action'>
+                        <a href="" ng-click="contentRemove($index)">
+                            <i class='icon-remove icon-large'></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-        <!-- Layout -->
-        <label><strong>Layout</strong></label>
-            <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
-            <input class='span' type='number' ng-model='widget.layout.column' placeholder='Column Position' required>
-            <input class='span' type='number' ng-model='widget.layout.width' placeholder='Width Size' required>
-            <input class='span' type='number' ng-model='widget.layout.height' placeholder='Height Size' required>
+    <!-- Layout -->
+    <label><strong>Layout</strong></label>
+        <input class='span' type='number' ng-model='widget.layout.row' placeholder='Row Position' required>
+        <input class='span' type='number' ng-model='widget.layout.column' placeholder='Column Position' required>
+        <input class='span' type='number' ng-model='widget.layout.width' placeholder='Width Size' required>
+        <input class='span' type='number' ng-model='widget.layout.height' placeholder='Height Size' required>
 
-        <button class='btn btn-success btn-block btn-large' ng-click='updateWidget(widget)'>
-            <i class='icon-refresh icon-spin'></i> 
-            Update Widget
-        </button>
-    </form>
-
-
-    </div>
-
-    <div class="span7">
-Widget
-<pre>
-{{widget | json}}
-</pre>
-    </div>
-
-</div>
+    <button class='btn btn-success btn-block btn-large' ng-click='updateWidget(widget)'>
+        <i class='icon-refresh icon-spin'></i> 
+        Update Widget
+    </button>
+</form>
