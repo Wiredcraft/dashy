@@ -132,7 +132,8 @@ angular.module('Dashboard.Charts', [])
                         color: palette.color(),
                         data: aData,
                         name: pointName
-                    }]
+                    }],
+                    interpolation: 'step-after'
                 });
 
                 // Hover Effect
@@ -472,10 +473,17 @@ angular.module('Dashboard.Charts', [])
                 // Most recent at top
                 sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
 
+                // Limit list to user given limit
+                if(sData.length >= nLimit) {
+                    sData = sData.slice(sData.length - nLimit)
+                }     
+
                 // If data has img info, use it!
                 // BUG WITH IMAGES HERE!!! TO FIX (list template <img> commented out for now)
                 if(sData[0].value.data.image !== undefined) {
                     $scope.class = 'image';
+                } else {
+                    $scope.class = 'status';
                 }
 
                 // Slap data into the scope
