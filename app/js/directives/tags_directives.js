@@ -30,7 +30,7 @@ angular.module('Dashboard.Tags', [])
                 $scope.shouldBeOpen = true;
             };
             $scope.close = function() {
-                // skipReload();
+                skipReload();
                 $location.hash('');
                 $scope.shouldBeOpen = false;
             };
