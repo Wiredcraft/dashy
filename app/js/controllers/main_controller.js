@@ -29,11 +29,7 @@ angular.module('Dashboard.Controllers', ['ui.bootstrap'])
 
 .controller('NavCtrl', ['$scope', '$rootScope', '$location',
     function($scope, $rootScope, $location) {
-        
-        $scope.add = function() {
-            $location.path('add');
-        }
-
+        // Modal Controls
         $scope.opts = {
             backdropFade: false,
             dialogFade: true

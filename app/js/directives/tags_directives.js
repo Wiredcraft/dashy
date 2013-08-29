@@ -9,7 +9,7 @@ angular.module('Dashboard.Tags', [])
             widgets: '='
         },
         templateUrl: 'partials/widgets.html',
-        controller: function($rootScope, $scope, $element, $location, Admin) {
+        controller: function($rootScope, $scope, $element, $location, Admin, skipReload) {
             // cache it for global use
             $rootScope.gridster = $element.gridster({
                 widget_margins: [5, 5], //widget margin
@@ -23,6 +23,22 @@ angular.module('Dashboard.Tags', [])
             $scope.updateWidget = function(id, rev) {
                 $location.path('update').hash(id);
             };
+
+            // Modal Controls
+            $scope.opts = {
+                backdropFade: false,
+                dialogFade: true
+            }
+            $scope.open = function(id, rev) {
+                skipReload()
+                $location.hash(id);
+                $scope.shouldBeOpen = true;
+            }
+            $scope.close = function() {
+                skipReload()
+                $location.hash('');
+                $scope.shouldBeOpen = false;
+            }
 
             $scope.deleteWidget = function(id) {
                 var del = confirm('Delete this widget? This action cannot be undone.')
