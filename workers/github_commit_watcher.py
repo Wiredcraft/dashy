@@ -4,7 +4,7 @@ import time
 import logging
 
 from getpass import getpass
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import namedtuple
 
 import requests
@@ -19,7 +19,7 @@ Running instructions:
 '''
 
 #  Settings:
-DATABASE_URL = 'http://127.0.0.1:5984/commit_list'
+DATABASE_URL = 'http://127.0.0.1:4000/commits'
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 DEFAULT_FETCH_DAYS = 2  # Used when there are no previous entries in the db
 INTERVAL = 120 # How many seconds to sleep between next check
@@ -45,26 +45,6 @@ def format_tuple(datatuple):
                     'title': datatuple.msg,
                     'image': datatuple.avatar_url }}
 
-
-def fetch_last_timestamp():
-    '''
-    Fetch timestamp of last dataentry from the db.
-    Query spec: http://docs.couchdb.org/en/latest/api/database.html#get-db
-    '''
-    params = {'limit': '1', 'include_docs': 'true'}
-    r = requests.get(DATABASE_URL + '/_all_docs', params=params)
-    if not r.ok:
-        logging.warning('Could not connect to couchdb using url %s, got response code: %s.'%(DATABASE_URL, r.status_code))
-        raise RuntimeError('Could not fetch data from to couchdb.')
-    res = json.loads(r.text)
-    
-    if len(res['rows']) == 0:
-        logging.info('No previous entries found.')
-        return None
-    timestamp = res['rows'][0]['doc']['time']
-    logging.debug('Successfully fetched last timestamp: ' + timestamp)
-    date_obj = datetime.strptime(timestamp, TIMESTAMP_FORMAT)
-    return date_obj
 
 def fetch_commits_since(timestamp, gh):
     commit_list = []
@@ -107,10 +87,7 @@ def main():
     
     gh = github.Github(username, password)
 
-    last_timestamp = fetch_last_timestamp()
-    if not last_timestamp:
-        last_timestamp = datetime.now() - timedelta(days=DEFAULT_FETCH_DAYS)
-    
+    last_timestamp = datetime.now()
     while True:
         try:
             commits = fetch_commits_since(last_timestamp, gh)
@@ -126,8 +103,8 @@ def main():
         except:
             logging.exception("Exception when fetching commits.")
             # continuing
-            
+
         time.sleep(INTERVAL)
-    
+
 if __name__ == '__main__':
     main()
