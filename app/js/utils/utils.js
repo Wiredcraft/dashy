@@ -16,5 +16,4 @@ angular.module('Dashboard.Utils', [])
     //     return data;
     // }
     // })
-//alsdjfa;lkjds;lafkjds;lfakjas;dfkja;dksj
 });
