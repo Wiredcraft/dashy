@@ -19,7 +19,8 @@ Running instructions:
 '''
 
 #  Settings:
-DATABASE_URL = 'http://127.0.0.1:5984/commit_list'
+DATABASE_URL = 'http://127.0.0.1:5984/commits'
+DASHY_URL = 'http://127.0.0.1:4000/commits'
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 DEFAULT_FETCH_DAYS = 2  # Used when there are no previous entries in the db
 INTERVAL = 120 # How many seconds to sleep between next check
@@ -119,7 +120,7 @@ def main():
                 headers = {'content-type': 'application/json'}
                 now = datetime.now()
                 payload = format_tuple(commit)
-                r = requests.post(DATABASE_URL, data=json.dumps(payload), headers=headers)
+                r = requests.post(DASHY_URL, data=json.dumps(payload), headers=headers)
             logging.info('Added %s commits.'%(len(commits)))
             if commits:
                 last_timestamp = datetime.strptime(commits[0].time, TIMESTAMP_FORMAT)
