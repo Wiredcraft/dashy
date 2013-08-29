@@ -90,7 +90,7 @@ angular.module('Dashboard.Admin', ['ui.bootstrap'])
         // Update Function
         $scope.updateWidget = function(widget) {
             Admin.updateWidget(id, widget).then(function(data) {
-                $location.path('');
+                document.location.reload(true);
             });
         };
 
