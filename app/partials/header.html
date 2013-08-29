@@ -21,15 +21,5 @@
     </div>
 </header>
 
-<!-- Add Widget Modal -->
-<div modal="shouldBeOpen" close="close()" options="opts">
-    <div class="modal-header">
-        <h3>Add Widget</h3>
-    </div>
-    <div class="modal-body">
-        <ng-include ng-controller="AddCtrl" src="'partials/addwidget.html'"></ng-include>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-warning cancel" ng-click="close()">Cancel</button>
-    </div>
-</div>
+<!-- Include Widget Modal -->
+<ng-include src="'partials/addModal.html'"></ng-include>

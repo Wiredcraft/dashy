@@ -35,7 +35,7 @@ angular.module('Dashboard.Controllers', ['ui.bootstrap'])
         }
 
         $scope.opts = {
-            backdropFade: true,
+            backdropFade: false,
             dialogFade: true
         }
         $scope.open = function() {

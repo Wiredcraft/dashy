@@ -133,7 +133,7 @@ angular.module('Dashboard.Charts', [])
                         data: aData,
                         name: pointName
                     }],
-                    interpolation: 'step-after'
+                    interpolation: 'linear'
                 });
 
                 // Hover Effect

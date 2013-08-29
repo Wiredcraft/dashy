@@ -37,7 +37,7 @@ angular.module('Dashboard.Admin', ['ui.bootstrap'])
         // Add widget function
         $scope.addWidget = function(widget){
             Admin.addWidget($scope.widget).then(function(data) {
-                $location.path('');
+                document.location.reload(true);
             });
         };
 
