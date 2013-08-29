@@ -472,7 +472,7 @@ angular.module('Dashboard.Charts', [])
 
                 // Limit list to user given limit
                 if(sData.length >= nLimit) {
-                    sData = sData.slice(sData.length - nLimit)
+                    sData = sData.slice(0, nLimit)
                 }     
 
                 // If data has img info, use it!
