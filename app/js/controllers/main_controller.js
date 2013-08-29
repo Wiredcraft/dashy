@@ -3,7 +3,7 @@ angular.module('Dashboard.Controllers', ['ui.bootstrap'])
 // Main controller
 .controller('MainAppCtrl', ['$scope', 'Widgets', '$rootScope', '$document',
     function($scope, Widgets, $rootScope, $document) {
-        // get widget list info
+        // Get widgets
         Widgets.getWidgetList().then(function(data) {
             $scope.widgets = data;
         }, function(err) {
@@ -33,13 +33,13 @@ angular.module('Dashboard.Controllers', ['ui.bootstrap'])
         $scope.opts = {
             backdropFade: false,
             dialogFade: true
-        }
+        };
         $scope.open = function() {
             $scope.shouldBeOpen = true;
-        }
+        };
         $scope.close = function() {
             $scope.shouldBeOpen = false;
-        }
+        };
 
         // Lock / Unlock draggable
         $scope.lock = function() {

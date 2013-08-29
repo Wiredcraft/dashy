@@ -10,35 +10,30 @@ angular.module('Dashboard.Tags', [])
         },
         templateUrl: 'partials/widgets.html',
         controller: function($rootScope, $scope, $element, $location, Admin, skipReload) {
-            // cache it for global use
+            // Gridster options
             $rootScope.gridster = $element.gridster({
                 widget_margins: [5, 5], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
                 min_cols: 12
-                // draggable: {handle: '.handle'} // Only class 'handle' allows dragging
             }).data('gridster');
             $rootScope.gridster.disable();
             $rootScope.locked = true;
-
-            $scope.updateWidget = function(id, rev) {
-                $location.path('update').hash(id);
-            };
 
             // Modal Controls
             $scope.opts = {
                 backdropFade: false,
                 dialogFade: true
-            }
+            };
             $scope.open = function(id, rev) {
-                skipReload()
+                skipReload();
                 $location.hash(id);
                 $scope.shouldBeOpen = true;
-            }
+            };
             $scope.close = function() {
-                skipReload()
+                // skipReload();
                 $location.hash('');
                 $scope.shouldBeOpen = false;
-            }
+            };
 
             $scope.deleteWidget = function(id) {
                 var del = confirm('Delete this widget? This action cannot be undone.')
@@ -52,7 +47,7 @@ angular.module('Dashboard.Tags', [])
     };
 })
 
-// dynamic widget middlerware
+// dynamic widget middleware
 .directive('widget', function() {
     return {
         restrict: 'E',
@@ -67,7 +62,7 @@ angular.module('Dashboard.Tags', [])
                 $rootScope.gridster.add_widget($element.parent(), oLayout['width'], oLayout['height'], oLayout['column'], oLayout['row']);
             }
             
-            // dynamic create chart directive
+            // dynamically create directive
             var dynamicDirective = function () {
                 var oDirective = JSON.parse($scope.templates),
                     sHtml = '';
