@@ -3,12 +3,15 @@
         "linechart": {
             "points": "number"
         },
-        "delta": {},
+        "delta": {
+            "points": "number"
+        },
         "gauge": {
             "min": "number",
             "max": "number"
         },
         "sum": {
+            "points": "number",
             "append": "text",
             "prepend": "text",
             "subtitle": "text"
@@ -19,7 +22,6 @@
         "picture": {},
         "clock": {},
         "countdown": {
-            "startdate": "date",
             "enddate": "date"
         },
         "announcement": {

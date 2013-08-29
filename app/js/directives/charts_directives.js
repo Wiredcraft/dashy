@@ -114,7 +114,7 @@ angular.module('Dashboard.Charts', [])
             });
 
             var graph,
-                maxSize = 20,
+                maxSize = tmpls.points,
                 pointName = 'Value';
 
             // Graph Initialize function
@@ -307,6 +307,11 @@ angular.module('Dashboard.Charts', [])
                 // Custom defined key?
                 if(attr) {key = attr} else {key = 'value'}
 
+                // Data points to show all or user amount
+                if(sData.length >= tmpls.points) {
+                    sData = sData.slice(sData.length - tmpls.points)
+                }
+
                 // Get first and last value
                 var base = sData[0].value.data[key],
                     length = sData.length - 1,
@@ -358,7 +363,7 @@ angular.module('Dashboard.Charts', [])
             templates: '@'
         },
         templateUrl: 'templates/sum.html',
-        controller: function($scope, $element, $timeout, Number, Widgets) {
+        controller: function($scope, $element, $timeout, Number, Widgets, parseTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
             var tmpls, refresh, source, attr;
@@ -382,8 +387,21 @@ angular.module('Dashboard.Charts', [])
                     sub = tmpls.subtitle,
                     total = 0;
 
+                // format time
+                angular.forEach(sData, function(data, index) {
+                    data.value.time = parseTime(data.value.time);
+                });
+
+                // sort by time
+                sData.sort(function(a, z) { return a['x'] - z['x'] });
+
                 // If custom key
                 if(attr) {key = attr;} else {key = 'value'}
+
+                // Data points to show all or user amount
+                if(sData.length >= tmpls.points) {
+                    sData = sData.slice(sData.length - tmpls.points)
+                }                
 
                 // Addition is fun!
                 angular.forEach(sData, function(data, index, source){

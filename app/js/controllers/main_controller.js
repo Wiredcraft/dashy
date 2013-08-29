@@ -1,4 +1,4 @@
-angular.module('Dashboard.Controllers', [])
+angular.module('Dashboard.Controllers', ['ui.bootstrap'])
 
 // Main controller
 .controller('MainAppCtrl', ['$scope', 'Widgets', '$rootScope', '$document',
@@ -32,6 +32,17 @@ angular.module('Dashboard.Controllers', [])
         
         $scope.add = function() {
             $location.path('add');
+        }
+
+        $scope.opts = {
+            backdropFade: true,
+            dialogFade: true
+        }
+        $scope.open = function() {
+            $scope.shouldBeOpen = true;
+        }
+        $scope.close = function() {
+            $scope.shouldBeOpen = false;
         }
 
         // Lock / Unlock draggable
