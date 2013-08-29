@@ -4,7 +4,7 @@ import time
 import logging
 
 from getpass import getpass
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import namedtuple
 
 import requests
@@ -45,6 +45,20 @@ def format_tuple(datatuple):
                     'title': datatuple.msg,
                     'image': datatuple.avatar_url }}
 
+def fetch_last_timestamp(gh):
+    last_timestamp = None
+    for org in ORGANIZATIONS:
+        org_obj = gh.get_organization(org)
+        for event in gh.get_user().get_organization_events(org_obj):
+            if last_timestamp is None:
+                last_timestamp = event.created_at
+                break
+            elif event.created_at > last_timestamp:
+                last_timestamp = event.created_at
+                break
+            break
+    return last_timestamp
+
 
 def fetch_commits_since(timestamp, gh):
     commit_list = []
@@ -54,8 +68,8 @@ def fetch_commits_since(timestamp, gh):
         for event in gh.get_user().get_organization_events(org_obj):
             if event.created_at <= timestamp:
                 logging.debug('Timestamp passed after %s events.'%(event_counter,))
-                break 
-            
+                break
+
             if event.type == 'PushEvent':
                 avatar_url = event.actor.avatar_url
                 event_time = event.created_at
@@ -87,14 +101,15 @@ def main():
     
     gh = github.Github(username, password)
 
-    last_timestamp = datetime.now()
+    last_timestamp = fetch_last_timestamp(gh)
+    logging.info('Last timestamp is: %s.' % last_timestamp)
+    
     while True:
         try:
             commits = fetch_commits_since(last_timestamp, gh)
 
             for commit in commits:
                 headers = {'content-type': 'application/json'}
-                now = datetime.now()
                 payload = format_tuple(commit)
                 r = requests.post(DATABASE_URL, data=json.dumps(payload), headers=headers)
             logging.info('Added %s commits.'%(len(commits)))
