@@ -1,7 +1,7 @@
 angular.module('Dashboard.Models', [])
 .factory('Widgets', ['$http', '$q', function($http, $q) {
     var Widgets = {},
-        apiUrl = 'http://127.0.0.1:4000/';
+        apiUrl = '/';
 
     // get widgets info
     Widgets.getWidgetList = function() {
@@ -50,7 +50,7 @@ angular.module('Dashboard.Models', [])
 
 .factory('Sources', ['$http', '$q', function($http, $q) {
     var Sources = {},
-        apiUrl = 'http://127.0.0.1:4000/sources';
+        apiUrl = '/sources';
 
     Sources.getSources = function() {
         var deferred = $q.defer();
@@ -81,7 +81,7 @@ angular.module('Dashboard.Models', [])
 
 .factory('Admin', ['$http', '$q', function($http, $q) {
     var Admin = {},
-    apiUrl = 'http://127.0.0.1:4000/widget/';
+    apiUrl = '/widget';
 
     Admin.addWidget = function(data) {
         var deferred = $q.defer();
