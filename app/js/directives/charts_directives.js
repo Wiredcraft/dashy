@@ -65,6 +65,9 @@ angular.module('Dashboard.Charts', [])
 
                 // Render All
                 graph.render();
+
+                // xAxis.render();
+                // yAxis.render();
             }
 
             var formatData = function(x) {
@@ -231,13 +234,13 @@ angular.module('Dashboard.Charts', [])
                 // Determine status
                 var status;
                 if (diff > 100) {
-                    dir = "⬆";
+                    dir = "+";
                     status = 'up';
                 } else if (diff === 100) {
                     dir = "="
                     status = 'equal'
                 } else {
-                    dir = "⬇";
+                    dir = "-";
                     status = 'down'
                 }
                 diff = diff - 100;

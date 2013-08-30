@@ -269,6 +269,24 @@ text.subtitle{
     }
 }
 
+/* rickshaw */
+.rickshaw_graph {
+    svg {
+        /* rickshaw border*/
+        border: 0;
+    }
+    .x_tick {
+        /* change the dotted to solid*/
+        border: none!important;
+        /*display: none;*/
+    }
+/*    .y_grid {
+      line {
+        stroke: red;
+      }
+    }*/
+}
+
 /* Modal CSS Requirements */
 .modal-backdrop {
   position: fixed;
