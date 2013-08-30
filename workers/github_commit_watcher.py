@@ -52,17 +52,16 @@ def fetch_last_timestamp():
     Fetch timestamp of last dataentry from the db.
     Query spec: http://docs.couchdb.org/en/latest/api/database.html#get-db
     '''
-    params = {'limit': '1', 'include_docs': 'true'}
-    r = requests.get(DATABASE_URL + '/_all_docs', params=params)
+    r = requests.get(DASHY_URL)
     if not r.ok:
         logging.warning('Could not connect to couchdb using url %s, got response code: %s.'%(DATABASE_URL, r.status_code))
-        raise RuntimeError('Could not fetch data from to couchdb.')
+        raise RuntimeError('Could not fetch data from to dashy api.')
     res = json.loads(r.text)
     
-    if len(res['rows']) == 0:
+    if not res:
         logging.info('No previous entries found.')
         return None
-    timestamp = res['rows'][0]['doc']['time']
+    timestamp = res[0]['value']['time']
     logging.debug('Successfully fetched last timestamp: ' + timestamp)
     date_obj = datetime.strptime(timestamp, TIMESTAMP_FORMAT)
     return date_obj
@@ -103,15 +102,15 @@ def get_username_and_password():
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    
+
     username, password = get_username_and_password()
-    
+
     gh = github.Github(username, password)
 
     last_timestamp = fetch_last_timestamp()
     if not last_timestamp:
         last_timestamp = datetime.now() - timedelta(days=DEFAULT_FETCH_DAYS)
-    
+
     while True:
         try:
             commits = fetch_commits_since(last_timestamp, gh)
@@ -127,8 +126,8 @@ def main():
         except:
             logging.exception("Exception when fetching commits.")
             # continuing
-            
+
         time.sleep(INTERVAL)
-    
+
 if __name__ == '__main__':
     main()
