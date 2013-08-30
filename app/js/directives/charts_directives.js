@@ -1,95 +1,7 @@
 // charts directives
 angular.module('Dashboard.Charts', [])
 
-// linechart directive
-// .directive('linechart', function() {
-//     return {
-//         restrict: 'E',
-//         replace: true,
-//         scope: {
-//             templates: '@'
-//         },
-//         controller: function($scope, $element, $timeout, Widgets, parseTime) {
-//             $timeout(function () {
-//                 // Loop through content, find linechart options
-//                 var templates = JSON.parse($scope.templates);
-//                 var tmpls, refresh, source, attr;
-//                 angular.forEach(templates, function(data, index) {
-//                     if(data.template === "linechart") {
-//                         tmpls = data.options;
-//                         refresh = data.refresh;
-//                         source = data.source;
-//                         if(data.dataKey) {
-//                             attr = data.dataKey;
-//                         }
-//                     }
-//                 });
-
-//                 var linechart = function(data) {
-//                     // Remove old graph, replace with new graph
-//                     angular.element($element[0]).children().remove();
-
-//                     var axisData = data,
-//                         width = $element.width(),
-//                         height = $element.height(),
-//                         x = d3.time.scale().range([0, width]),
-//                         y = d3.scale.linear().range([height, 0]),
-//                         xAxis = d3.svg.axis().scale(x).orient("bottom"),
-//                         yAxis = d3.svg.axis().scale(y).orient("left"),
-//                         line = d3.svg.line()
-//                             .x(function(d) { 
-//                                 return x(d.value.date); 
-//                             })
-//                             .y(function(d) { 
-//                                 return y(d.value.amount);
-//                             }),
-//                         area = d3.svg.area()
-//                             .x(function(d) {
-//                                 return x(d.value.date);
-//                             })
-//                             .y0(height)
-//                             .y1(function(d) {
-//                                 return y(d.value.amount);
-//                             }),
-//                         svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
-
-//                     angular.forEach(axisData, function(data, index, source){
-//                         var target = data.value;
-//                         if (target.data[attr]) { // If data object uses custom key
-//                             target.amount = +target.data[attr];
-//                             target.amount.toFixed();
-//                         } else { // If data object uses value
-//                             target.amount = +target.data.value.toFixed(); //target.amount
-//                         }
-//                         target.date = parseTime(target.time);
-//                     });
-
-//                     // sort by date, its important, linechart need
-//                     axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
-
-//                     x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
-//                     y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
-
-//                     // line
-//                     svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
-//                     svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
-//                 }
-
-//                 Widgets.getWidgetData(source).then(function(data) {
-//                     linechart(data);
-//                 })
-//                 setInterval(function() {
-//                     Widgets.getWidgetData(source).then(function(data) {
-//                         linechart(data);
-//                     })
-//                 }, refresh)
-
-//             }, 0)
-//         }
-//     };
-// })
-
-//Rickshaw Chart
+// linechart
 .directive('linechart', function() {
     return {
         restrict: 'E',
@@ -463,7 +375,7 @@ angular.module('Dashboard.Charts', [])
 
                 // Parse Date
                 angular.forEach(sData, function(data, index) {
-                    data.value.since = moment(data.value.time, 'YYYY-MM-DDThh:mm:ssZ').fromNow();
+                    data.value.since = moment(data.value.time, 'YYYY-MM-DDThh:mm:ssZ').fromNow();                    
                     data.value.time = parseTime(data.value.time);
                 });
 

@@ -34,6 +34,5 @@ angular.module('Dashboard.Formatters', [])
         var time = moment(time).format();
         var x = new Date(time);
         return x;
-
     }
 })
