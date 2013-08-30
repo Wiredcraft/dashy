@@ -8,10 +8,20 @@ var day = date.getDate();
 var hours = date.getHours();
 var minutes = date.getMinutes();
 var seconds = date.getSeconds();
+var timezone = '+0800';
+
+// Month must be '08' instead of '8'
+if(month.toString().length === 1) {
+    var month = '0' + month;
+}
+// Same for day
+if(day.toString().length === 1) {
+    var day = '0' + month;
+}
 
 // Format the time to how Dashy likes it
 // "yyyy-MM-ddTHH:mm:ssZ"
-var time = "" + year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "Z";
+var time = "" + year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + timezone + "";
 
 // Get a value
 var nVal = Math.floor(Math.random() * 799);
