@@ -9,19 +9,30 @@ angular.module('Dashboard.Tags', [])
             widgets: '='
         },
         templateUrl: 'partials/widgets.html',
-        controller: function($rootScope, $scope, $element, $location, Admin) {
-            // cache it for global use
+        controller: function($rootScope, $scope, $element, $location, Admin, skipReload) {
+            // Gridster options
             $rootScope.gridster = $element.gridster({
                 widget_margins: [5, 5], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
                 min_cols: 12
-                // draggable: {handle: '.handle'} // Only class 'handle' allows dragging
             }).data('gridster');
             $rootScope.gridster.disable();
             $rootScope.locked = true;
 
-            $scope.updateWidget = function(id, rev) {
-                $location.path('update').hash(id);
+            // Modal Controls
+            $scope.opts = {
+                backdropFade: false,
+                dialogFade: true
+            };
+            $scope.open = function(id, rev) {
+                skipReload();
+                $location.hash(id);
+                $scope.shouldBeOpen = true;
+            };
+            $scope.close = function() {
+                skipReload();
+                $location.hash('');
+                $scope.shouldBeOpen = false;
             };
 
             $scope.deleteWidget = function(id) {
@@ -36,24 +47,22 @@ angular.module('Dashboard.Tags', [])
     };
 })
 
-// dynamic widget middlerware
+// dynamic widget middleware
 .directive('widget', function() {
     return {
         restrict: 'E',
         scope: {
             templates: '@',
-            data: '@',
             layout : '@'
         },
         controller: function($rootScope, $scope, $element, $compile) {
             // add widget element to gridster
-
             var gridWidget = function () {
                 var oLayout = JSON.parse($scope.layout);
-                $rootScope.gridster.add_widget($element.parent(), oLayout['data-sizex'], oLayout['data-sizey'], oLayout['data-col'], oLayout['data-row']);
+                $rootScope.gridster.add_widget($element.parent(), oLayout['width'], oLayout['height'], oLayout['column'], oLayout['row']);
             }
             
-            // dynamic create chart directive
+            // dynamically create directive
             var dynamicDirective = function () {
                 var oDirective = JSON.parse($scope.templates),
                     sHtml = '';
@@ -61,7 +70,8 @@ angular.module('Dashboard.Tags', [])
                 // Start Section
                 sHtml += '<section class="widget-body number-widget">';
                 // Add directives to section
-                angular.forEach(oDirective, function (directive, directiveName) {
+                angular.forEach(oDirective, function (data, index) {
+                    var directiveName = data.template;
                     sHtml += '<' + directiveName + ' data="{{data}}" templates="{{templates}}"></' + directiveName + '>';
                 });
                 // End Section
@@ -70,12 +80,10 @@ angular.module('Dashboard.Tags', [])
                 $element.replaceWith($compile(sHtml)($scope));
             }
 
-            // Setup placement of widgets on load
-            gridWidget();
-
-            // Setup data on widgets as new data is pulled
-            $scope.$watch('data', function (aft, bef) {
+            // Setup placement of widgets and add templates on load
+            $scope.$watch('templates', function (aft, bef) {
                 if (aft) {
+                    gridWidget();
                     dynamicDirective();
                 }
             });

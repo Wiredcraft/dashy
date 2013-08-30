@@ -1,72 +1,103 @@
 // charts directives
 angular.module('Dashboard.Charts', [])
 
-// linechart directive
+// linechart
 .directive('linechart', function() {
     return {
         restrict: 'E',
         replace: true,
         scope: {
+            templates: '@',
             data: '@'
         },
-        controller: function($scope, $element, $timeout) {
-            $timeout(function () {
-                var linechart = function() {
-                    // Remove old graph, replace with new graph
-                    angular.element($element[0]).children().remove();
-
-                    var axisData = JSON.parse($scope.data),
-                        width = $element.width(),
-                        height = $element.height(),
-                        parseDate = d3.time.format("%d-%b-%y").parse, // date format like this '28-Mar-12'
-                        x = d3.time.scale().range([0, width]),
-                        y = d3.scale.linear().range([height, 0]),
-                        xAxis = d3.svg.axis().scale(x).orient("bottom"),
-                        yAxis = d3.svg.axis().scale(y).orient("left"),
-                        line = d3.svg.line()
-                            .x(function(d) { 
-                                return x(d.value.date); 
-                            })
-                            .y(function(d) { 
-                                return y(d.value.amount);
-                            }),
-                        area = d3.svg.area()
-                            .x(function(d) {
-                                return x(d.value.date);
-                            })
-                            .y0(height)
-                            .y1(function(d) {
-                                return y(d.value.amount);
-                            }),
-                        svg = d3.select($element[0]).append("svg").attr("width", width).attr("height", height).append("g");
-
-                    
-
-                    angular.forEach(axisData, function(data, index, source){
-                        var target = data.value;
-
-                        target.date = parseDate(target.time);
-                        target.amount = +target.data.value.toFixed(); //target.amount
-                    });
-
-                    // sort by date, its important, linechart need
-                    axisData.sort(function (x, y) { return x['value']['date'] - y['value']['date'] })
-
-                    x.domain(d3.extent(axisData, function(d) { return d.value.date; }));
-                    y.domain(d3.extent(axisData, function(d) { return d.value.amount; }));
-
-                    // line
-                    svg.append("path").datum(axisData).attr("class", "area").attr("d", area);
-                    svg.append("path").datum(axisData).attr("class", "line").attr("d", line);
+        controller: function($scope, $element, $timeout, Widgets, parseTime) {
+            //Loop through content, find linechart options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "linechart") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
                 }
+            });
 
-                $scope.$watch('data', function (aft, bef) {
-                    linechart();
-                }, true);
+            var graph,
+                maxSize = tmpls.points,
+                pointName = 'Value';
 
-            }, 0)
+            // Graph Initialize function
+            var init = function (aData) {
+                // select rickshaw color palette
+                var palette = new Rickshaw.Color.Palette({ scheme: 'spectrum14' });
+
+                // Graph Options
+                graph = new Rickshaw.Graph({
+                    element: $element[0],
+                    renderer: 'line',
+                    width: $element.width(),
+                    height: $element.height(),
+                    series: [{
+                        color: palette.color(),
+                        data: aData,
+                        name: pointName
+                    }],
+                    interpolation: 'linear'
+                });
+
+                // Hover Effect
+                // var hoverDetail = new Rickshaw.Graph.HoverDetail({
+                //     graph: graph
+                // });
+
+                // Display X Axis
+                var xAxis = new Rickshaw.Graph.Axis.Time({
+                    graph: graph
+                });
+
+                // Display Y Axis
+                var yAxis = new Rickshaw.Graph.Axis.Y({
+                    graph: graph
+                });
+
+                // Render All
+                graph.render();
+            }
+
+            var formatData = function(x) {
+                var y = [];
+                angular.forEach(x, function(data, index) {
+                    time = parseTime(data.value.time).getTime();
+                    data.value.time = time / 1000; // Rickshaw uses s not ms
+                    y.push({ 'x': data.value.time, 'y': data.value.data.value });
+                });
+                y.sort(function(a, z) { return a['x'] - z['x'] });
+                if(y.length >= maxSize) {
+                    y = y.slice(y.length - maxSize);
+                }
+                return y;
+            }
+
+            // Initialize Chart
+            Widgets.getWidgetData(source).then(function(data) {
+                data = formatData(data);
+                init(data);
+            });
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    var upData = formatData(data);
+                    angular.forEach(graph.series, function(series, index) {
+                        series.data = upData
+                    });
+                    graph.update();
+                })
+            }, refresh)
+
         }
-    };
+    }
 })
 
 
@@ -76,12 +107,22 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@',
             templates: '@'
         },
         templateUrl: 'templates/countdown.html',
         controller: function($scope, $element, $timeout) {
-            var oDate = JSON.parse($scope.templates).countdown,
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "countdown") {
+                    tmpls = data.options;
+                    refresh = data.refresh
+                }
+            });
+
+            // Widget logic
+            var oDate = tmpls,
                 timer = function () {
                     countdown();
                     $timeout(timer, 1000);
@@ -143,28 +184,51 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@',
             templates: '@'
         },
         templateUrl: 'templates/delta.html',
-        controller: function($scope, $element) {
-            var delta = function() {
-                var sData = JSON.parse($scope.data),
-                    parseDate = d3.time.format("%d-%b-%y").parse; // Correct time formatting
-                
-                angular.forEach(sData, function(data, index, source) {
-                    var target = data.value;
-                    target.date = parseDate(target.time);
-                });
-                
-                // Order Information by date
-                sData.sort(function(a, b) { return a['value']['date'] - b['value']['date'] });
+        controller: function($scope, $element, Widgets, parseTime) {
+            // Get delta options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "delta") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
+                }
+            });
 
-                var base = sData[0].value.data.value,
+            var delta = function(data) {
+                // Parse data to json
+                var sData = data;
+                
+                // format time
+                angular.forEach(sData, function(data, index) {
+                    data.value.time = parseTime(data.value.time);
+                });
+
+                // Order Information by date
+                sData.sort(function(a, b) { return a['value']['time'] - b['value']['time'] });
+
+                // Custom defined key?
+                if(attr) {key = attr} else {key = 'value'}
+
+                // Data points to show all or user amount
+                if(sData.length >= tmpls.points) {
+                    sData = sData.slice(sData.length - tmpls.points)
+                }
+
+                // Get first and last value
+                var base = sData[0].value.data[key],
                     length = sData.length - 1,
-                    current = sData[length].value.data.value,
+                    current = sData[length].value.data[key],
                     diff = ((current / base) * 100);
 
+                // Determine status
                 var status;
                 if (diff > 100) {
                     dir = "⬆";
@@ -176,10 +240,10 @@ angular.module('Dashboard.Charts', [])
                     dir = "⬇";
                     status = 'down'
                 }
-
                 diff = diff - 100;
                 diff = diff.toFixed();
 
+                // Place data into scope
                 $scope.delta = {
                     'difference' : diff + "%",
                     'direction' : dir,
@@ -187,9 +251,14 @@ angular.module('Dashboard.Charts', [])
                 }                
             }
 
-            $scope.$watch('data', function (aft, bef) {
-                delta();
-            }, true); 
+            Widgets.getWidgetData(source).then(function(data) {
+                delta(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    delta(data);
+                })
+            }, refresh)
 
         }
     };
@@ -201,31 +270,68 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/sum.html',
-        controller: function($scope, $element, $timeout, Number) {
-            var sum = function() {
-                var sData = JSON.parse($scope.data),
-                    tmpls = JSON.parse($scope.templates),
-                    append = tmpls.sum.append,
-                    prepend = tmpls.sum.prepend,
-                    sub = tmpls.sum.subtitle,
+        controller: function($scope, $element, $timeout, Number, Widgets, parseTime) {
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "sum") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
+                }
+            });
+
+            // Widget Logic
+            var sum = function(data) {
+                // Data -> JSON, set vars.
+                var sData = data,
+                    append = tmpls.append,
+                    prepend = tmpls.prepend,
+                    sub = tmpls.subtitle,
                     total = 0;
 
-                angular.forEach(sData, function(data, index, source){
-                    total += data.value.data.value;
+                // format time
+                angular.forEach(sData, function(data, index) {
+                    data.value.time = parseTime(data.value.time);
                 });
 
+                // sort by time
+                sData.sort(function(a, z) { return a['x'] - z['x'] });
+
+                // If custom key
+                if(attr) {key = attr;} else {key = 'value'}
+
+                // Data points to show all or user amount
+                if(sData.length >= tmpls.points) {
+                    sData = sData.slice(sData.length - tmpls.points)
+                }                
+
+                // Addition is fun!
+                angular.forEach(sData, function(data, index, source){
+                    total += data.value.data[key];
+                });
+
+                // Set data to scope
                 total = Number(total, prepend, append);
                 $scope.sum = total;
                 $scope.sub = sub;
             }
 
-            $scope.$watch('data', function (aft, bef) {
-                sum();
-            }, true);
+            Widgets.getWidgetData(source).then(function(data) {
+                sum(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    sum(data);
+                })
+            }, refresh)
 
         }
     };
@@ -237,41 +343,74 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/list.html',
-        controller: function($scope, $element, $timeout) {
-            var list = function() {
-                var sData = JSON.parse($scope.data),
-                tmpls = JSON.parse($scope.templates).list,
+        controller: function($scope, $element, $timeout, $compile, Widgets, parseTime) {
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "list") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
+                }
+            });
+
+            // Widget Logic
+            var list = function(data) {
+                var sData = [];
+                $scope.list = [];   
+
+                sData = data,
                 nLimit = parseInt(tmpls.limit);
 
-                var array = [];
+                if(attr) {key = attr;} else {key = 'value'}
+
+                $scope.class='error'; // error by default
+
+                // Parse Date
                 angular.forEach(sData, function(data, index) {
-                    if (data.value.time !== undefined) {
-                        data.value.time = moment(data.value.time).fromNow();
-                    };
-                    array.push(data.value);
+                    data.value.since = moment(data.value.time, 'YYYY-MM-DDThh:mm:ssZ').fromNow();                    
+                    data.value.time = parseTime(data.value.time);
                 });
 
-                // Show status icons if builds, img if not
-                $scope.builds = false;
-                if (sData[0].value.data.status !== undefined) {
-                    $scope.builds = true;
-                };
+                // Most recent at top
+                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
 
-                // Data into scope
-                if (nLimit) {   // if has limit attr
-                    $scope.list = array.splice(0, nLimit);
+                // Limit list to user given limit
+                if(sData.length >= nLimit) {
+                    sData = sData.slice(0, nLimit)
+                }     
+
+                // If data has img info, use it!
+                // BUG WITH IMAGES HERE!!! TO FIX (list template <img> commented out for now)
+                if(sData[0].value.data.image !== undefined) {
+                    $scope.class = 'image';
                 } else {
-                    $scope.list = array;
+                    $scope.class = 'status';
                 }
+
+                // Slap data into the scope
+                angular.forEach(sData, function(data, index) {
+                    $scope.list.push(data);
+                });
             };
 
-            $scope.$watch('data', function() {
-                list();
-            }, true);
+            // Start widget
+            Widgets.getWidgetData(source).then(function(data) {
+                list(data);
+            })
+            // Keep widget updated
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    list(data);
+                })
+            }, refresh)
 
         }
     }
@@ -283,14 +422,23 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/announcement.html',
         controller: function($scope, $element) {
-            var sData = JSON.parse($scope.templates).announcement;
-            $scope.announcement = sData.announcement;
-            $scope.sub = sData.subtitle;     
+            // Loop through content, find countdown options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "announcement") {
+                    tmpls = data.options;
+                    refresh = data.refresh
+                }
+            });
+
+            // Widget Logic
+            $scope.announcement = tmpls.announcement;
+            $scope.sub = tmpls.subtitle;     
         }
     };
 })
@@ -301,21 +449,43 @@ angular.module('Dashboard.Charts', [])
         restrict: 'E',
         replace: true,
         scope: {
-            templates: '@',
-            data: '@'
+            templates: '@'
         },
         templateUrl: 'templates/picture.html',
-        controller: function($scope, $element) {
-            var picture = function() {
-                var sData = JSON.parse($scope.data),
-                image = sData[0].value.data.image;
+        controller: function($scope, $element, Widgets, parseTime) {
+            // Loop through content, find options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "picture") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                    if(data.dataKey) {
+                        attr = data.dataKey;
+                    }
+                }
+            });
 
+            var picture = function(data) {
+                var sData = data;
+                angular.forEach(sData, function(data) {
+                    data.value.time = parseTime(data.value.time);
+                });
+                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
+                image = sData[0].value.data.image;
                 $scope.imageUrl = image;
             }
 
-            $scope.$watch('data', function() {
-                picture();
-            }, true);
+            Widgets.getWidgetData(source).then(function(data) {
+                picture(data);
+            })
+            setInterval(function() {
+                Widgets.getWidgetData(source).then(function(data) {
+                    picture(data);
+                })
+            }, refresh)
+
 
         }
     }
@@ -442,177 +612,138 @@ angular.module('Dashboard.Charts', [])
     };
 })
 
-//Gauge directive
+// New Gauge directive
 .directive('gauge', function() {
     return {
         restrict: 'E',
         replace: true,
         scope: {
-            data: '@',
             templates: '@'
         },
-        controller: function($scope, $element, $timeout) {
-            $timeout(function () {
-                var powerGauge,
-                    sData = JSON.parse($scope.data),
-                    tmpls = JSON.parse($scope.templates),
-                    gauge = function(configuration) {
-                        var that = {},
-                            config = {
-                                size                     : ($element.width() - 20),
-                                clipWidth                : $element.width(),
-                                clipHeight               : $element.height()/1.5,
-                                ringInset                : 20,
-                                ringWidth                : 40,
-                                pointerWidth             : 10,
-                                pointerTailLength        : 5,
-                                pointerHeadLengthPercent : 0.9,
-                                
-                                minValue                 : tmpls.gauge.min || 0,
-                                maxValue                 : tmpls.gauge.max || 1000,
+        controller: function($scope, $element, $timeout, Widgets, parseTime) {
+            $timeout(function() {
+                // Loop through content, find gauge options
+                var templates = JSON.parse($scope.templates);
+                var tmpls, refresh, source, attr;
+                angular.forEach(templates, function(data, index) {
+                    if(data.template === "gauge") {
+                        tmpls = data.options;
+                        refresh = data.refresh;
+                        source = data.source;
+                        if(data.dataKey) {
+                            attr = data.dataKey;
+                        }
+                    }
+                });
+                
+                // Set Up
+                var pi = Math.PI,
+                    width = $element.width(),
+                    height = $element.height();
 
-                                minAngle                 : -90,
-                                maxAngle                 : 90, 
+                var iR = (width/2) - 50;
+                var oR = (width/2) - 10;
 
-                                transitionMs             : 3500,
-                                majorTicks               : 5,
-                                labelFormat              : d3.format(',g'),
-                                labelInset               : 10,
-                                arcColorFn               : d3.interpolateHsl(d3.rgb('#AEAEFF'), d3.rgb('#383872'))
-                            },
-                            range, r, pointerHeadLength, svg, arc, scale, ticks, tickData, pointer,
-                            value = 0,
-                            donut = d3.layout.pie(),
-                            deg2rad = function(deg) {
-                                return deg * Math.PI / 180;
-                            },
-                            newAngle = function(d) {
-                                var newAngle = config.minAngle + (scale(d) * range);
-                                return newAngle;
-                            },
-                            configure = function(configuration) {
-                                var prop = undefined;
+                var color = 'rgba(184, 179, 255, 1)';
 
-                                for ( prop in configuration ) {
-                                    config[prop] = configuration[prop];
-                                }
+                var max = tmpls.max || 100, // get max possible or make 100 (for percents)
+                    min = tmpls.min || 0, // get min or 0 for default
+                    current = 0;
 
-                                range = config.maxAngle - config.minAngle;
-                                r = config.size / 2;
-                                pointerHeadLength = Math.round(r * config.pointerHeadLengthPercent);
+                // Arc Defaults
+                var arc = d3.svg.arc()
+                    .innerRadius(iR)
+                    .outerRadius(oR)
+                    .startAngle(-90 * (pi/180))
 
-                                // a linear scale that maps domain values to a percent from 0..1
-                                scale = d3.scale.linear()
-                                    .range([0,1])
-                                    .domain([config.minValue, config.maxValue]);
+                // Place svg element
+                var svg = d3.select($element[0]).append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append("g")
+                    .attr("transform", "translate(" + width / 2 + "," + height / 1.4 + ")")
 
-                                ticks = scale.ticks(config.majorTicks);
-                                tickData = d3.range(config.majorTicks).map(function() {return 1/config.majorTicks;});
+                // Append background arc to svg
+                var background = svg.append("path")
+                    .datum({endAngle: 90 * (pi/180)})
+                    .style("fill", "rgba(184, 179, 255, 0.1)")
+                    .attr("d", arc);
 
-                                arc = d3.svg.arc()
-                                    .innerRadius(r - config.ringWidth - config.ringInset)
-                                    .outerRadius(r - config.ringInset)
-                                    .startAngle(function(d, i) {
-                                        var ratio = d * i;
-                                        return deg2rad(config.minAngle + (ratio * range));
-                                    })
-                                    .endAngle(function(d, i) {
-                                        var ratio = d * (i+1);
-                                        return deg2rad(config.minAngle + (ratio * range));
-                                    });
-                            },
-                            centerTranslation = function() {
-                                return 'translate('+r +','+ r +')';
-                            },
-                            isRendered = function() {
-                                return (svg !== undefined);
-                            },
-                            render = function(newValue) {
-                                svg = d3.select($element[0])
-                                    .append('svg:svg')
-                                        .attr('class', 'gauge')
-                                        .attr('width', config.clipWidth)
-                                        .attr('height', config.clipHeight);
+                // Append foreground arc to svg
+                var foreground = svg.append("path")
+                    .datum({endAngle: -90 * (pi/180)})
+                    .style("fill", color)
+                    .attr("d", arc);
 
-                                var centerTx = centerTranslation();
+                // Display Max value
+                var maxText = svg.append("text")
+                    .attr("transform", "translate("+ (iR + ((oR - iR)/2)) +",15)") // Set between inner and outer Radius
+                    .attr("text-anchor", "middle")
+                    .style("font-family", "Helvetica")
+                    .style("fill", "grey")
+                    .text(max)
 
-                                var arcs = svg.append('g')
-                                        .attr('class', 'arc')
-                                        .attr('transform', centerTx);
+                // Display Min value
+                var minText = svg.append("text")
+                    .attr("transform", "translate("+ -(iR + ((oR - iR)/2)) +",15)") // Set between inner and outer Radius
+                    .attr("text-anchor", "middle")
+                    .style("font-family", "Helvetica")
+                    .style("fill", "grey")
+                    .text(min)
 
-                                arcs.selectAll('path')
-                                        .data(tickData)
-                                    .enter().append('path')
-                                        .attr('fill', function(d, i) {
-                                            return config.arcColorFn(d * i);
-                                        })
-                                        .attr('d', arc);
+                // Display Current value
+                var current = svg.append("text")
+                    .attr("text-anchor", "middle")
+                    .style("font-family", "Helvetica")
+                    .style("fill", "rgb(211, 212, 212)")
+                    .style("font-size", "50")
+                    .text(current)
 
-                                var lg = svg.append('g')
-                                        .attr('class', 'label')
-                                        .attr('transform', centerTx);
-                                lg.selectAll('text')
-                                        .data(ticks)
-                                    .enter().append('text')
-                                        .attr('transform', function(d) {
-                                            var ratio = scale(d);
-                                            var newAngle = config.minAngle + (ratio * range);
-                                            return 'rotate(' +newAngle +') translate(0,' +(config.labelInset - r) +')';
-                                        })
-                                        .text(config.labelFormat);
-
-                                var lineData = [ [config.pointerWidth / 2, 0], 
-                                                [0, -pointerHeadLength],
-                                                [-(config.pointerWidth / 2), 0],
-                                                [0, config.pointerTailLength],
-                                                [config.pointerWidth / 2, 0] ];
-                                var pointerLine = d3.svg.line().interpolate('monotone');
-                                var pg = svg.append('g').data([lineData])
-                                        .attr('class', 'pointer')
-                                        .attr('transform', centerTx);
-
-                                pointer = pg.append('path')
-                                    .attr('d', pointerLine/*function(d) { return pointerLine(d) +'Z';}*/ )
-                                    .attr('transform', 'rotate(' +config.minAngle +')');
-
-                                update(newValue === undefined ? 0 : newValue);
-                            },
-                            update = function(newValue, newConfiguration) {
-                                if ( newConfiguration  !== undefined) {
-                                    configure(newConfiguration);
-                                }
-                                var ratio = scale(newValue);
-                                var newAngle = config.minAngle + (ratio * range);
-                                pointer.transition()
-                                    .duration(config.transitionMs)
-                                    .ease('elastic')
-                                    .attr('transform', 'rotate(' +newAngle +')');
-                            };
-
-                        that.configure = configure;
-
-                        that.isRendered = isRendered;
-                       
-                        that.render = render;
-                        
-                        that.update = update;
-
-                        configure(configuration);
-                        
-                        return that;
+                // Animation function
+                function arcTween(transition, newAngle) {
+                  transition.attrTween("d", function(d) {
+                    var interpolate = d3.interpolate(d.endAngle, newAngle);
+                    return function(t) {
+                      d.endAngle = interpolate(t);
+                      return arc(d);
                     };
+                  });
+                }
 
-                powerGauge = gauge();
-                powerGauge.render();
+                // Update logic
+                function gaugeUpdate(x) {
+                    angular.forEach(x, function(data, key){
+                        data.value.time = parseTime(data.value.time);
+                    });
+                    x.sort(function(a, z) { return z['value']['time'] - a['value']['time'] });
+                    cVal = x[0].value.data.value;
+                    gVal = ((cVal * 180) / max);
+                    gVal = (gVal - 90) * (pi/180);
 
-                // Need to add sort by time!!
-                $scope.$watch('data', function (aft, bef) {
-                    var sData = JSON.parse(aft);
-                    var x = sData.length - 1;
-                    powerGauge.update(sData[x].value.data.value);
-                }, true);
+                    // If value too large, only animate to full gauge, not over
+                    if(gVal > 1.5707963267948966) { gVal = 1.5707963267948966 };
+                    
+                    // Update Gauge
+                    foreground.transition()
+                        .duration(700)
+                        .call(arcTween, gVal)
+                    current.transition()
+                        .text(cVal)
+                    return;
+                }
 
-            }, 0)           
+                // Start widget
+                Widgets.getWidgetData(source).then(function(data) {
+                    gaugeUpdate(data);
+                })
+                // Widget updating
+                setInterval(function() {
+                    Widgets.getWidgetData(source).then(function(data) {
+                        gaugeUpdate(data);
+                    })
+                }, refresh)
+
+            }, 0);
         }
-    }
-});
+    };
+})

@@ -1,40 +1,14 @@
-angular.module('Dashboard.Controllers', [])
+angular.module('Dashboard.Controllers', ['ui.bootstrap'])
 
 // Main controller
 .controller('MainAppCtrl', ['$scope', 'Widgets', '$rootScope', '$document',
     function($scope, Widgets, $rootScope, $document) {
-
-        // get widget's info
-        var getWidgetData = function () {
-            angular.forEach($scope.widgets, function (widget, index) {
-                var source = widget.value.config.source;
-                // for countdown widget we dont need couchdb source
-                if (angular.isObject(source)) {
-                    widget['value']['data'] = source;
-                } else {
-                    Widgets.getWidgetData(source).then(function(data) {
-                        widget['value']['data'] = data;
-                        // console.log(widget); // Data available at partials/widgets.html
-                    }, function(err) {
-                        console.log(err);
-                    })
-                }
-            })
-        }      
-
-        // get widget list info
+        // Get widgets
         Widgets.getWidgetList().then(function(data) {
             $scope.widgets = data;
-            // get widget's info
-            getWidgetData();
         }, function(err) {
             console.log(err);
         });
-
-        // Pull all data from couchdb every XXXXms
-        setInterval(function() {
-            getWidgetData()
-        }, 5000)
 
         // Press 'L' to un/lock dragging
         $document.keydown(function(e) {
@@ -55,10 +29,17 @@ angular.module('Dashboard.Controllers', [])
 
 .controller('NavCtrl', ['$scope', '$rootScope', '$location',
     function($scope, $rootScope, $location) {
-        
-        $scope.add = function() {
-            $location.path('add');
-        }
+        // Modal Controls
+        $scope.opts = {
+            backdropFade: false,
+            dialogFade: true
+        };
+        $scope.open = function() {
+            $scope.shouldBeOpen = true;
+        };
+        $scope.close = function() {
+            $scope.shouldBeOpen = false;
+        };
 
         // Lock / Unlock draggable
         $scope.lock = function() {

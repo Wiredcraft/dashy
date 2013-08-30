@@ -1,0 +1,11 @@
+<div modal="shouldBeOpen" close="close()" options="opts">
+    <div class="modal-header">
+        <h3>Update Widget</h3>
+    </div>
+    <div class="modal-body">
+        <ng-include ng-controller="UpdateCtrl" src="'partials/updatewidget.html'"></ng-include>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning cancel" ng-click="close()">Cancel</button>
+    </div>
+</div>

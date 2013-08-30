@@ -22,7 +22,7 @@ module.exports = {
             },
             // for basic validate at router side
             validate : function (oData) {
-                if (oData && oData.name && oData.status) {
+                if (oData && oData.time && oData.data) {
                     return false;
                 } else {
                     return true;
@@ -45,7 +45,7 @@ module.exports = {
             },
             // for basic validate at router side
             validate : function (oData) {
-                if (oData && oData.name && oData.status) {
+                if (oData && oData.time && oData.data) {
                     return false;
                 } else {
                     return true;
@@ -91,7 +91,7 @@ module.exports = {
             },
             // for basic validate at router side
             validate : function (oData) {
-                if (oData && oData.name && oData.status) {
+                if (oData && oData.time && oData.data) {
                     return false;
                 } else {
                     return true;
@@ -114,7 +114,7 @@ module.exports = {
             },
             // for basic validate at router side
             validate : function (oData) {
-                if (oData && oData.time && oData.value) {
+                if (oData && oData.time && oData.data) {
                     return false;
                 } else {
                     return true;
