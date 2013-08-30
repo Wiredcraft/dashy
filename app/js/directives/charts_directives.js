@@ -125,7 +125,7 @@ angular.module('Dashboard.Charts', [])
                 // Graph Options
                 graph = new Rickshaw.Graph({
                     element: $element[0],
-                    renderer: 'area',
+                    renderer: 'line',
                     width: $element.width(),
                     height: $element.height(),
                     series: [{

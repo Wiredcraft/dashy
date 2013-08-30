@@ -31,8 +31,8 @@ angular.module('Dashboard.Formatters', [])
 .factory('parseTime', function() {
 
     return function(time) {
-        var parse = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
-        var x = parse(time);
+        var time = moment(time).format();
+        var x = new Date(time);
         return x;
 
     }
