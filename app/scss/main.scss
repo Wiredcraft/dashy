@@ -1,7 +1,7 @@
 @import "compass/css3";
 /* global */
 body{
-    background-color: black;
+    background-color: #111111;
 }
 
 ul, ol{
@@ -11,7 +11,7 @@ ul, ol{
 
 #top-bar{
     padding: 12px 0;
-    background-color: #313131;
+    background-color: #202020;
     .inner {
         margin: 0 auto;
         max-width: 940px;
@@ -36,10 +36,10 @@ ul, ol{
             background-color: #434343;
             text-transform: uppercase;
             margin-left: 5px;
-            @include transition-duration(0.2s);
-            @include border-radius(3px);
+            @include transition-duration(0.3s);
+            @include border-radius(2px);
             &:hover {
-                background-color: #202020;
+                background-color: #2980b9;
             }
 
         }
@@ -61,7 +61,7 @@ ul, ol{
 .widget{
     position: relative;
     header{
-        background-color: rgb(39, 39, 39);
+        background-color: #202020;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
@@ -78,7 +78,7 @@ ul, ol{
         span {
             float: right;
             button {
-                background-color: rgb(39, 39, 39);
+                background-color: #202020;
                 color: rgba(139, 139, 139, 0);
                 border: none;
                 height: 51px;

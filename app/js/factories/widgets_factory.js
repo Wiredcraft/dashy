@@ -81,7 +81,7 @@ angular.module('Dashboard.Models', [])
 
 .factory('Admin', ['$http', '$q', function($http, $q) {
     var Admin = {},
-    apiUrl = '/widget';
+    apiUrl = '/widget/';
 
     Admin.addWidget = function(data) {
         var deferred = $q.defer();
