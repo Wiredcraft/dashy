@@ -2,7 +2,7 @@
   "name": "Dashy",
   "version": "0.0.0",
   "scripts": {
-    "start": "node ./api/index.js"
+    "start": "grunt staging && node ./api/index.js"
   },
   "main": "Gruntfile.js",
   "dependencies": {},
