@@ -19,7 +19,8 @@ Running instructions:
 '''
 
 #  Settings:
-DATABASE_URL = 'http://127.0.0.1:4000/commits'
+DATABASE_URL = 'http://127.0.0.1:5984/commits'
+DASHY_URL = 'http://127.0.0.1:4000/commits'
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 DEFAULT_FETCH_DAYS = 2  # Used when there are no previous entries in the db
 INTERVAL = 120 # How many seconds to sleep between next check
@@ -45,20 +46,25 @@ def format_tuple(datatuple):
                     'title': datatuple.msg,
                     'image': datatuple.avatar_url }}
 
-def fetch_last_timestamp(gh):
-    last_timestamp = None
-    for org in ORGANIZATIONS:
-        org_obj = gh.get_organization(org)
-        for event in gh.get_user().get_organization_events(org_obj):
-            if last_timestamp is None:
-                last_timestamp = event.created_at
-                break
-            elif event.created_at > last_timestamp:
-                last_timestamp = event.created_at
-                break
-            break
-    return last_timestamp
 
+def fetch_last_timestamp():
+    '''
+    Fetch timestamp of last dataentry from the db.
+    Query spec: http://docs.couchdb.org/en/latest/api/database.html#get-db
+    '''
+    r = requests.get(DASHY_URL)
+    if not r.ok:
+        logging.warning('Could not connect to couchdb using url %s, got response code: %s.'%(DATABASE_URL, r.status_code))
+        raise RuntimeError('Could not fetch data from to dashy api.')
+    res = json.loads(r.text)
+    
+    if not res:
+        logging.info('No previous entries found.')
+        return None
+    timestamp = res[0]['value']['time']
+    logging.debug('Successfully fetched last timestamp: ' + timestamp)
+    date_obj = datetime.strptime(timestamp, TIMESTAMP_FORMAT)
+    return date_obj
 
 def fetch_commits_since(timestamp, gh):
     commit_list = []
@@ -68,8 +74,8 @@ def fetch_commits_since(timestamp, gh):
         for event in gh.get_user().get_organization_events(org_obj):
             if event.created_at <= timestamp:
                 logging.debug('Timestamp passed after %s events.'%(event_counter,))
-                break
-
+                break 
+            
             if event.type == 'PushEvent':
                 avatar_url = event.actor.avatar_url
                 event_time = event.created_at
@@ -96,22 +102,24 @@ def get_username_and_password():
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    
+
     username, password = get_username_and_password()
-    
+
     gh = github.Github(username, password)
 
-    last_timestamp = fetch_last_timestamp(gh)
-    logging.info('Last timestamp is: %s.' % last_timestamp)
-    
+    last_timestamp = fetch_last_timestamp()
+    if not last_timestamp:
+        last_timestamp = datetime.now() - timedelta(days=DEFAULT_FETCH_DAYS)
+
     while True:
         try:
             commits = fetch_commits_since(last_timestamp, gh)
 
             for commit in commits:
                 headers = {'content-type': 'application/json'}
+                now = datetime.now()
                 payload = format_tuple(commit)
-                r = requests.post(DATABASE_URL, data=json.dumps(payload), headers=headers)
+                r = requests.post(DASHY_URL, data=json.dumps(payload), headers=headers)
             logging.info('Added %s commits.'%(len(commits)))
             if commits:
                 last_timestamp = datetime.strptime(commits[0].time, TIMESTAMP_FORMAT)
