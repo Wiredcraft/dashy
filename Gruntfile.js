@@ -9,22 +9,12 @@ module.exports = function(grunt) {
     compass : {
         dev: {
         options: {
-            // require : 'zurb-foundation',
             outputStyle : 'compressed',
             sassDir: 'app/scss',
             cssDir: 'app/css'
         }
         }
     },
-    // connect: {
-    //     server: {
-    //     options: {
-    //         hostname: '*',
-    //         port: 4000,
-    //         base: 'app'
-    //     }
-    //     }
-    // },
     watch: {
         scss : {
         files: ['app/scss/**.scss'],
