@@ -35,8 +35,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
     'compass:dev',
-    // 'connect',
     'watch'
+    ]);
+
+    grunt.registerTask('staging', [
+    'compass:dev'
     ]);
 
 };

@@ -38,7 +38,7 @@ angular.module('Dashboard.Charts', [])
                 graph = new Rickshaw.Graph({
                     element: $element[0],
                     renderer: 'line',
-                    width: $element.width(),
+                    width: $element.width() - 30,
                     height: $element.height(),
                     series: [{
                         color: palette.color(),
@@ -48,19 +48,20 @@ angular.module('Dashboard.Charts', [])
                     interpolation: 'linear'
                 });
 
-                // Hover Effect
-                // var hoverDetail = new Rickshaw.Graph.HoverDetail({
-                //     graph: graph
-                // });
-
                 // Display X Axis
-                var xAxis = new Rickshaw.Graph.Axis.Time({
-                    graph: graph
+                var x_ticks = new Rickshaw.Graph.Axis.Time({
+                    graph: graph,
+                    orientation: 'bottom',
+                    element: $element.find('.x_axis')[0],
+                    pixelsPerTick: 200
                 });
 
                 // Display Y Axis
-                var yAxis = new Rickshaw.Graph.Axis.Y({
-                    graph: graph
+                var y_ticks = new Rickshaw.Graph.Axis.Y({
+                    graph: graph,
+                    orientation: 'left',
+                    tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                    element: $element.find('.y_axis')[0]
                 });
 
                 // Render All
