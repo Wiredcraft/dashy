@@ -120,7 +120,7 @@ Now `http://apiUrl.com/githubrepos` will retrun an array of objects. Each one lo
 		id: "5520d3749727a68339b7eac5ff02b955",
 		key: "1-02ae2b48cd8ec63984f323ec0846c086",
 		value: {
-			time: "28-Mar-12",
+			time: "2013-08-30T21:42:21+0800",
 			data: {
 				value: 582.13
 			}
