@@ -33,13 +33,13 @@ ul, ol{
             cursor: pointer;
             font-size: 14px;
             text-decoration: none;
-            background-color: #434343;
+            background-color: rgba(67, 67, 67, 0.5);
             text-transform: uppercase;
             margin-left: 5px;
             @include transition-duration(0.3s);
-            @include border-radius(2px);
+            @include border-radius(1px);
             &:hover {
-                background-color: #2980b9;
+                background-color: rgba(41, 128, 185, 1);
             }
 
         }
