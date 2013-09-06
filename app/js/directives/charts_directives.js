@@ -39,7 +39,7 @@ angular.module('Dashboard.Charts', [])
                     element: $element[0],
                     renderer: 'line',
                     width: $element.width() - 30,
-                    height: $element.height(),
+                    height: $element.height() - 30,
                     series: [{
                         color: palette.color(),
                         data: aData,

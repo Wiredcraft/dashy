@@ -48,6 +48,16 @@ ul, ol{
 }
 
 /* widget style */
+.widget:hover { /* Show widget buttons on widget hover */
+  header {
+    span {
+      button {
+        color: rgba(139, 139, 139, 0.2);
+      }
+    }
+  }
+}
+
 .widget{
     position: relative;
     header{
@@ -69,10 +79,10 @@ ul, ol{
             float: right;
             button {
                 background-color: rgb(39, 39, 39);
-                color: rgba(139, 139, 139, 0.2);
+                color: rgba(139, 139, 139, 0);
                 border: none;
                 height: 51px;
-                width: 40px;
+                width: 30px;
             }
             button:hover {
                 background-color: rgb(42, 42, 42);
