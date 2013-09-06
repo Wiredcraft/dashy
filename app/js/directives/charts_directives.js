@@ -648,7 +648,7 @@ angular.module('Dashboard.Charts', [])
                 var iR = (width/2) - 50;
                 var oR = (width/2) - 10;
 
-                var color = 'rgba(184, 179, 255, 1)';
+                var color = 'rgba(41, 128, 185, 1)';
 
                 var max = tmpls.max || 100, // get max possible or make 100 (for percents)
                     min = tmpls.min || 0, // get min or 0 for default
@@ -670,7 +670,7 @@ angular.module('Dashboard.Charts', [])
                 // Append background arc to svg
                 var background = svg.append("path")
                     .datum({endAngle: 90 * (pi/180)})
-                    .style("fill", "rgba(184, 179, 255, 0.1)")
+                    .style("fill", "rgba(106, 106, 106, 0.2)")
                     .attr("d", arc);
 
                 // Append foreground arc to svg
