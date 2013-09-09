@@ -65,8 +65,10 @@ def fetch_last_timestamp():
     date_obj = datetime.strptime(timestamp, TIMESTAMP_FORMAT)
     return date_obj
 
+
 def fetch_commits_since(timestamp, gh):
     commit_list = []
+    last_timestamp = None
     for org in ORGANIZATIONS:
         event_counter = 0
         org_obj = gh.get_organization(org)
@@ -85,8 +87,10 @@ def fetch_commits_since(timestamp, gh):
                                                  name= author,
                                                  msg= msg,
                                                  avatar_url= avatar_url))
+                if last_timestamp == None or last_timestamp < event_time:
+                    last_timestamp = event_time
             event_counter += 1
-    return commit_list
+    return commit_list, last_timestamp
 
 
 def get_username_and_password():
@@ -100,7 +104,10 @@ def get_username_and_password():
     return username, password
 
 def main():
-    logging.basicConfig(level=logging.INFO)
+    if os.environ.get('DEBUG'):
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     username, password = get_username_and_password()
 
@@ -113,13 +120,17 @@ def main():
 
     while True:
         try:
-            commits = fetch_commits_since(last_timestamp, gh)
-
+            logging.debug("Checking with last timestamp: %s " % last_timestamp)
+            commits, last = fetch_commits_since(last_timestamp, gh)
             for commit in commits:
+                last_timestamp = last
                 headers = {'content-type': 'application/json'}
-                now = datetime.now()
                 payload = format_tuple(commit)
                 r = requests.post(DASHY_URL, data=json.dumps(payload), headers=headers)
+                if not r.ok:
+                    logging.warning("Failed to add data entry: %s" % payload)
+                else:
+                    logging.debug("Added commit: %s" % payload)
             logging.info('Added %s commits.'%(len(commits)))
             if commits:
                 last_timestamp = datetime.strptime(commits[0].time, TIMESTAMP_FORMAT)
