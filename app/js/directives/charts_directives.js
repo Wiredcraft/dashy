@@ -66,9 +66,6 @@ angular.module('Dashboard.Charts', [])
 
                 // Render All
                 graph.render();
-
-                // xAxis.render();
-                // yAxis.render();
             }
 
             var formatData = function(x) {

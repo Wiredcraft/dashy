@@ -35,7 +35,7 @@ module.exports = {
                 all : {
                     map : function(doc) {
                         if (doc.time && doc.data) {
-                            emit(doc._rev,{
+                            emit(Date.parse(doc.time),{
                                 'time' : doc.time,
                                 'data' : doc.data
                             });
