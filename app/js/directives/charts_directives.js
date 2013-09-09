@@ -392,6 +392,7 @@ angular.module('Dashboard.Charts', [])
                 // BUG WITH IMAGES HERE!!! TO FIX (list template <img> commented out for now)
                 if(sData[0].value.data.image !== undefined) {
                     $scope.class = 'image';
+                    $scope.image = true;
                 } else {
                     $scope.class = 'status';
                 }
