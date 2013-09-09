@@ -23,7 +23,7 @@ DATABASE_URL = 'http://127.0.0.1:5984/commits'
 DASHY_URL = 'http://127.0.0.1:4000/commits'
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 DEFAULT_FETCH_DAYS = 2  # Used when there are no previous entries in the db
-INTERVAL = 120 # How many seconds to sleep between next check
+INTERVAL = 20 # How many seconds to sleep between next check
 ORGANIZATIONS = ['devo-ps', 'wiredcraft']
 
                        
