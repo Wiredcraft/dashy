@@ -82,6 +82,7 @@ angular.module('Dashboard.Charts', [])
                 if(y.length >= maxSize) {
                     y = y.slice(y.length - maxSize);
                 }
+                console.log(y);
                 return y;
             }
 

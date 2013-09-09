@@ -1,11 +1,7 @@
 @import "compass/css3";
 /* global */
 body{
-<<<<<<< HEAD
     background-color: #111111;
-=======
-    background-color: blue;
->>>>>>> 323ff55223910489ab3274d14317043cc5376b00
 }
 
 ul, ol{
@@ -52,7 +48,7 @@ ul, ol{
 }
 
 /* widget style */
-.widget:hover { /* Show widget buttons on widget hover */
+.widget:hover {
   header {
     span {
       button {
@@ -89,11 +85,9 @@ ul, ol{
                 width: 30px;
             }
             button:hover {
-                background-color: rgb(42, 42, 42);
                 color: rgba(139, 139, 139, 1);
             }
             button:active {
-                background-color: rgb(39, 39, 39);
                 color: rgba(139, 139, 139, 0.2); 
             }
         }
