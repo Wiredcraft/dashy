@@ -59,9 +59,8 @@ def fetch_last_timestamp():
     res = json.loads(r.text)
     
     if not res:
-        logging.info('No previous entries found.')
         return None
-    timestamp = res[0]['value']['time']
+    timestamp = res[-1]['value']['time']
     logging.debug('Successfully fetched last timestamp: ' + timestamp)
     date_obj = datetime.strptime(timestamp, TIMESTAMP_FORMAT)
     return date_obj
@@ -75,7 +74,7 @@ def fetch_commits_since(timestamp, gh):
             if event.created_at <= timestamp:
                 logging.debug('Timestamp passed after %s events.'%(event_counter,))
                 break 
-            
+
             if event.type == 'PushEvent':
                 avatar_url = event.actor.avatar_url
                 event_time = event.created_at
@@ -109,6 +108,7 @@ def main():
 
     last_timestamp = fetch_last_timestamp()
     if not last_timestamp:
+        logging.info('No previous entries found in db. Querying every commit since %s days before.' % DEFAULT_FETCH_DAYS)
         last_timestamp = datetime.now() - timedelta(days=DEFAULT_FETCH_DAYS)
 
     while True:
