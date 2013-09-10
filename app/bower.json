@@ -1,0 +1,13 @@
+{
+    "name": "Dashy",
+    "version": "0.0.0",
+    "devDependencies": {
+        "jquery": "~1.10.2",
+        "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js",
+        "d3": "*",
+        "rickshaw": "*",
+        "momentjs": "*",
+        "gridster": "*",
+        "normalize-css": "*"
+    }
+}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en" ng-app="Dashboard">
+<head>
+  <meta charset="utf-8">
+  <title>Dashy</title>
+
+  <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+  <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+
+<body>
+  <ng-include ng-controller="NavCtrl" src="'partials/header.html'"></ng-include>
+  <ng-view></ng-view>
+
+  <!-- compiled JS --><% scripts.forEach( function ( file ) { %>
+  <script type="text/javascript" src="<%= file %>"></script><% }); %>
+
+</body>
+</html>
