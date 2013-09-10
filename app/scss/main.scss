@@ -304,6 +304,9 @@ linechart{
     }
     .x_tick.plain{
         border: none;
+        .title{
+          padding-left: 30px
+        }
     }
 }
 
