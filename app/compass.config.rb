@@ -1,4 +1,4 @@
-sass_path = 'src/scss'
+sass_path = 'src/assets/scss'
 images_path = 'src/assets/img'
 fonts_path = 'src/assets/font'
 output_style = :compressed
