@@ -274,6 +274,9 @@ text.subtitle{
 /* rickshaw */
 linechart{
     svg{
+        text {
+          fill: white;
+        }
         padding: 30px;
         .x_grid_d3{
             .tick{
