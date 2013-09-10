@@ -52,7 +52,7 @@ angular.module('Dashboard', [
                 } else if($rootScope.locked === true) {
                     $rootScope.gridster.enable();
                     $rootScope.locked = false;
-                }                
+                }
             }
         });
 

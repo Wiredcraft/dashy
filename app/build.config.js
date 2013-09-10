@@ -56,10 +56,10 @@ module.exports = {
       'vendor/gridster/jquery.gridster.min.js',
       'vendor/momentjs/min/moment.min.js',
       'vendor/rickshaw/rickshaw.min.js',
-      'vendor/angular/index.js',
+      'vendor/angular/index.js'
     ],
     css: [
-      'vendor/gridster/jquery.gridster.min.css',
+      'vendor/gridster/dist/jquery.gridster.min.css',
       'vendor/rickshaw/rickshaw.min.css',
       'vendor/normalize-css/normalize.css'
     ],

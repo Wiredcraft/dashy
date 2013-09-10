@@ -7,12 +7,12 @@
   <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
   <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
 
+  <!-- compiled JS --><% scripts.forEach( function ( file ) { %>
+  <script type="text/javascript" src="<%= file %>"></script><% }); %>
+
 <body>
   <ng-include ng-controller="NavCtrl" src="'partials/header.html'"></ng-include>
   <ng-view></ng-view>
-
-  <!-- compiled JS --><% scripts.forEach( function ( file ) { %>
-  <script type="text/javascript" src="<%= file %>"></script><% }); %>
 
 </body>
 </html>
