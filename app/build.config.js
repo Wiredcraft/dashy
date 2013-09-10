@@ -52,6 +52,7 @@ module.exports = {
   vendor_files: {
     js: [
       'vendor/jquery/jquery.min.js',
+      'vendor/jquery/jquery.min.map',
       'vendor/d3/d3.min.js',
       'vendor/gridster/jquery.gridster.min.js',
       'vendor/momentjs/min/moment.min.js',

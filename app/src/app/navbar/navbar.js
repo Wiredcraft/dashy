@@ -3,11 +3,10 @@ angular.module('Dashboard.Navbar', [
 ])
 
 .config(function($routeProvider, $locationProvider) {
-        $routeProvider.when('/', {        
-            controller: 'NavCtrl',
-            templateUrl: 'navbar/navbar.tpl.html'
-        });
-    }
+    $routeProvider.when('/', {
+        controller: 'NavCtrl',
+        templateUrl: 'navbar/navbar.tpl.html'
+    })
 })
 
 .controller('NavCtrl', ['$scope', '$rootScope', '$location',

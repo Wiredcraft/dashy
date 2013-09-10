@@ -9,12 +9,7 @@
   "devDependencies": {
     "cradle": "~0.6.5",
     "q" : "*",
-    "express" : "*",
-    "grunt-notify": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-contrib-compass": "*",
-    "grunt-contrib-less": "*",
-    "grunt-contrib-connect": "*"
+    "express" : "*"
   },
   "repository": "",
   "author": ""

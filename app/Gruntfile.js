@@ -259,6 +259,27 @@ module.exports = function ( grunt ) {
     },
 
     /**
+     * Open the browser and point to the dev page
+     */
+    shell: {
+      openBrowser: {
+          command: 'open http://localhost:' + '<%= dev_port %>'
+      }
+    },
+
+    /**
+     * Connect server
+     */
+    connect: {
+      server: {
+          options: {
+              port: '<%= dev_port %>',
+              base: 'build'
+          }
+      }
+    },
+
+    /**
      * And for rapid development, we have a watch set up that checks to see if
      * any of the files listed below change, and then to execute the listed
      * tasks when they do. This just saves us from having to type "grunt" into
@@ -277,18 +298,6 @@ module.exports = function ( grunt ) {
        */
       options: {
         livereload: true
-      },
-
-      /**
-       * When the Gruntfile changes, we just want to lint it. In fact, when
-       * your Gruntfile changes, it will automatically be reloaded!
-       */
-      gruntfile: {
-        files: 'Gruntfile.js',
-        tasks: [ 'jshint:gruntfile' ],
-        options: {
-          livereload: false
-        }
       },
 
       /**
@@ -345,7 +354,7 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
+  grunt.registerTask( 'watch', [ 'build', 'connect', 'shell', 'delta' ] );
 
   /**
    * The default task is to build and compile.

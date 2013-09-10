@@ -11,10 +11,8 @@ angular.module('Dashboard', [
 
     // filters
     'Dashboard.Filters',
-    'Dashboard.Formatters',
+    'Dashboard.Formatters'
 
-    // utils
-    'Dashboard.Utils'
 ]).config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
         $routeProvider.when('/', {
