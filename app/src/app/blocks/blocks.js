@@ -110,7 +110,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
-        templateUrl: 'block_templates/countdown.html',
+        templateUrl: 'blocks/block_templates/countdown.tpl.html',
         controller: function($scope, $element, $timeout) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
@@ -187,7 +187,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
-        templateUrl: 'block_templates/delta.html',
+        templateUrl: 'blocks/block_templates/delta.tpl.html',
         controller: function($scope, $element, Widgets, parseTime) {
             // Get delta options
             var templates = JSON.parse($scope.templates);
@@ -273,7 +273,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
-        templateUrl: 'block_templates/sum.html',
+        templateUrl: 'blocks/block_templates/sum.tpl.html',
         controller: function($scope, $element, $timeout, Number, Widgets, parseTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
@@ -346,7 +346,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
-        templateUrl: 'block_templates/list.html',
+        templateUrl: 'blocks/block_templates/list.tpl.html',
         controller: function($scope, $element, $timeout, $compile, Widgets, parseTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
@@ -426,7 +426,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
-        templateUrl: 'block_templates/announcement.html',
+        templateUrl: 'blocks/block_templates/announcement.tpl.html',
         controller: function($scope, $element) {
             // Loop through content, find countdown options
             var templates = JSON.parse($scope.templates);
@@ -453,7 +453,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
-        templateUrl: 'block_templates/picture.html',
+        templateUrl: 'blocks/block_templates/picture.tpl.html',
         controller: function($scope, $element, Widgets, parseTime) {
             // Loop through content, find options
             var templates = JSON.parse($scope.templates);
