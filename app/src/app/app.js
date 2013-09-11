@@ -18,12 +18,6 @@ angular.module('Dashboard', [
         $routeProvider.when('/', {
             templateUrl: 'grid/grid_templates/layout.html',
             controller: 'MainAppCtrl'
-        }).when('/add', {
-            templateUrl: 'partials/addwidget.html',
-            controller: 'AddCtrl'
-        }).when('/update', {
-            templateUrl: 'partials/updatewidget.html',
-            controller: 'UpdateCtrl'
         }).otherwise({
             redirectTo: '/404'
         });

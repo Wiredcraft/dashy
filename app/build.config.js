@@ -13,7 +13,7 @@ module.exports = {
   /**
      * This will change the port to the app server port
      */
-  "dev_port": 3000,
+  "dev_port": 4000,
 
   /**
    * This is a collection of file patterns that refer to our app code (the
