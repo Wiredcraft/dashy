@@ -1,4 +1,4 @@
-angular.module('Dashboard.Tags', [])
+angular.module('Dashboard.Grid', [])
 
 // for widget list
 .directive('widgets', function() {

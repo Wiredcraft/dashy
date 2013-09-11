@@ -3,13 +3,11 @@ angular.module('Dashboard', [
     'templates-app',
     'templates-common',
 
+    'Dashboard.Grid',
     'Dashboard.Navbar',
     'Dashboard.Blocks',
     'Dashboard.Add',
     'Dashboard.Update',
-
-    // directives
-    'Dashboard.Tags',
 
     // filters
     'Dashboard.Filters',
@@ -18,7 +16,7 @@ angular.module('Dashboard', [
 ]).config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
         $routeProvider.when('/', {
-            templateUrl: 'partials/layout.html',
+            templateUrl: 'grid/grid_templates/layout.html',
             controller: 'MainAppCtrl'
         }).when('/add', {
             templateUrl: 'partials/addwidget.html',
