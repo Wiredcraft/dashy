@@ -6,6 +6,7 @@ angular.module('Dashboard', [
 
     'Dashboard.Grid',
     'Dashboard.Navbar',
+    'Dashboard.Prompt',
     'Dashboard.Blocks',
     'Dashboard.Add',
     'Dashboard.Update',
