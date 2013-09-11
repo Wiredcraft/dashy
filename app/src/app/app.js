@@ -1,5 +1,6 @@
 // Declare app level module which depends on filters, and services
 angular.module('Dashboard', [
+    'ui.bootstrap',
     'templates-app',
     'templates-common',
 
@@ -10,13 +11,14 @@ angular.module('Dashboard', [
     'Dashboard.Update',
 
     // filters
+    'Dashboard.Models',
     'Dashboard.Filters',
     'Dashboard.Formatters'
 
 ]).config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider) {
         $routeProvider.when('/', {
-            templateUrl: 'grid/grid_templates/layout.html',
+            templateUrl: 'grid/grid_templates/layout.tpl.html',
             controller: 'MainAppCtrl'
         }).otherwise({
             redirectTo: '/404'

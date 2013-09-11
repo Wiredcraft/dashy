@@ -8,7 +8,7 @@ angular.module('Dashboard.Grid', [])
         scope: {
             widgets: '='
         },
-        templateUrl: 'partials/widgets.html',
+        templateUrl: 'grid/grid_templates/widgets.tpl.html',
         controller: function($rootScope, $scope, $element, $location, Admin, skipReload) {
             // Gridster options
             $rootScope.gridster = $element.gridster({
