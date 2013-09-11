@@ -5,6 +5,8 @@ angular.module('Dashboard', [
 
     'Dashboard.Navbar',
     'Dashboard.Blocks',
+    'Dashboard.Add',
+    'Dashboard.Update',
 
     // directives
     'Dashboard.Tags',
