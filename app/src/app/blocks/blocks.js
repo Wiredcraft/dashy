@@ -1,5 +1,5 @@
 // charts directives
-angular.module('Dashboard.Charts', [])
+angular.module('Dashboard.Blocks', [])
 
 // linechart
 .directive('linechart', function() {

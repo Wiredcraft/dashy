@@ -4,10 +4,10 @@ angular.module('Dashboard', [
     'templates-common',
 
     'Dashboard.Navbar',
+    'Dashboard.Blocks',
 
     // directives
     'Dashboard.Tags',
-    'Dashboard.Charts',
 
     // filters
     'Dashboard.Filters',
