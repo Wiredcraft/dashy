@@ -164,7 +164,7 @@ textarea {
 
 #menu {
   background: $dark;
-  display: none;
+  /*display: none;*/
   @include clearfix();
   height: 100%;
   left: 0;
@@ -211,22 +211,21 @@ textarea {
   }
 }
 
-#show {
-  background: rgba(0,0,0,0);
+/*#admin:before {
+  background: green;
+  content: ' ';
   display: block;
-  @include clearfix();
   height: 100%;
-  left: 0;
-  margin-bottom: $gutter;
-  padding-left: 40px;
   position: fixed;
-  top: 0;
-  vertical-align: middle;
+  width: 3*$gutter;
   z-index: 998;
-  &:hover + #menu {
+  &:hover {
+    background: red;
+  }
+  &:hover > #menu {
     display: block;
   }
-}
+}*/
 
 /* WIDGETS */
 
