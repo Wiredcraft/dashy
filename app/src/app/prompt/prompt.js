@@ -1,6 +1,4 @@
-angular.module('Dashboard.Prompt', [
-
-])
+angular.module('Dashboard.Prompt', [])
 
 .config(function($routeProvider, $locationProvider) {
     $routeProvider.when('/', {
@@ -9,15 +7,18 @@ angular.module('Dashboard.Prompt', [
     })
 })
 
-.controller('PromptCtrl', ['$scope', '$rootScope', '$location',
-    function($scope, $rootScope, $location) {
-        // Prompt Controller Options
-        $scope.test = function() {
-            console.log('Clicked!!');
+.directive('prompt', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'prompt/prompt.tpl.html',
+        controller: function($scope, $rootScope, $location) {
+            // Controller
+            $scope.test = function() {
+                console.log('I was clicked!');
+            }
         }
-
-        $scope.words = 'Some most excellent content! :D';
-    }
-])
+    };
+})
 
 ;

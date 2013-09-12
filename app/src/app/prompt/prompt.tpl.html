@@ -1,33 +1,23 @@
-<div id='prompt'>
-
-  <section class='header'>
-    <button>Delete</button>
-    <h2>Title</h2>
+<section id='prompt'>
+  <header class='header'>
+    <h2>Dashy</h2>
     <button>Cancel</button>
     <button>Save</button>
-  </section>
+  </header>
 
-  <section class='meta'>
+  <section class='body'>
     
-    <label>Title</label>
-      <input type='text' ng-model='widget.config.title'>
+    <section class='meta'></section>
 
-    <label>Position</label>
-      <input type='number' ng-model='widget.layout.row' placeholder='Row'>
-      <input type='number' ng-model='widget.layout.column' placeholder='Column'>
-      <input type='number' ng-model='widget.layout.width' placeholder='Width'>
-      <input type='number' ng-model='widget.layout.height' placeholder='Height'>
+    <section class='content'></section>
+
+    <section class='options'></section>
 
   </section>
 
-  <section class='content'>
-    
-    <!-- List of template icons -->
-
-    
-
-  </section>
-
-  <section class='options'></section>
-
-</div>
+  <footer class='footer'>
+    <button ng-click='test()'>Delete</button>
+    <button>Cancel</button>
+    <button>Save</button>
+  </footer>
+</section>

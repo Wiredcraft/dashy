@@ -8,13 +8,14 @@
   <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
-
   <!-- compiled JS --><% scripts.forEach( function ( file ) { %>
   <script type="text/javascript" src="<%= file %>"></script><% }); %>
 
 <body>
-  <ng-include ng-controller="PromptCtrl" src="'prompt/prompt.tpl.html'"></ng-include>
-  <ng-include ng-controller="NavCtrl" src="'navbar/navbar.tpl.html'"></ng-include>
+  <aside id='admin'>
+    <prompt></prompt>
+    <navbar></navbar>
+  </aside>
   <ng-view></ng-view>
 
 </body>

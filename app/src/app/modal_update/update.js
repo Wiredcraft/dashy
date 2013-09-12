@@ -1,11 +1,20 @@
-angular.module('Dashboard.Add', ['ui.bootstrap'])
+angular.module('Dashboard.Update', [])
 
-.controller('AddCtrl', ['$scope', '$http', 'Admin', 'Sources', '$location',
-    function($scope, $http, Admin, Sources, $location) {
-        // Define widget & content
-        $scope.widget = {config: {}, content: [],layout: {}};
+.controller('UpdateCtrl', ['$scope', '$http', '$location', 'Admin', 'Sources', 'Widgets',
+    function($scope, $http, $location, Admin, Sources, Widgets) {
+        // Define content
         $scope.content = {"type": "data"};
         $scope.content.options = {};
+
+        // Get widget ID
+        var id = $location.hash();
+        var thisId = id;
+
+        // Get the widget to edit
+        Widgets.getWidgetById(thisId).then(function(data) {
+            $scope.widget = data;
+            $scope.thisTitle = data.config.title;
+        });
 
         // Get list of useable datasources
         Sources.getSources().then(function(data) {
@@ -17,7 +26,7 @@ angular.module('Dashboard.Add', ['ui.bootstrap'])
             $scope.dbWidgets = data[0];
         });
 
-        // Content Options
+        // Content Functions
         $scope.contentAdd = function(content) {
             $scope.widget.content.push({
                 "type": content.type,
@@ -34,10 +43,10 @@ angular.module('Dashboard.Add', ['ui.bootstrap'])
             $scope.widget.content.splice(index, 1);
         }
 
-        // Add widget function
-        $scope.addWidget = function(widget){
-            Admin.addWidget($scope.widget).then(function(data) {
-                document.location.reload(true);
+        // Update Function
+        $scope.updateWidget = function(widget) {
+            Admin.updateWidget(id, widget).then(function(data) {
+                $location.path('');
             });
         };
 
