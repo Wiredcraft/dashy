@@ -10,6 +10,7 @@ angular.module('Dashboard.Blocks', [])
             templates: '@',
             data: '@'
         },
+        template: '<div class="chart"><div class="y_axis"></div><div class="x_axis"></div></div>',
         controller: function($scope, $element, $timeout, Widgets, parseTime) {
             //Loop through content, find linechart options
             var templates = JSON.parse($scope.templates);
@@ -38,8 +39,8 @@ angular.module('Dashboard.Blocks', [])
                 graph = new Rickshaw.Graph({
                     element: $element[0],
                     renderer: 'line',
-                    width: $element.width() - 30, // need to work on styling more!
-                    height: $element.height() - 30, // Don't forget!
+                    width: $element.width() - 40,
+                    height: $element.height() - 20,
                     series: [{
                         color: palette.color(),
                         data: aData,
@@ -48,16 +49,18 @@ angular.module('Dashboard.Blocks', [])
                     interpolation: 'linear'
                 });
 
-                // Display X Axis
-                var x_ticks = new Rickshaw.Graph.Axis.Time({
+                var x_ticks = new Rickshaw.Graph.Axis.X( {
                     graph: graph,
                     orientation: 'bottom',
                     element: $element.find('.x_axis')[0],
-                    pixelsPerTick: 200
+                    pixelsPerTick: 200,
+                    tickFormat: function(time) {
+                        // changes for python time format
+                        return moment(time*1000).format('HH:mm:ss')
+                    }
                 });
 
-                // Display Y Axis
-                var y_ticks = new Rickshaw.Graph.Axis.Y({
+                var y_ticks = new Rickshaw.Graph.Axis.Y( {
                     graph: graph,
                     orientation: 'left',
                     tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
