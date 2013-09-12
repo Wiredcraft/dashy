@@ -12,7 +12,7 @@ angular.module('Dashboard.Tags', [])
         controller: function($rootScope, $scope, $element, $location, Admin, skipReload) {
             // Gridster options
             $rootScope.gridster = $element.gridster({
-                widget_margins: [5, 5], //widget margin
+                widget_margins: [10, 10], //widget margin
                 widget_base_dimensions: [140, 140], //widget base dimensions
                 min_cols: 12
             }).data('gridster');

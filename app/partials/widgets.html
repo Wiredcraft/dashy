@@ -1,24 +1,17 @@
 <ul>
-    <!-- Include Widget Modal -->
-    <ng-include src="'partials/updateModal.html'"></ng-include>
-    <li class="widget" ng-repeat="widget in widgets">
-        <header>
-            <h1>{{widget.value.config.title}}</h1>
-
-            <span>
-                <button ng-click='open(widget.id, widget.key)'>
-                    <i class='icon-cog icon-large'></i>
-                </button>
-                <button ng-click='deleteWidget(widget.id)'>
-                    <i class='icon-trash icon-large'></i>
-                </button>
-            </span>
-
-        </header>
-        <widget
-            templates={{widget.value.content}}
-            layout={{widget.value.layout}}>
-        </widget>
-    </li>
+  <!-- Include Widget Modal -->
+  <ng-include src='partials/updateModal.html'></ng-include>
+  <li class='widget' ng-repeat='widget in widgets'>
+    <header class='header'>
+      <div class='options'>
+        <a ng-click='open(widget.id, widget.key)' class='settings'><span>Settings</span></a>
+        <a ng-click='deleteWidget(widget.id)' class='delete'><span>Delete</span></a>
+      </div>
+      <h1>{{widget.value.config.title}}</h1>
+    </header>
+    <widget class='body'
+      templates={{widget.value.content}}
+      layout={{widget.value.layout}}>
+    </widget>
+  </li>
 </ul>
-

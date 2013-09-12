@@ -1,0 +1,37 @@
+/* Rickshaw */
+.rickshaw_graph {
+  .x_axis {
+    position: absolute;
+    top: 90%;
+    bottom: 0;
+  }
+  .y_axis {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -10px;
+    width: 40px;
+  }
+  svg {
+    .x_grid_d3 {
+      .tick{
+        line{
+          display: none;
+        }
+      }
+    }
+    .y_grid {
+      .tick {
+        line {
+          stroke-dasharray: none;
+          stroke: rgba(240, 240, 240, 0.2);
+          z-index: -100;
+        }
+      }
+    }
+    .y_ticks path,
+    .x_ticks_d3 path {
+      stroke: none;
+    }
+  }
+}

@@ -1,25 +1,9 @@
-<header id="top-bar"> 
-    <div class="inner"> 
-        <div id="branding"> 
-            <a href="/"> Dashy </a> 
-        </div>
-        <a class="btn navbtn" ng-click="open()">
-            <i class="icon-plus icon-large"></i>
-        </a>
-
-        <a class="btn navbtn" ng-hide="locked" ng-click="lock()">
-            <i class="icon-unlock-alt icon-large"></i>
-        </a>
-
-        <a class="btn navbtn" ng-show="locked" ng-click="unlock()">
-            <i class="icon-lock icon-large"></i>
-        </a>
-
-        <a class="btn navbtn" ng-click="refresh()">
-            <i class="icon-refresh icon-large"></i>
-        </a>
-    </div>
+<header id='header'>
+  <a class='add' ng-click='open()'><span>Add a widget</span></a>
+  <a class='locked' ng-hide='locked' ng-click='lock()'><span>Lock</span></a>
+  <a class='unlocked' ng-show='locked' ng-click='unlock()'><span>Unlock</span></a>
+  <a class='refresh' ng-click='refresh()'><span>Refresh</span></a>
 </header>
 
 <!-- Include Widget Modal -->
-<ng-include src="'partials/addModal.html'"></ng-include>
+<ng-include src='partials/addModal.html'></ng-include>
