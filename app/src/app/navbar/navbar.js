@@ -6,17 +6,14 @@ angular.module('Dashboard.Navbar', [])
         replace: true,
         templateUrl: 'navbar/navbar.tpl.html',
         controller: function($scope, $rootScope, $location) {
-            // Modal Controls
-            $scope.opts = {
-                backdropFade: false,
-                dialogFade: true
-            };
+            // Show / Hide Admin
             $scope.open = function() {
-                $scope.shouldBeOpen = true;
-            };
-            $scope.close = function() {
-                $scope.shouldBeOpen = false;
-            };
+                if($rootScope.hideAdmin) {
+                    $rootScope.hideAdmin = false
+                } else {
+                    $rootScope.hideAdmin = true;
+                }
+            }
 
             // Lock / Unlock draggable
             $scope.lock = function() {
