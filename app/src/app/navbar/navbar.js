@@ -1,12 +1,5 @@
 angular.module('Dashboard.Navbar', [])
 
-.config(function($routeProvider, $locationProvider) {
-    $routeProvider.when('/', {
-        controller: 'NavCtrl',
-        templateUrl: 'navbar/navbar.tpl.html'
-    })
-})
-
 .directive('navbar', function() {
     return {
         restrict: 'E',

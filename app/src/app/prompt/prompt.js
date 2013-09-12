@@ -1,12 +1,5 @@
 angular.module('Dashboard.Prompt', [])
 
-.config(function($routeProvider, $locationProvider) {
-    $routeProvider.when('/', {
-        controller: 'PromptCtrl',
-        templateUrl: 'prompt/prompt.tpl.html'
-    })
-})
-
 .directive('prompt', function() {
     return {
         restrict: 'E',
