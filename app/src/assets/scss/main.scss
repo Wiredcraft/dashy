@@ -1,67 +1,273 @@
-@import "compass/css3";
-/* global */
-body{
-    background-color: #111111;
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,400,700);
+
+@import 'compass/css3';
+@import 'compass/css3/border-radius';
+@import 'compass/utilities/general/clearfix';
+
+/* Colors */
+@import 'rickshaw';
+
+$primary: #2EA8E6;
+$secondary: #854EB3;
+$base: tint(desaturate($primary, 60%), 90%);
+$dark: shade(desaturate($primary, 60%), 90%);
+
+/* Spacing */
+
+$gutter: 20px;
+$radius: 2px;
+
+/* Typography */
+
+$family: 'Open Sans', sans-serif;
+$size: 16px;
+$pico: 10px;
+$micro: 12px;
+$small: 14px;
+$large: 20px;
+
+/* Mixins */
+
+@mixin button($color: $primary) {
+  @include background(linear-gradient(tint($color, 10%), $color));
+  border: 1px solid shade($color, 10%);
+  @include border-radius($radius);
+  color: #FFF;
+  font-weight: bold;
+  padding: ($gutter/4) $gutter;
+  @include text-shadow(rgba(0, 0, 0, 0.3) 0 -1px 1px);
+  &:hover {
+    @include box-shadow(rgba(0, 0, 0, 0.05) 0 2px 0);
+    border-color: shade($color, 20%);
+    @include background(linear-gradient(tint($color, 25%), tint($color, 5%)));
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    @include background(linear-gradient($color, tint($color, 10%)));
+    border-color: shade($color, 15%);
+    @include box-shadow(rgba(0, 0, 0, 0.08) 0 0 3px 1px inset);
+  }
 }
 
-ul, ol{
+@font-face {
+  font-family: 'icons';
+  src:url('/icons/icons.eot');
+  src:url('/icons/icons.eot?#iefix') format('embedded-opentype'),
+    url('/icons/icons.woff') format('woff'),
+    url('/icons/icons.ttf') format('truetype'),
+    url('/icons/icons.svg#Icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin icon {
+  font-family: 'icons';
+  font-size: 120%;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  speak: none;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* GENERAL */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: $base;
+  color: tint($dark, 40%);
+  font-family: $family;
+  font-size: $size;
+  line-height: 140%;
+  /*position: relative;*/
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: $dark;
+  font-weight: normal;
+}
+
+/* Forms */
+
+form {
+  line-height: 140%;
+  padding: 0;
+}
+
+form .field {
+  @include clearfix;
+  padding: ($gutter/2) 0;
+}
+
+input,
+textarea {
+  line-height: 140%;
+}
+
+input:not([type=submit]),
+textarea {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: ($gutter/4) ($gutter/2);
+  &:active,
+  &:focus {
+    border-color: shade(#ccc, 10%);
+    outline: none;
+  }
+  &[disabled],
+  &[disabled=disabled],
+  &[readonly=true] {
+    background: transparent;
+  }
+}
+
+/* Buttons */
+
+.button,
+.button:visited {
+  display: inline-block;
+  font-size: 80%;
+  line-height: inherit;
+  text-transform: uppercase;
+  @include button($primary);
+}
+
+
+/* Gridster */
+
+.gridster {
+  margin: 0 auto;
+  > ul {
     list-style: none;
-    padding: 0;
+    padding-left: 0;
+  }
 }
 
-#top-bar{
-    padding: 12px 0;
-    background-color: #202020;
-    .inner {
-        margin: 0 auto;
-        max-width: 940px;
-        overflow: hidden;
-        #branding {
-            float: left;
-            width: 200px;
-            padding: 8px 0 0;
-            a{
-                color: #d3d4d4;
-                text-decoration: none;
-            }
-        }
-        .navbtn {
-            float: right;
-            display: block;
-            color: #fff;
-            padding: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            text-decoration: none;
-            background-color: rgba(67, 67, 67, 0.5);
-            text-transform: uppercase;
-            margin-left: 5px;
-            @include transition-duration(0.3s);
-            @include border-radius(1px);
-            &:hover {
-                background-color: rgba(41, 128, 185, 1);
-            }
+/* HEADER */
 
-        }
+#header {
+  background: $dark;
+  @include clearfix();
+  height: 100%;
+  left: 0;
+  margin-bottom: $gutter;
+  position: fixed;
+  text-align: right;
+  text-transform: uppercase;
+  top: 0;
+  vertical-align: middle;
+  z-index: 999;
+  a {
+    border-bottom: 1px solid tint($dark, 20%);
+    color: tint($dark, 80%);
+    cursor: pointer;
+    display: block;
+    padding: $gutter $gutter;
+    &:hover {
+      background: shade($dark, 20%);
+      color: #FFF;
+      text-decoration: none;
     }
-    
-}
-
-/* widget style */
-.widget:hover {
-  header {
     span {
-      button {
-        color: rgba(139, 139, 139, 0.2);
-      }
+      display: none;
+    }
+    &:before {
+      @include icon();
+      vertical-align: top;
+    }
+    &.refresh:before {
+      content: 'r';
+    }
+    &.locked:before {
+      content: 'u';
+    }
+    &.unlocked:before {
+      content: 'l';
+    }
+    &.add:before {
+      content: 'p';
     }
   }
 }
 
-.widget{
-    position: relative;
+/* WIDGETS */
+
+.widget {
+  @include border-radius($radius);
+  border: 1px solid #FFF;
+  /*padding: 0 $gutter/4;*/
+  &:hover {
+    background: #FFF;
+  }
+  .header {
+    @include border-radius($radius);
+    padding: $gutter/2 $gutter;
+    h1 {
+      font-size: $small;
+      font-weight: normal;
+      margin: 0;
+      padding: $gutter/4 0;
+      text-transform: uppercase;
+    }
+    .options {
+      float: right;
+      a {
+        display: block;
+        float: right;
+        padding: $gutter/4 $gutter/2;
+      }
+      span {
+        display: none;
+      }
+      &:before {
+        @include icon();
+        vertical-align: top;
+      }
+      &.settings:before {
+        content: 's';
+      }
+      &.delete:before {
+        content: 'd';
+      }
+    }
+  }
+  .body {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  ul.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.dwidget {
+  position: relative;
     header{
-        background-color: #202020;
+        
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
@@ -101,7 +307,7 @@ ul, ol{
         h2 {
             margin: 0;
         }
-        & > *{
+        & > * {
             padding: 16px;
             color: rgb(211, 212, 212);
             text-shadow: 1px 1px rgb(14, 14, 14);
@@ -193,31 +399,7 @@ ul, ol{
     }
 }
 
-/* gridster styles */
-.gridster {
-    margin: 0 auto;
-    width: 94%;
-    opacity: 0.8;
-    @include transition-duration(0.6s);
-    .gs_w {
-        /*layout elements*/
-        cursor: pointer;
-        background-color: rgb(42, 42, 42);
-        @include box-shadow(rgba(0,0,0,0.3) 0 0 5px);
-    }
-    .player {
-        /*draging element*/
-        @include box-shadow(rgba(0,0,0,0.3) 3px 3px 5px);
-    }
-    .preview-holder {
-        /*target holder element*/
-        border: none!important;
-        border-radius: 0!important;
-        background: rgba(255,255,255,0.2)!important;
-    }
-}
-
-/* sum */
+/* Sum */
 text.subtitle{
     font-size: 26px;
     fill: #d3d4d4;
@@ -268,51 +450,6 @@ text.subtitle{
     }
     a:active {
         color: darkred;
-    }
-}
-
-/* rickshaw */
-.rickshaw_graph{
-    .x_axis{
-        position: absolute;
-        top: 90%;
-        bottom: 0;
-    }
-    .y_axis {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: -10px;
-        width: 40px;
-    }
-    svg{
-        padding: 20px;
-        .x_grid_d3{
-            .tick{
-                line{
-                    display: none;
-                }
-                text{
-                    display: none;
-                }
-            }
-        }
-        .y_grid{
-            .tick{
-                line{
-                    stroke-dasharray: none;
-                    stroke: rgba(240, 240, 240, 0.2);
-                    z-index: -100;
-                }
-                text{
-                    display: none;
-                }
-            }
-        }
-        .y_ticks path,
-        .x_ticks_d3 path{
-            stroke: none;
-        }
     }
 }
 
