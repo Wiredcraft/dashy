@@ -1,4 +1,5 @@
 .*
+!.bowerrc
 !.gitignore
 !.gitmodules
 npm-debug.log
