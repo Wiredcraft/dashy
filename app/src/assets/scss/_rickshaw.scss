@@ -1,3 +1,5 @@
+$primary: #2EA8E6;
+
 /* Rickshaw */
 .rickshaw_graph {
   position: absolute;   
@@ -14,6 +16,9 @@
     width: 40px;
   }
   svg {
+    path {
+      stroke: $primary;
+    }
     .x_grid_d3 {
       .tick{
         line{
@@ -33,9 +38,6 @@
     .y_ticks path,
     .x_ticks_d3 path {
       stroke: none;
-    }
-    path {
-      stroke: red;
     }
   }
 }

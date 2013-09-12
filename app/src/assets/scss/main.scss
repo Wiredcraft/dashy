@@ -104,6 +104,7 @@ h4 {
   color: $dark;
   font-weight: normal;
   line-height: 140%;
+  margin: 0 0 $gutter;
 }
 
 /* Forms */
@@ -235,15 +236,17 @@ textarea {
 
 .widget {
   @include border-radius($radius);
-  border: 1px solid transparent;
   &:hover {
-    background: #FFF;
+    .header .options {
+      display: block;
+    }
   }
   .header {
+    border-bottom: 1px solid shade($base, 10%);
     @include border-radius($radius);
-    padding: $gutter $gutter $gutter/2;
+    padding-bottom: $gutter/2;
+    margin-bottom: $gutter/2;
     h1 {
-      border-bottom: 1px solid shade($base, 10%);
       font-size: $small;
       font-weight: normal;
       margin: 0;
@@ -251,6 +254,7 @@ textarea {
       text-transform: uppercase;
     }
     .options {
+      display: none;
       float: right;
       a {
         display: block;
@@ -274,11 +278,10 @@ textarea {
   }
   .body {
     display: block;
-    padding: $gutter/2 $gutter $gutter;
     height: 100%;
     width: 100%;
   }
-  ul.list {
+  .list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -286,25 +289,25 @@ textarea {
       padding: 0;
       margin: 0;
     }
+    img {
+      height: 2*$gutter;
+      float: left;
+    }
+  }
+  .countdown {
+    @include clearfix();
+    span {
+      display: inline-block;
+    }
+    strong {
+      color: $dark;
+      display: block;
+      line-height: 140%;
+      margin-bottom: $gutter/4;
+      font-size: $humongous;
+    }
   }
 }
-
-.countdown {
-  @include clearfix();
-  span {
-    display: inline-block;
-  }
-  strong {
-    color: $dark;
-    display: block;
-    line-height: 140%;
-    margin-bottom: $gutter/4;
-    font-size: $humongous;
-  }
-
-}
-
-
 
 .dwidget {
   position: relative;
@@ -365,47 +368,7 @@ textarea {
             text-align: center;
             display: block;
         }
-        .list{
-            li{
-                display: block;
-                height:50px;
-                margin-top: 10px;
-                font-weight: bold;
-                background: rgb(39, 39, 39);
-                div{
-                    float: left;
-                    display: inline-block;
-                    height: 50px;
-                    &.fail{
-                        padding: 0 25px;
-                        background: #c0392b;
-                    }
-                    &.pass{
-                        padding: 0 25px;
-                        background: #27ae60;
-                    }
-                }
-                h3 {
-                    font-size: 15px;
-                    font-weight: bolder;
-                    margin-left: 55px;
-                    position: relative;
-                }
-                p {
-                    font-size: 14px;
-                    font-weight: lighter;
-                    margin-left: 55px;
-                    position: relative;
-                }
-                img{
-                    display: block;
-                    float:left;
-                    width: 50px;
-                    height: 50px;
-                    z-index: 50;
-                }
-            }
-        }
+        
         .delta{
             display: block;
             font-size: 26px;
