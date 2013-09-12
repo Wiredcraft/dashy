@@ -3,9 +3,9 @@
 @import 'compass/css3';
 @import 'compass/css3/border-radius';
 @import 'compass/utilities/general/clearfix';
+@import 'rickshaw';
 
 /* Colors */
-@import 'rickshaw';
 
 $primary: #2EA8E6;
 $secondary: #854EB3;
@@ -162,8 +162,9 @@ textarea {
 
 /* HEADER */
 
-#header {
+#menu {
   background: $dark;
+  display: none;
   @include clearfix();
   height: 100%;
   left: 0;
@@ -174,6 +175,9 @@ textarea {
   top: 0;
   vertical-align: middle;
   z-index: 999;
+  &:hover {
+    display: block;
+  }
   a {
     border-bottom: 1px solid tint($dark, 20%);
     color: tint($dark, 80%);
@@ -204,6 +208,23 @@ textarea {
     &.add:before {
       content: 'p';
     }
+  }
+}
+
+#show {
+  background: rgba(0,0,0,0);
+  display: block;
+  @include clearfix();
+  height: 100%;
+  left: 0;
+  margin-bottom: $gutter;
+  padding-left: 40px;
+  position: fixed;
+  top: 0;
+  vertical-align: middle;
+  z-index: 998;
+  &:hover + #menu {
+    display: block;
   }
 }
 
