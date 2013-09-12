@@ -1,6 +1,6 @@
 /* Rickshaw */
 .rickshaw_graph {
-  position: absolute;	
+  position: absolute;   
   .x_axis {
     position: absolute;
     top: 90%;
@@ -33,6 +33,9 @@
     .y_ticks path,
     .x_ticks_d3 path {
       stroke: none;
+    }
+    path {
+      stroke: red;
     }
   }
 }
