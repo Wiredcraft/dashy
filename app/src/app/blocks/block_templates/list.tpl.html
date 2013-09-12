@@ -1,8 +1,8 @@
-<ul class='list'>
-    <li ng-repeat='item in list'>
-        <div class='{{item.value.data.status}}'></div>
-        <img ng-if="image" src='{{item.value.data.image}}'>
-        <h3>{{item.value.data.title}}</h3>
-        <p>{{item.value.since}}</p>
-    </li>
-</ul>
+<section class='list'>
+	<article ng-repeat='item in list' class='item'>
+		<div class='{{item.value.data.status}}'></div>
+		<img ng-if='image' src='{{item.value.data.image}}'>
+		<h3>{{item.value.data.title}}</h3>
+		<p>{{item.value.since}}</p>
+	</article>
+</section>
