@@ -68,7 +68,7 @@ angular.module('Dashboard.Grid', [])
                     sHtml = '';
 
                 // Start Section
-                sHtml += '<section class="widget-body number-widget">';
+                sHtml += '<section class="body">';
                 // Add directives to section
                 angular.forEach(oDirective, function (data, index) {
                     var directiveName = data.template;

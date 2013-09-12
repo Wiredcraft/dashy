@@ -38,8 +38,8 @@ angular.module('Dashboard.Blocks', [])
                 graph = new Rickshaw.Graph({
                     element: $element[0],
                     renderer: 'line',
-                    width: $element.width() - 30, // need to work on styling more!
-                    height: $element.height() - 30, // Don't forget!
+                    // width: $element.width() - 30, // need to work on styling more!
+                    // height: $element.height() - 30, // Don't forget!
                     series: [{
                         color: palette.color(),
                         data: aData,

@@ -247,6 +247,11 @@ textarea {
       }
     }
   }
+  .body {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
   ul.list {
     list-style: none;
     margin: 0;
