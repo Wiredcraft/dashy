@@ -234,6 +234,12 @@ textarea {
 
 /* WIDGETS */
 
+/* Keep markdown image inside element!!!! */
+img{
+    max-height:100%;
+    max-width: 100%;
+}
+
 .widget {
   @include border-radius($radius);
   &:hover {
@@ -400,14 +406,6 @@ text.subtitle{
     fill: #d3d4d4;
 }
 
-/* Picture */
-.picture {
-    display: block;
-    img{
-        max-height:100%;
-        max-width: 100%;
-    }
-}
 
 /* Admin Interface */
 .optionsList {

@@ -19,14 +19,12 @@
         "list": {
             "limit": "number"
         },
-        "picture": {},
         "clock": {},
         "countdown": {
             "enddate": "date"
         },
-        "announcement": {
-            "announcement": "text",
-            "subtitle": "text"
+        "markdown": {
+            "markdown": "textarea"
         }
     }
 ]
