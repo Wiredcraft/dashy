@@ -8,6 +8,7 @@
         "rickshaw": "*",
         "momentjs": "*",
         "gridster": "*",
-        "normalize-css": "*"
+        "normalize-css": "*",
+        "showdown": "*"
     }
 }

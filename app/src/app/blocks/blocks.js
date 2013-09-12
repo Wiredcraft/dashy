@@ -421,81 +421,6 @@ angular.module('Dashboard.Blocks', [])
     }
 })
 
-// Announcement Directive
-.directive('announcement', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            templates: '@'
-        },
-        templateUrl: 'blocks/block_templates/announcement.tpl.html',
-        controller: function($scope, $element) {
-            // Loop through content, find countdown options
-            var templates = JSON.parse($scope.templates);
-            var tmpls, refresh;
-            angular.forEach(templates, function(data, index) {
-                if(data.template === "announcement") {
-                    tmpls = data.options;
-                    refresh = data.refresh
-                }
-            });
-
-            // Widget Logic
-            $scope.announcement = tmpls.announcement;
-            $scope.sub = tmpls.subtitle;     
-        }
-    };
-})
-
-// Picture directive
-.directive('picture', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            templates: '@'
-        },
-        templateUrl: 'blocks/block_templates/picture.tpl.html',
-        controller: function($scope, $element, Widgets, parseTime) {
-            // Loop through content, find options
-            var templates = JSON.parse($scope.templates);
-            var tmpls, refresh, source, attr;
-            angular.forEach(templates, function(data, index) {
-                if(data.template === "picture") {
-                    tmpls = data.options;
-                    refresh = data.refresh;
-                    source = data.source;
-                    if(data.dataKey) {
-                        attr = data.dataKey;
-                    }
-                }
-            });
-
-            var picture = function(data) {
-                var sData = data;
-                angular.forEach(sData, function(data) {
-                    data.value.time = parseTime(data.value.time);
-                });
-                sData.sort(function(a, b) { return b['value']['time'] - a['value']['time'] });
-                image = sData[0].value.data.image;
-                $scope.imageUrl = image;
-            }
-
-            Widgets.getWidgetData(source).then(function(data) {
-                picture(data);
-            })
-            setInterval(function() {
-                Widgets.getWidgetData(source).then(function(data) {
-                    picture(data);
-                })
-            }, refresh)
-
-
-        }
-    }
-})
-
 // Clock directive
 .directive('clock', function() {
     return {
@@ -751,4 +676,37 @@ angular.module('Dashboard.Blocks', [])
             }, 0);
         }
     };
+})
+
+// Markdown directive
+.directive('markdown', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            templates: '@'
+        },
+        controller: function($scope, $element, $compile, Widgets) {
+            // Loop through content, find gauge options
+            var templates = JSON.parse($scope.templates);
+            var tmpls, refresh, source, attr;
+            angular.forEach(templates, function(data, index) {
+                if(data.template === "markdown") {
+                    tmpls = data.options;
+                    refresh = data.refresh;
+                    source = data.source;
+                }
+            });
+
+            // Prep showdown converter
+            var converter = new Showdown.converter();
+
+            // Markdown logic
+            var markdown = function(mdData) {
+                var html = converter.makeHtml(mdData)
+                $element.replaceWith($compile(html)($scope))
+            }
+            markdown(tmpls.markdown)
+        }
+    }
 })
