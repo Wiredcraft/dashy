@@ -6,12 +6,13 @@ angular.module('Dashboard.Navbar', [])
         replace: true,
         templateUrl: 'navbar/navbar.tpl.html',
         controller: function($scope, $rootScope, $location) {
-            // Show / Hide Admin
+            // Show / Hide Admin panel
             $scope.open = function() {
-                if($rootScope.hideAdmin) {
-                    $rootScope.hideAdmin = false
+                if($rootScope.showAdmin) {
+                    $location.hash('');
+                    $rootScope.showAdmin = false;
                 } else {
-                    $rootScope.hideAdmin = true;
+                    $rootScope.showAdmin = true;
                 }
             }
 
@@ -25,8 +26,7 @@ angular.module('Dashboard.Navbar', [])
                 $rootScope.locked = false;
             };
 
-            // Manually refresh widget data.
-            // For now refreshes whole page.
+            // Refresh Page
             $scope.refresh = function() {
                 document.location.reload(true);
             }

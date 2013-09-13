@@ -1,26 +1,31 @@
-<section id='prompt' ng-show='hideAdmin'>
+<section id='prompt' ng-show='showAdmin'>
   <header class='header'>
-    <h2>Dashy - {{hash}}</h2>
+    <h2 ng-if='adding'>Adding Widget</h2>
+    <h2 ng-if='updating'>Updating {{hash}}</h2>
     <button ng-click='cancel()'>Cancel</button>
-    <button ng-click='test()'>Save</button>
+    <button ng-click='save()'>Save</button>
   </header>
 
   <section class='body'>
     <!-- META -->    
     <section class='meta'>
-      <label>Name</label>
+      <div class='field'>
+        <label>Name</label>
         <input type='text' ng-model='widget.config.title'>
+      </div>
 
-      <label>Position</label>
+      <div class='field'>
+        <label>Position</label>
         Row<input type='number' ng-model='widget.layout.row'>
         Column<input type='number' ng-model='widget.layout.column'>
         Width<input type='number' ng-model='widget.layout.width'>
         Height<input type='number' ng-model='widget.layout.height'>
+      </div>
     </section>
 
     <!-- CONTENT -->
     <section class='content'>
-      <h1>Add Content</h1>
+      <h3>Add Content</h3>
       <ul class='add-block'>
         <li class='chart'>Linechart</li>
         <li class='gauge'>Gauge</li>
@@ -30,7 +35,7 @@
         <li class='markdown'>MarkDown</li>
       </ul>
 
-      <h1>Current Content</h1>
+      <h3>Current Content</h3>
       <article ng-repeat='item in widget.content'>
         {{ item.template }} - {{ item.source }} - {{ item.refresh }}
         <button>Delete</button>
@@ -40,21 +45,22 @@
 
     <!-- OPTIONS -->
     <section class='options'>
-      <h1>Edit Content</h1>
+      <h3>Edit Content</h3>
 
-      <label>Source</label>
+      <div class='field'>
+        <label>Source</label>
         <select type='text' ng-model='DEFINE_SELECTED_WIDGET.source'>
           <option disabled value=''>Pick one...</option>
           <option value='none'>None</option>
           <option ng-repeat='item in sources' value='{{item.value.name}}'>{{item.value.name}}</option>
         </select>
-
-      <label>Refresh</label>
-        <input type='number' ng-model='DEFINE_SELECTED_WIDGET.refresh'>
+      </div>
 
       <div ng-repeat='(key, value) in dbWidgets[DEFINE_SELECTED_WIDGET.template] track by $id($index)'>
-        <label>{{key}}</label>
+        <div class='field'>
+          <label>{{key}}</label>
           <input type='{{value}}' ng-model='DEFINE_SELECTED_WIDGET.options[key]'>
+        </div>
       </div>
     </section>
   </section>
@@ -62,6 +68,6 @@
   <footer class='footer'>
     <button ng-click='delete()'>Delete</button>
     <button ng-click='cancel()'>Cancel</button>
-    <button ng-click='test()'>Save</button>
+    <button ng-click='save()'>Save</button>
   </footer>
 </section>

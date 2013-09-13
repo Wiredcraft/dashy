@@ -1,22 +1,27 @@
 [
     {
         "linechart": {
+            "refresh": "number",
             "points": "number"
         },
         "delta": {
+            "refresh": "number",
             "points": "number"
         },
         "gauge": {
+            "refresh": "number",
             "min": "number",
             "max": "number"
         },
         "sum": {
+            "refresh": "number",
             "points": "number",
             "append": "text",
             "prepend": "text",
             "subtitle": "text"
         },
         "list": {
+            "refresh": "number",
             "limit": "number"
         },
         "clock": {},
