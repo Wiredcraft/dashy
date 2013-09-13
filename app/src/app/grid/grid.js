@@ -13,7 +13,7 @@ angular.module('Dashboard.Grid', [])
             // Gridster options
             $rootScope.gridster = $element.gridster({
                 widget_margins: [20, 20], //widget margin
-                widget_base_dimensions: [120, 120], //widget base dimensions
+                widget_base_dimensions: [120, 130], //widget base dimensions
                 min_cols: 12
             }).data('gridster');
             $rootScope.gridster.disable();
