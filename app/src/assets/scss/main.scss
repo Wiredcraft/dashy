@@ -15,10 +15,11 @@ $border: shade($base, 10%);
 $ok: green;
 $error: red;
 
-/* Spacing */
+/* Spacing & Layout */
 
 $gutter: 20px;
 $radius: 2px;
+$prompt: 400px;
 
 /* Typography */
 
@@ -172,19 +173,32 @@ textarea {
 
 /* HEADER */
 
+#admin {
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}
+
+#prompt {
+  background: $dark;
+  border-right: 1px solid tint($dark, 20%);
+  float: left;
+  height: 100%;
+  width: $prompt;
+}
+
 #menu {
   background: $dark;
   display: none;
   @include clearfix();
+  float: left;
   height: 100%;
-  left: 0;
   margin-bottom: $gutter;
-  position: fixed;
   text-align: right;
   text-transform: uppercase;
-  top: 0;
   vertical-align: middle;
-  z-index: 999;
   &:hover {
     display: block;
   }
