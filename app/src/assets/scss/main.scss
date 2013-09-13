@@ -324,16 +324,20 @@ img{
     }
     img,
     .status {
+      @include border-radius($radius);
       display: block;
       height: 2.5*$gutter;
       float: left;
       margin-top: $gutter/4;
-      padding-top: $gutter/4;
       text-align: center;
       width: 2.5*$gutter;
+    }
+    .status {
       &:before {
         @include icon();
         font-size: $humongous;
+        line-height: 120%;
+        padding-top: $gutter/4;
         vertical-align: middle;
       }
     }
