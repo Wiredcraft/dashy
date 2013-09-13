@@ -1,8 +1,8 @@
 <section id='prompt' ng-show='hideAdmin'>
   <header class='header'>
-    <h2>Dashy</h2>
-    <button>Cancel</button>
-    <button>Save</button>
+    <h2>Dashy - {{hash}}</h2>
+    <button ng-click='cancel()'>Cancel</button>
+    <button ng-click='test()'>Save</button>
   </header>
 
   <section class='body'>
@@ -60,8 +60,8 @@
   </section>
 
   <footer class='footer'>
-    <button ng-click='test()'>Delete</button>
-    <button>Cancel</button>
-    <button>Save</button>
+    <button ng-click='delete()'>Delete</button>
+    <button ng-click='cancel()'>Cancel</button>
+    <button ng-click='test()'>Save</button>
   </footer>
 </section>

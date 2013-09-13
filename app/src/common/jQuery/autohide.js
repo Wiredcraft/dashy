@@ -1,11 +1,12 @@
 showDistance = 50;
+animateSpeed = 200 //ms
 
 $(document).ready(function() {
     $("#menu").hide();
 });
 
 function showNavBar() {
-    $("#menu").show('slow', 'linear');
+    $("#menu").show(animateSpeed, 'linear');
 };
 
 $(document).mousemove(function(ev) {
@@ -13,6 +14,6 @@ $(document).mousemove(function(ev) {
     if(ev.pageX <= showDistance) {
         showNavBar()
     } else if (ev.pageX > showDistance) {
-        $("#menu").hide('slow', 'linear');
+        $("#menu").hide(animateSpeed, 'linear');
     }
 });

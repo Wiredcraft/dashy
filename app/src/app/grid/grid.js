@@ -9,7 +9,7 @@ angular.module('Dashboard.Grid', [])
             widgets: '='
         },
         templateUrl: 'grid/grid_templates/widgets.tpl.html',
-        controller: function($rootScope, $scope, $element, $location, Admin, skipReload) {
+        controller: function($rootScope, $scope, $element, $location, $window, Admin, skipReload) {
             // Gridster options
             $rootScope.gridster = $element.gridster({
                 widget_margins: [20, 20], //widget margin
@@ -19,20 +19,12 @@ angular.module('Dashboard.Grid', [])
             $rootScope.gridster.disable();
             $rootScope.locked = true;
 
-            // Modal Controls
-            $scope.opts = {
-                backdropFade: false,
-                dialogFade: true
-            };
-            $scope.open = function(id, rev) {
-                skipReload();
-                $location.hash(id);
-                $scope.shouldBeOpen = true;
-            };
-            $scope.close = function() {
-                skipReload();
-                $location.hash('');
-                $scope.shouldBeOpen = false;
+            // Open edit pane
+            $scope.edit = function(id, rev) {
+                // $location.hash(id);
+                thisLocation = window.location;
+                window.location = thisLocation + '#' + id;
+                $rootScope.hideAdmin = true;
             };
 
             $scope.deleteWidget = function(id) {

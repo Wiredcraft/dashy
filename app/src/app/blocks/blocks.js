@@ -396,8 +396,9 @@ angular.module('Dashboard.Blocks', [])
                 if(sData[0].value.data.image !== undefined) {
                     $scope.class = 'image';
                     $scope.image = true;
-                } else {
+                } else {                    
                     $scope.class = 'status';
+                    $scope.status = true;
                 }
 
                 // Slap data into the scope
