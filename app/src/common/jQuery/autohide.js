@@ -1,5 +1,5 @@
 showDistance = 50;
-animateSpeed = 200 //ms
+animateSpeed = 300 //ms
 
 $(document).ready(function() {
     $("#menu").hide();

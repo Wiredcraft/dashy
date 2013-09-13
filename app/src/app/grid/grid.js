@@ -9,7 +9,7 @@ angular.module('Dashboard.Grid', [])
             widgets: '='
         },
         templateUrl: 'grid/grid_templates/widgets.tpl.html',
-        controller: function($rootScope, $scope, $element, $location, $window, Admin, skipReload) {
+        controller: function($rootScope, $scope, $element, $location, Admin) {
             // Gridster options
             $rootScope.gridster = $element.gridster({
                 widget_margins: [20, 20], //widget margin
@@ -21,10 +21,8 @@ angular.module('Dashboard.Grid', [])
 
             // Open edit pane
             $scope.edit = function(id, rev) {
-                // $location.hash(id);
-                thisLocation = window.location;
-                window.location = thisLocation + '#' + id;
-                $rootScope.hideAdmin = true;
+                $location.hash(id);
+                $rootScope.showAdmin = true;
             };
 
             $scope.deleteWidget = function(id) {
