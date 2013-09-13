@@ -7,7 +7,7 @@
         <a ng-click='edit(widget.id, widget.key)' class='settings'><span>Settings</span></a>
         <a ng-click='deleteWidget(widget.id)' class='delete'><span>Delete</span></a>
       </div>
-      <h1>{{widget.value.config.title}}</h1>
+      <h2>{{widget.value.config.title}}</h2>
     </header>
     <widget class='body'
       templates={{widget.value.content}}
