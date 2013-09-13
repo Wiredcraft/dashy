@@ -1,0 +1,9 @@
+/* Colors */
+
+$primary: #2EA8E6;
+$secondary: #854EB3;
+$base: tint(desaturate($primary, 60%), 90%);
+$dark: shade(desaturate($primary, 60%), 90%);
+$border: shade($base, 10%);
+$ok: #2EE66F;
+$error: #E62E4B;

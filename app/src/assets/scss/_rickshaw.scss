@@ -1,5 +1,3 @@
-$primary: #2EA8E6;
-
 /* Rickshaw */
 .rickshaw_graph {
   position: absolute;   
@@ -30,14 +28,20 @@ $primary: #2EA8E6;
       .tick {
         line {
           stroke-dasharray: none;
-          stroke: rgba(240, 240, 240, 0.2);
+          stroke: $border;
           z-index: -100;
         }
       }
     }
-    .y_ticks path,
-    .x_ticks_d3 path {
-      stroke: none;
+    .y_ticks,
+    .x_ticks_d3 {
+      path {
+        stroke: none;
+      }
+      text {
+        fill: $dark;
+        stroke: none;
+      }
     }
   }
 }

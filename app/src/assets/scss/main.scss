@@ -3,17 +3,8 @@
 @import 'compass/css3';
 @import 'compass/css3/border-radius';
 @import 'compass/utilities/general/clearfix';
+@import 'colors';
 @import 'rickshaw';
-
-/* Colors */
-
-$primary: #2EA8E6;
-$secondary: #854EB3;
-$base: tint(desaturate($primary, 60%), 90%);
-$dark: shade(desaturate($primary, 60%), 90%);
-$border: shade($base, 10%);
-$ok: green;
-$error: red;
 
 /* Spacing & Layout */
 
@@ -57,11 +48,11 @@ $humongous: 40px;
 
 @font-face {
   font-family: 'icons';
-  src:url('./icons/icons.eot');
-  src:url('./icons/icons.eot?#iefix') format('embedded-opentype'),
-    url('./icons/icons.woff') format('woff'),
-    url('./icons/icons.ttf') format('truetype'),
-    url('./icons/icons.svg#Icons') format('svg');
+  src:url('./fonts/icons.eot');
+  src:url('./fonts/icons.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/icons.woff') format('woff'),
+    url('./fonts/icons.ttf') format('truetype'),
+    url('./fonts/icons.svg#Icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -333,18 +324,32 @@ img{
     }
     img,
     .status {
-      background: green;
       display: block;
       height: 2.5*$gutter;
       float: left;
       margin-top: $gutter/4;
+      padding-top: $gutter/4;
+      text-align: center;
       width: 2.5*$gutter;
+      &:before {
+        @include icon();
+        font-size: $humongous;
+        vertical-align: middle;
+      }
     }
     .pass {
-      background: $ok;
+      background: tint($ok, 20%);
+      &:before {
+        color: $ok;
+        content: 'o';
+      }
     }
     .fail {
-      background: $error;
+      background: tint($error, 20%);
+      &:before {
+        color: $error;
+        content: 'd';
+      }
     }
     h3,
     p {
