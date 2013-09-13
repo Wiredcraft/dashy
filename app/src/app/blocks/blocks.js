@@ -550,6 +550,7 @@ angular.module('Dashboard.Blocks', [])
         scope: {
             templates: '@'
         },
+        template: '<div class="gauge"></div>',
         controller: function($scope, $element, $timeout, Widgets, parseTime) {
             $timeout(function() {
                 // Loop through content, find gauge options
@@ -569,7 +570,7 @@ angular.module('Dashboard.Blocks', [])
                 // Set Up
                 var pi = Math.PI,
                     width = $element.width(),
-                    height = $element.height();
+                    height = $element.width() - 20;
 
                 var iR = (width/2) - 50;
                 var oR = (width/2) - 10;
@@ -677,6 +678,25 @@ angular.module('Dashboard.Blocks', [])
         }
     };
 })
+
+// Gauge directive
+// .directive('gauge', function() {
+//     return {
+//         restrict: 'E',
+//         replace: true,
+//         scope: {
+//             templates: '@'
+//         },
+//         template: '<div class="gauge"></div>',
+//         controller: function($scope, $element, $timeout, Widgets, parseTime) {
+//             $timeout(function() {
+//                 console.log($element);
+//                 console.log($element.height());
+//                 console.log($element.width());
+//             }, 0)
+//         }
+//     }
+// })
 
 // Markdown directive
 .directive('markdown', function() {

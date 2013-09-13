@@ -9,6 +9,7 @@ angular.module('Dashboard.Prompt', [])
             // Controller
             $scope.test = function() {
                 console.log('I was clicked!');
+                console.log($location.hash());
             }
         }
     };

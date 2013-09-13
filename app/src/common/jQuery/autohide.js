@@ -1,4 +1,4 @@
-showDistance = 40;
+showDistance = 50;
 
 $(document).ready(function() {
     $("#menu").hide();
