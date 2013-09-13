@@ -626,7 +626,7 @@ angular.module('Dashboard.Blocks', [])
                 var current = svg.append("text")
                     .attr("text-anchor", "middle")
                     .style("font-family", "Helvetica")
-                    .style("fill", "rgb(211, 212, 212)")
+                    .style("fill", "rgba(0, 0, 0, 0.5)")
                     .style("font-size", "50")
                     .text(current)
 
