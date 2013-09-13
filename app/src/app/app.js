@@ -1,6 +1,5 @@
 // Declare app level module which depends on filters, and services
 angular.module('Dashboard', [
-    'ui.bootstrap',
     'templates-app',
     'templates-common',
 
