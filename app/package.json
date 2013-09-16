@@ -7,6 +7,9 @@
   "main": "Gruntfile.js",
   "dependencies": {},
   "devDependencies": {
+    "cradle": "~0.6.5",
+    "q" : "*",
+    "express" : "*",
     "load-grunt-tasks": "~0.1.0",
     "grunt": "~0.4.1",
     "grunt-notify": "*",
