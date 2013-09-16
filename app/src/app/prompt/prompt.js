@@ -8,7 +8,7 @@ angular.module('Dashboard.Prompt', [])
         controller: function($scope, $rootScope, $location, Admin, Sources, Widgets) {
             // Do this when closing the panel & on app start
             var reset_panel = function() {
-                $scope.hash = '';
+                $scope.id = '';
                 $scope.updating = false;
                 $scope.adding = true;
                 $scope.widget = {config: {}, content: [],layout: {}};
@@ -23,7 +23,7 @@ angular.module('Dashboard.Prompt', [])
                 $scope.sources = data;
             });
 
-            // Get templates in /js/config/config.json
+            // Get templates in /js/config/config.json, not being used currently
             Sources.getTemplates().then(function(data) {
                 $scope.dbWidgets = data[0];
             });
@@ -32,11 +32,11 @@ angular.module('Dashboard.Prompt', [])
             $scope.$on('$routeChangeStart', function() {
                 if($location.hash()) {
                     $rootScope.showAdmin = true;
-                    $scope.hash = $location.hash();
+                    $scope.id = $location.hash();
                     $scope.updating = true;
                     $scope.adding = false
                 
-                    Widgets.getWidgetById($scope.hash).then(function(data) {
+                    Widgets.getWidgetById($scope.id).then(function(data) {
                         $scope.widget = data;
                         $scope.thisTitle = data.config.title;
                     });
@@ -47,11 +47,13 @@ angular.module('Dashboard.Prompt', [])
             $scope.contentRemove = function(index) {
                 $scope.widget.content.splice(index, 1);
             };
+
             $scope.contentEdit = function(index) {
                 $scope.content = $scope.widget.content[index];
                 $scope.editingContent = true;
                 $scope.cIndex = index;
             };
+
             $scope.contentUpdate = function() {
                 $scope.widget.content[$scope.cIndex] = $scope.content;
                 $scope.editingContent = false;
@@ -60,32 +62,28 @@ angular.module('Dashboard.Prompt', [])
             };
 
             // Panel Functions
-            // Save
             $scope.save = function(widget) {
                 if($scope.updating === true) {
-                    // Call update API
-                    Admin.updateWidget($scope.hash, widget).then(function(data) {
-                        console.log(data);
+                    Admin.updateWidget($scope.id, widget).then(function(data) {
+                        reset_panel();
                     });
                 } else if($scope.adding === true) {
-                    // Call add API
                     Admin.addWidget(widget).then(function(data) {
-                        console.log(data);
+                        reset_panel();
+                        document.location.reload(true);
                     });
                 }
             };
 
-            // Cancel
             $scope.cancel = function() {
                 reset_panel()
             };
 
-            // Delete
             $scope.delete = function() {
                 // INCLUDE if statement > if widget to delete
                 var del = confirm('Delete this widget? This action cannot be undone.')
                 if (del) {
-                    Admin.deleteWidget($scope.hash);
+                    Admin.deleteWidget($scope.id);
                     reset_panel();
                     document.location.reload(true);
                 }
