@@ -7,8 +7,6 @@ angular.module('Dashboard', [
     'Dashboard.Navbar',
     'Dashboard.Prompt',
     'Dashboard.Blocks',
-    'Dashboard.Add',
-    'Dashboard.Update',
 
     // filters
     'Dashboard.Models',
