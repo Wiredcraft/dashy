@@ -1,7 +1,7 @@
-<section id='prompt' ng-show='showAdmin' style='color:white;'>
+<section id='prompt' ng-show='showAdmin'>
   <header class='header'>
-    <h2 ng-if='adding' style='color:white;'>Adding Widget</h2>
-    <h2 ng-if='updating' style='color:white;'>Updating {{widget.config.title}}</h2>
+    <h2 ng-if='adding'>Adding Widget</h2>
+    <h2 ng-if='updating'>Updating {{widget.config.title}}</h2>
     <button ng-click='cancel()'>Cancel</button>
     <button ng-click='save()'>Save</button>
   </header>
