@@ -40,7 +40,7 @@ angular.module('Dashboard.Navbar', [])
             });
 
             function showNavBar() {
-                $("#menu").show(animateSpeed, 'linear');
+                $("#menu").show();
             };
 
             $rootScope.$watch('showAdmin', function() {
@@ -54,7 +54,7 @@ angular.module('Dashboard.Navbar', [])
                 if(ev.pageX <= showDistance) {
                     showNavBar();
                 } else if ($rootScope.showAdmin === false && ev.pageX > showDistance) {
-                    $("#menu").hide(animateSpeed, 'linear');
+                    $("#menu").hide();
                 }
             });
         }

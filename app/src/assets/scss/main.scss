@@ -77,7 +77,7 @@ body {
 
 body {
   background: $base;
-  color: tint($dark, 40%);
+  color: tint($light, 40%);
   font-family: $family;
   font-size: $size;
   line-height: 140%;
@@ -100,7 +100,7 @@ h1,
 h2,
 h3,
 h4 {
-  color: $dark;
+  color: tint($light, 20%);
   font-weight: normal;
   line-height: 140%;
   margin: 0 0 $gutter;
@@ -165,8 +165,9 @@ textarea {
 /* HEADER */
 
 #admin {
-  background: $dark;
-  color: #FFF;
+  background: shade($light, 20%);
+  @include box-shadow(rgba(0, 0, 0, 0.2) 3px 0 1px);
+  color: $base;
   height: 100%;
   left: 0;
   position: fixed;
@@ -175,7 +176,7 @@ textarea {
 }
 
 #prompt {
-  border-right: 1px solid tint($dark, 20%);
+  border-right: 1px solid shade($light, 20%);
   float: left;
   height: 100%;
   width: $prompt;
@@ -194,13 +195,13 @@ textarea {
     display: block;
   }
   a {
-    border-bottom: 1px solid tint($dark, 20%);
-    color: tint($dark, 80%);
+    border-bottom: 1px solid tint($light, 20%);
+    color: tint($light, 80%);
     cursor: pointer;
     display: block;
     padding: $gutter $gutter;
     &:hover {
-      background: shade($dark, 20%);
+      background: shade($light, 20%);
       color: #FFF;
       text-decoration: none;
     }
@@ -230,24 +231,6 @@ textarea {
   display: none;
 }
 
-/*
-#admin:before {
-  background: green;
-  content: ' ';
-  display: block;
-  height: 100%;
-  position: fixed;
-  width: 3*$gutter;
-  z-index: 998;
-  &:hover {
-    background: red;
-  }
-  &:hover > #menu {
-    display: block;
-  }
-}
-*/
-
 /* WIDGETS */
 
 /* Keep markdown image inside element!!!! */
@@ -264,6 +247,7 @@ img{
     padding-bottom: $gutter/2;
     margin-bottom: $gutter/2;
     h2 {
+      color: shade($light, 20%);
       font-size: $small;
       font-weight: normal;
       margin: 0;
@@ -274,8 +258,7 @@ img{
       display: none;
       float: right;
       a {
-        border: 1px solid $border;
-        color: tint($dark, 40%);
+        color: tint($light, 40%);
         cursor: pointer;
         display: block;
         float: right;
@@ -293,12 +276,9 @@ img{
         &.delete:before {
           content: 'd';
         }
-        &:first-child {
-          border-left: 0;
-        }
         &:hover {
-          background: #FFF;
-          color: $dark;
+          background: tint($base, 10%);
+          color: $light;
           text-decoration: none;
         }
       }
@@ -325,33 +305,32 @@ img{
     img,
     .status {
       @include border-radius($radius);
+      color: $base;
       display: block;
-      height: 2.5*$gutter;
+      height: 2*$gutter;
       float: left;
-      margin-top: $gutter/4;
+      padding-top: $gutter/2;
       text-align: center;
       width: 2.5*$gutter;
     }
     .status {
       &:before {
         @include icon();
-        font-size: $humongous;
-        line-height: 120%;
-        padding-top: $gutter/4;
+        font-size: $large;
+        line-height: 140%;
+        padding-top: $gutter/2;
         vertical-align: middle;
       }
     }
     .pass {
       background: tint($ok, 20%);
       &:before {
-        color: $ok;
         content: 'o';
       }
     }
     .fail {
       background: tint($error, 20%);
       &:before {
-        color: $error;
         content: 'd';
       }
     }
@@ -360,9 +339,11 @@ img{
       margin-left: 3*$gutter;
     }
     h3 {
+      color: tint($light, 40%);
       margin-bottom: $gutter/4;
     }
     p {
+      /*color: shade($light, 20%);*/
       font-size: $small;
     }
   }
@@ -379,7 +360,7 @@ img{
       }
     }
     strong {
-      color: $dark;
+      color: $light;
       display: block;
       line-height: 140%;
       margin-bottom: $gutter/4;
@@ -395,50 +376,15 @@ img{
       font-size: $humongous;
     }
   }
+  .gauge {
+    text {
+      fill: $light !important;
+    }
+  }
 }
 
 /* Sum */
 text.subtitle{
     font-size: 26px;
     fill: #d3d4d4;
-}
-
-
-/* Admin Interface */
-.optionsList {
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
-    li {
-        position: relative;
-        margin: 10px 0;
-        padding: 15px;
-        background: #f5f5f5;
-        border-left: 4px solid #ccc;
-    }
-    li .action {
-        position: absolute;
-        right: 6px;
-        top: 6px;
-        display: block;
-        opacity: 0.2;
-        -webkit-transition: all 0.1s linear;
-    }
-    li:hover .action {
-        opacity: 1;
-    }
-    a {
-        color: black;
-        opacity: 0.5
-    }
-    a:hover {
-        text-decoration: none;
-        color: red;
-        opacity: 1;
-    }
-    a:active {
-        color: darkred;
-    }
 }
