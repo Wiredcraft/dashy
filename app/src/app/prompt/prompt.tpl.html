@@ -2,8 +2,6 @@
   <header class='header'>
     <h2 ng-if='adding'>Adding Widget</h2>
     <h2 ng-if='updating'>Updating {{widget.config.title}}</h2>
-    <button ng-click='cancel()'>Cancel</button>
-    <button ng-click='save()'>Save</button>
   </header>
 
   <section class='body'>
@@ -50,7 +48,7 @@
     </section>
 
     <!-- OPTIONS -->
-    <section class='options' ng-show='editingContent'>
+    <section class='settings' ng-show='editingContent'>
       <h3>Edit Content</h3>
 
       <div class='field'>
@@ -74,8 +72,10 @@
   </section>
 
   <footer class='footer'>
-    <button ng-click='delete()'>Delete</button>
-    <button ng-click='cancel()'>Cancel</button>
-    <button ng-click='save(widget)'>Save</button>
+    <div class='options'>
+      <a ng-click='cancel()' class='cancel'>Cancel</a>
+      <button ng-click='save(widget)'>Save</button>
+    </div>
+    <button ng-click='delete()' class='delete'>Delete</button>
   </footer>
 </section>

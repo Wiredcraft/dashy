@@ -29,9 +29,11 @@ $humongous: 40px;
   border: 1px solid shade($color, 10%);
   @include border-radius($radius);
   color: #FFF;
-  font-weight: bold;
+  cursor: pointer;
+  font-size: $small;
+  font-weight: normal;
   padding: ($gutter/4) $gutter;
-  @include text-shadow(rgba(0, 0, 0, 0.3) 0 -1px 1px);
+  text-transform: uppercase;
   &:hover {
     @include box-shadow(rgba(0, 0, 0, 0.05) 0 2px 0);
     border-color: shade($color, 20%);
@@ -184,7 +186,38 @@ textarea {
   border-right: 1px solid tint($base, 20%);
   float: left;
   height: 100%;
+  overflow: auto;
+  padding: $gutter/2 $gutter/2 4*$gutter;
+  position: relative;
   width: $prompt;
+  fieldset {
+    border: 0;
+  }
+  button {
+    @include button();
+    &.delete {
+      @include button($secondary);
+    }
+  }
+  .cancel {
+    color: $light;
+    cursor: pointer;
+    font-size: $small;
+    margin-right: $gutter/2;
+    text-transform: uppercase;
+  }
+  .footer {
+    background: tint($base, 10%);
+    border-top: 1px solid tint($base, 20%);
+    bottom: 0;
+    left: 0;
+    padding: $gutter/2;
+    position: fixed;
+    width: $prompt;
+    .options {
+      float: right;
+    }
+  }
 }
 
 #menu {
@@ -229,9 +262,6 @@ textarea {
     &.add:before {
       content: 'p';
     }
-  }
-  fieldset {
-
   }
 }
 
@@ -375,13 +405,13 @@ img{
       font-size: $humongous;
     }
   }
-  .sum {
-    h3,
-    p {
-      display: inline;
-    }
+  .sum,
+  .delta {
     h3 {
-      font-size: $humongous;
+      strong {
+        font-size: $humongous;
+        font-weight: normal;
+      }
     }
   }
   .gauge {
