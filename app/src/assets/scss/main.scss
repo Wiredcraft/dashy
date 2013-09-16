@@ -462,6 +462,18 @@ img{
         font-weight: normal;
       }
     }
+    .up {
+      color: tint($ok, 20%);
+    }
+    .down {
+      color: tint($error, 20%);
+    }
+    .up,
+    .down {
+      h3 {
+        color: tint($light, 40%);
+      }
+    }
   }
   .gauge {
     text {
