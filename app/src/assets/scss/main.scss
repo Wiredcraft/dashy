@@ -307,13 +307,14 @@ img{
       @include border-radius($radius);
       color: $base;
       display: block;
-      height: 2*$gutter;
+      height: 2.5*$gutter;
       float: left;
-      padding-top: $gutter/2;
       text-align: center;
       width: 2.5*$gutter;
     }
     .status {
+      height: 2*$gutter;
+      padding-top: $gutter/2;
       &:before {
         @include icon();
         font-size: $large;
