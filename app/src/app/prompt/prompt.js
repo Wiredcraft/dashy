@@ -5,9 +5,27 @@ angular.module('Dashboard.Prompt', [])
         restrict: 'E',
         replace: true,
         templateUrl: 'prompt/prompt.tpl.html',
-        controller: function($scope, $rootScope, $location) {
-            // Adding not Editing by default
-            $scope.adding = true;
+        controller: function($scope, $rootScope, $location, Admin, Sources, Widgets) {
+            // Do this when closing the panel & on app start
+            var reset_panel = function() {
+                $scope.hash = '';
+                $scope.updating = false;
+                $scope.adding = true;
+                $scope.widget = {config: {}, content: [],layout: {}};
+                $location.hash('');
+                $rootScope.showAdmin = false;
+            }
+            reset_panel();
+
+            // Get datasources
+            Sources.getSources().then(function(data) {
+                $scope.sources = data;
+            });
+
+            // Get templates in /js/config/config.json
+            Sources.getTemplates().then(function(data) {
+                $scope.dbWidgets = data[0];
+            });
 
             // If routeChange & has location hash, set up & show panel
             $scope.$on('$routeChangeStart', function() {
@@ -16,6 +34,11 @@ angular.module('Dashboard.Prompt', [])
                     $scope.hash = $location.hash();
                     $scope.updating = true;
                     $scope.adding = false
+                
+                    Widgets.getWidgetById($scope.hash).then(function(data) {
+                        $scope.widget = data;
+                        $scope.thisTitle = data.config.title;
+                    });
                 }
             });
 
@@ -37,15 +60,6 @@ angular.module('Dashboard.Prompt', [])
                     // Admin.deleteWidget(THIS_ID);
                     reset_panel();
                 }
-            }
-
-            // Do this when closing the panel
-            var reset_panel = function() {
-                $scope.hash = '';
-                $scope.updating = false;
-                $scope.adding = true;
-                $location.hash('');
-                $rootScope.showAdmin = false;    
             }
 
         }
