@@ -599,13 +599,15 @@ angular.module('Dashboard.Blocks', [])
                 var background = svg.append("path")
                     .datum({endAngle: 90 * (pi/180)})
                     .style("fill", "rgba(106, 106, 106, 0.2)")
-                    .attr("d", arc);
+                    .attr("d", arc)
+                    .attr('class', 'background');
 
                 // Append foreground arc to svg
                 var foreground = svg.append("path")
                     .datum({endAngle: -90 * (pi/180)})
                     .style("fill", color)
-                    .attr("d", arc);
+                    .attr("d", arc)
+                    .attr('class', 'foreground');
 
                 // Display Max value
                 var maxText = svg.append("text")
