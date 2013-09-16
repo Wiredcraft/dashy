@@ -43,6 +43,15 @@ angular.module('Dashboard.Prompt', [])
                 }
             });
 
+            // Block Selector
+            $scope.test = function(type) {
+                var len = $scope.widget.content.length
+                $scope.widget.content.push({'template': type, 'refresh': 0, 'options': {}});
+                $scope.content = $scope.widget.content[len];
+                $scope.editingContent = true;
+                $scope.cIndex = len;
+            }
+
             // Options Functions
             $scope.contentRemove = function(index) {
                 $scope.widget.content.splice(index, 1);

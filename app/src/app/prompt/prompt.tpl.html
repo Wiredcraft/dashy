@@ -26,14 +26,14 @@
     <!-- CONTENT -->
     <section class='content'>
       <h3>Add Content</h3>
-      <ul class='add-block'>
-        <li class='chart'>Linechart</li>
-        <li class='gauge'>Gauge</li>
-        <li class='countdown'>Countdown</li>
-        <li class='sum'>Sum</li>
-        <li class='delta'>Delta</li>
-        <li class='markdown'>MarkDown</li>
-      </ul>
+      <div class='blocks'>
+        <a class='linechart' ng-click='test("linechart")'>Linechart</a>
+        <a class='guage' ng-click='test("gauge")'>Gauge</a>
+        <a class='countdown' ng-click='test("countdown")'>Countdown</a>
+        <a class='sum' ng-click='test("sum")'>Sum</a>
+        <a class='delta' ng-click='test("delta")'>Delta</a>
+        <a class='markdown' ng-click='test("markdown")'>Markdown</a>
+      </div>
 
       <h3>Current Content</h3>
       <article ng-repeat='item in widget.content'>
