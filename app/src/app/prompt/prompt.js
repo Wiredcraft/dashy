@@ -12,6 +12,8 @@ angular.module('Dashboard.Prompt', [])
                 $scope.updating = false;
                 $scope.adding = true;
                 $scope.widget = {config: {}, content: [],layout: {}};
+                $scope.content = {};
+                $scope.content.options = {};
                 $location.hash('');
                 $rootScope.showAdmin = false;
             }
@@ -42,6 +44,22 @@ angular.module('Dashboard.Prompt', [])
                 }
             });
 
+            // Options Functions
+            $scope.contentRemove = function(index) {
+                $scope.widget.content.splice(index, 1);
+            }
+            $scope.contentEdit = function(index) {
+                $scope.content = $scope.widget.content[index];
+                $scope.editingContent = true;
+                $scope.cIndex = index;
+            }
+            $scope.contentUpdate = function() {
+                $scope.widget.content[$scope.cIndex] = $scope.content;
+                $scope.editingContent = false;
+                $scope.cIndex = '';
+            }
+
+            // Panel Functions
             // Save
             $scope.save = function() {
                 console.log('I\'m the save function!');
