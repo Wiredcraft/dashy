@@ -12,24 +12,31 @@
         <input type='text' ng-model='widget.config.title'>
       </div>
 
-      <div class='field'>
-        <fieldset>
-          <legend>Position</legend>
+      <fieldset>
+        <legend>Position</legend>
+        <div class='field'>
           <label>Row</label>
           <input type='number' ng-model='widget.layout.row'>
+        </div>
+        <div class='field'>
           <label>Column</label>
           <input type='number' ng-model='widget.layout.column'>
+        </div>
+        <div class='field'>
           <label>Width</label>
           <input type='number' ng-model='widget.layout.width'>
+        </div>
+        <div class='field'>
           <label>Height</label>
           <input type='number' ng-model='widget.layout.height'>
-        </fieldset>
-      </div>
+        </div>
+      </fieldset>
     </section>
 
     <!-- CONTENT -->
     <section class='content'>
-      <h3>Add Content</h3>
+      <h3>Blocks</h3>
+
       <div class='blocks'>
         <a class='linechart' ng-click='test("linechart")'>Linechart</a>
         <a class='guage' ng-click='test("gauge")'>Gauge</a>
@@ -39,11 +46,12 @@
         <a class='markdown' ng-click='test("markdown")'>Markdown</a>
       </div>
 
-      <h3>Current Content</h3>
-      <article ng-repeat='item in widget.content'>
-        {{ item.template }} - {{ item.source }} - {{ item.refresh }}
-        <button ng-click='contentRemove($index)'>Delete</button>
-        <button ng-click='contentEdit($index)'>Edit</button>
+      <article ng-repeat='item in widget.content' class='block'>
+        <div class='options'>
+          <a ng-click='contentRemove($index)' class='delete'><span>Delete</span></a>
+          <a ng-click='contentEdit($index)' class='settings'><span>Edit</span></a>
+        </div>
+        {{ item.template }}
       </article>
     </section>
 

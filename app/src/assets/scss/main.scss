@@ -116,9 +116,9 @@ form {
 }
 
 form .field {
-  @include clearfix;
+  @include clearfix();
   display: block;
-  padding: ($gutter/2) 0;
+  padding: $gutter 0;
 }
 
 label {
@@ -187,11 +187,31 @@ textarea {
   float: left;
   height: 100%;
   overflow: auto;
-  padding: $gutter/2 $gutter/2 4*$gutter;
+  padding: $gutter $gutter/2 4*$gutter;
   position: relative;
   width: $prompt;
+  .block {
+    border-top: 1px solid tint($base, 10%);
+    @include clearfix();
+  }
   fieldset {
     border: 0;
+    @include clearfix();
+    margin: 0;
+    padding: ($gutter/2) 0;
+    .field {
+      background: tint($base, 5%);
+      float: left;
+      padding: $gutter/2;
+      width: 4*$gutter;
+      label {
+        font-size: $small;
+        text-transform: uppercase;
+      }
+      input {
+        width: 2*$gutter;
+      }
+    }
   }
   button {
     @include button();
@@ -210,12 +230,35 @@ textarea {
     background: tint($base, 10%);
     border-top: 1px solid tint($base, 20%);
     bottom: 0;
-    left: 0;
     padding: $gutter/2;
+    left: 0;
     position: fixed;
     width: $prompt;
     .options {
       float: right;
+    }
+  }
+  .options {
+    float: right;
+    a {
+      color: tint($light, 40%);
+      cursor: pointer;
+      display: block;
+      float: right;
+      padding: $gutter/4 $gutter/2;
+      span {
+        display: none;
+      }
+      &:before {
+        @include icon();
+        vertical-align: top;
+      }
+      &.settings:before {
+        content: 's';
+      }
+      &.delete:before {
+        content: 'd';
+      }
     }
   }
 }
