@@ -187,9 +187,12 @@ textarea {
   float: left;
   height: 100%;
   overflow: auto;
-  padding: $gutter $gutter/2 4*$gutter;
+  padding: $gutter $gutter/2;
   position: relative;
   width: $prompt;
+  .body {
+    padding-bottom: 4*$gutter;
+  }
   .block {
     border-top: 1px solid tint($base, 10%);
     @include clearfix();
@@ -258,6 +261,9 @@ textarea {
       }
       &.delete:before {
         content: 'd';
+      }
+      &:hover {
+        text-decoration: none;
       }
     }
   }
