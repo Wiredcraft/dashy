@@ -2,8 +2,18 @@
 
 $primary: #2EA8E6;
 $secondary: #854EB3;
+$base: shade(desaturate($primary, 60%), 80%);
+$light: tint(desaturate($primary, 60%), 60%);
+$border: tint($base, 10%);
+$ok: desaturate(#2EE66F, 10%);
+$error: desaturate(#E62E4B, 10%);;
+
+/* Bright colors (alternate color scheme) */
+
+/*$primary: #2EA8E6;
+$secondary: #854EB3;
 $base: tint(desaturate($primary, 60%), 90%);
 $dark: shade(desaturate($primary, 60%), 90%);
 $border: shade($base, 10%);
 $ok: #2EE66F;
-$error: #E62E4B;
+$error: #E62E4B;*/
