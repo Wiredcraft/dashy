@@ -13,10 +13,9 @@ angular.module('Dashboard.Prompt', [])
                 $scope.adding = true;
                 $scope.widget = {config: {}, content: [],layout: {}};
                 $scope.content = {};
-                $scope.content.options = {};
                 $location.hash('');
                 $rootScope.showAdmin = false;
-            }
+            };
             reset_panel();
 
             // Get datasources
@@ -47,38 +46,50 @@ angular.module('Dashboard.Prompt', [])
             // Options Functions
             $scope.contentRemove = function(index) {
                 $scope.widget.content.splice(index, 1);
-            }
+            };
             $scope.contentEdit = function(index) {
                 $scope.content = $scope.widget.content[index];
                 $scope.editingContent = true;
                 $scope.cIndex = index;
-            }
+            };
             $scope.contentUpdate = function() {
                 $scope.widget.content[$scope.cIndex] = $scope.content;
                 $scope.editingContent = false;
+                $scope.content = {};
                 $scope.cIndex = '';
-            }
+            };
 
             // Panel Functions
             // Save
-            $scope.save = function() {
-                console.log('I\'m the save function!');
-            }
+            $scope.save = function(widget) {
+                if($scope.updating === true) {
+                    // Call update API
+                    Admin.updateWidget($scope.hash, widget).then(function(data) {
+                        console.log(data);
+                    });
+                } else if($scope.adding === true) {
+                    // Call add API
+                    Admin.addWidget(widget).then(function(data) {
+                        console.log(data);
+                    });
+                }
+            };
 
             // Cancel
             $scope.cancel = function() {
                 reset_panel()
-            }
+            };
 
             // Delete
             $scope.delete = function() {
                 // INCLUDE if statement > if widget to delete
                 var del = confirm('Delete this widget? This action cannot be undone.')
                 if (del) {
-                    // Admin.deleteWidget(THIS_ID);
+                    Admin.deleteWidget($scope.hash);
                     reset_panel();
+                    document.location.reload(true);
                 }
-            }
+            };
 
         }
     };
