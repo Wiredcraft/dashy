@@ -14,7 +14,7 @@ angular.module('Dashboard.Navbar', [])
                 } else {
                     $rootScope.showAdmin = true;
                 }
-            }
+            };
 
             // Lock / Unlock draggable
             $scope.lock = function() {
@@ -43,11 +43,17 @@ angular.module('Dashboard.Navbar', [])
                 $("#menu").show(animateSpeed, 'linear');
             };
 
+            $rootScope.$watch('showAdmin', function() {
+                if($rootScope.showAdmin === true) {
+                    showNavBar();
+                }
+            });
+
             $(document).mousemove(function(ev) {
                 var ev = ev || window.event;
                 if(ev.pageX <= showDistance) {
-                    showNavBar()
-                } else if (ev.pageX > showDistance && $rootScope.showAdmin === false) {
+                    showNavBar();
+                } else if ($rootScope.showAdmin === false && ev.pageX > showDistance) {
                     $("#menu").hide(animateSpeed, 'linear');
                 }
             });
