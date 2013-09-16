@@ -1,6 +1,6 @@
 module.exports = {
     host : '127.0.0.1',
-    clientDirectory : './app',
+    clientDirectory : './build',
     port : 4000,
     dbport : 5984,
     widgetsDB : 'widgets',

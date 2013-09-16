@@ -11,7 +11,7 @@ app.configure(function() {
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.errorHandler());
-    app.use(express.static(path.join(__dirname, '../app')));
+    app.use(express.static(path.join(__dirname, '../build')));
     app.use(app.router);
 
     app.use(function(req, res, next) {
