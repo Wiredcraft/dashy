@@ -54,7 +54,10 @@ angular.module('Dashboard.Prompt', [])
 
             // Options Functions
             $scope.contentRemove = function(index) {
-                $scope.widget.content.splice(index, 1);
+                var del = confirm('Delete this item? This action cannot be undone.')
+                if (del) {
+                    $scope.widget.content.splice(index, 1);
+                }
             };
 
             $scope.contentEdit = function(index) {
