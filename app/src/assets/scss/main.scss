@@ -29,9 +29,11 @@ $humongous: 40px;
   border: 1px solid shade($color, 10%);
   @include border-radius($radius);
   color: #FFF;
-  font-weight: bold;
+  cursor: pointer;
+  font-size: $small;
+  font-weight: normal;
   padding: ($gutter/4) $gutter;
-  @include text-shadow(rgba(0, 0, 0, 0.3) 0 -1px 1px);
+  text-transform: uppercase;
   &:hover {
     @include box-shadow(rgba(0, 0, 0, 0.05) 0 2px 0);
     border-color: shade($color, 20%);
@@ -114,9 +116,9 @@ form {
 }
 
 form .field {
-  @include clearfix;
+  @include clearfix();
   display: block;
-  padding: ($gutter/2) 0;
+  padding: $gutter 0;
 }
 
 label {
@@ -184,7 +186,87 @@ textarea {
   border-right: 1px solid tint($base, 20%);
   float: left;
   height: 100%;
+  overflow: auto;
+  padding: $gutter $gutter/2;
+  position: relative;
   width: $prompt;
+  .body {
+    padding-bottom: 4*$gutter;
+  }
+  .block {
+    border-top: 1px solid tint($base, 10%);
+    @include clearfix();
+  }
+  fieldset {
+    border: 0;
+    @include clearfix();
+    margin: 0;
+    padding: ($gutter/2) 0;
+    .field {
+      background: tint($base, 5%);
+      float: left;
+      padding: $gutter/2;
+      width: 4*$gutter;
+      label {
+        font-size: $small;
+        text-transform: uppercase;
+      }
+      input {
+        width: 2*$gutter;
+      }
+    }
+  }
+  button {
+    @include button();
+    &.delete {
+      @include button($secondary);
+    }
+  }
+  .cancel {
+    color: $light;
+    cursor: pointer;
+    font-size: $small;
+    margin-right: $gutter/2;
+    text-transform: uppercase;
+  }
+  .footer {
+    background: tint($base, 10%);
+    border-top: 1px solid tint($base, 20%);
+    bottom: 0;
+    padding: $gutter/2;
+    left: 0;
+    position: fixed;
+    width: $prompt;
+    .options {
+      float: right;
+    }
+  }
+  .options {
+    float: right;
+    a {
+      color: tint($light, 40%);
+      cursor: pointer;
+      display: block;
+      float: right;
+      padding: $gutter/4 $gutter/2;
+      span {
+        display: none;
+      }
+      &:before {
+        @include icon();
+        vertical-align: top;
+      }
+      &.settings:before {
+        content: 's';
+      }
+      &.delete:before {
+        content: 'd';
+      }
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }
 
 #menu {
@@ -229,9 +311,6 @@ textarea {
     &.add:before {
       content: 'p';
     }
-  }
-  fieldset {
-
   }
 }
 
@@ -375,13 +454,13 @@ img{
       font-size: $humongous;
     }
   }
-  .sum {
-    h3,
-    p {
-      display: inline;
-    }
+  .sum,
+  .delta {
     h3 {
-      font-size: $humongous;
+      strong {
+        font-size: $humongous;
+        font-weight: normal;
+      }
     }
   }
   .gauge {
