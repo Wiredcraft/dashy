@@ -77,7 +77,7 @@ body {
 
 body {
   background: $base;
-  color: tint($light, 40%);
+  color: $light;
   font-family: $family;
   font-size: $size;
   line-height: 140%;
@@ -100,7 +100,7 @@ h1,
 h2,
 h3,
 h4 {
-  color: tint($light, 20%);
+  color: tint($light, 40%);
   font-weight: normal;
   line-height: 140%;
   margin: 0 0 $gutter;
@@ -115,7 +115,12 @@ form {
 
 form .field {
   @include clearfix;
+  display: block;
   padding: ($gutter/2) 0;
+}
+
+label {
+  display: block;
 }
 
 input,
@@ -165,9 +170,9 @@ textarea {
 /* HEADER */
 
 #admin {
-  background: shade($light, 20%);
+  background: tint($base, 10%);
   @include box-shadow(rgba(0, 0, 0, 0.2) 3px 0 1px);
-  color: $base;
+  color: $light;
   height: 100%;
   left: 0;
   position: fixed;
@@ -176,7 +181,7 @@ textarea {
 }
 
 #prompt {
-  border-right: 1px solid shade($light, 20%);
+  border-right: 1px solid tint($base, 20%);
   float: left;
   height: 100%;
   width: $prompt;
@@ -195,13 +200,13 @@ textarea {
     display: block;
   }
   a {
-    border-bottom: 1px solid tint($light, 20%);
+    border-bottom: 1px solid tint($base, 20%);
     color: tint($light, 80%);
     cursor: pointer;
     display: block;
     padding: $gutter $gutter;
     &:hover {
-      background: shade($light, 20%);
+      background: tint($base, 20%);
       color: #FFF;
       text-decoration: none;
     }
@@ -224,6 +229,9 @@ textarea {
     &.add:before {
       content: 'p';
     }
+  }
+  fieldset {
+
   }
 }
 
@@ -340,7 +348,6 @@ img{
       margin-left: 3*$gutter;
     }
     h3 {
-      color: tint($light, 40%);
       margin-bottom: $gutter/4;
     }
     p {
@@ -380,6 +387,12 @@ img{
   .gauge {
     text {
       fill: $light !important;
+    }
+    .foreground {
+      fill: $primary !important;
+    }
+    .background {
+      fill: tint($base, 10%) !important;
     }
   }
 }

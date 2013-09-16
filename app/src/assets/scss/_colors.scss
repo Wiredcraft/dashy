@@ -3,7 +3,7 @@
 $primary: #2EA8E6;
 $secondary: #854EB3;
 $base: shade(desaturate($primary, 60%), 80%);
-$light: tint(desaturate($primary, 60%), 60%);
+$light: tint(desaturate($primary, 60%), 80%);
 $border: tint($base, 10%);
 $ok: desaturate(#2EE66F, 10%);
 $error: desaturate(#E62E4B, 10%);;
