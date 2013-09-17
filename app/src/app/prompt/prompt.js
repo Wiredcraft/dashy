@@ -11,6 +11,9 @@ angular.module('Dashboard.Prompt', [])
                 $scope.id = '';
                 $scope.updating = false;
                 $scope.adding = true;
+                $scope.editingContent = false;
+                $scope.cIndex = '';
+                $scope.content = {};
                 $scope.widget = {config: {}, content: [],layout: {}};
                 $scope.content = {};
                 $location.hash('');
