@@ -49,6 +49,9 @@ angular.module('Dashboard.Grid', [])
             // add widget element to gridster
             var gridWidget = function () {
                 var oLayout = JSON.parse($scope.layout);
+
+                // console.log(oLayout);
+
                 $rootScope.gridster.add_widget($element.parent(), oLayout['width'], oLayout['height'], oLayout['column'], oLayout['row']);
             }
             
@@ -56,6 +59,8 @@ angular.module('Dashboard.Grid', [])
             var dynamicDirective = function () {
                 var oDirective = JSON.parse($scope.templates),
                     sHtml = '';
+
+                // console.log(oDirective);
 
                 // Start Section
                 sHtml += '<section class="body">';

@@ -354,7 +354,8 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'build', 'connect', 'shell', 'delta' ] );
+  // grunt.registerTask( 'watch', [ 'build', 'connect', 'shell', 'delta' ] );
+  grunt.registerTask( 'watch', [ 'build', 'delta' ] );
 
   /**
    * The default task is to build and compile.
