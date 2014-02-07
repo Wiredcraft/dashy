@@ -23,17 +23,270 @@ curl -X POST http://127.0.0.1:5984/internet -H "Content-Type: application/json" 
 echo "Views complete."
 
 echo "Posting Widget Data..."
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":""},"content":{"title":"Announcements!","templates":{"announcement":{"announcement":"Finish that Super Awesome Secret Project","subtitle":""},"countdown":{"startdate":"20130717","enddate":"20131231"}}},"layout":{"data-row":1,"data-col":3,"data-sizex":4,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"builds"},"content":{"title":"Builds","templates":{"list":{}}},"layout":{"data-row":1,"data-col":1,"data-sizex":2,"data-sizey":6} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"commits"},"content":{"title":"GitHub Commits","templates":{"list":{}}},"layout":{"data-row":3,"data-col":3,"data-sizex":2,"data-sizey":4} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"internet"},"content":{"title":"Internet Speed","templates":{"gauge":{"max":800,"min":0}}},"layout":{"data-row":5,"data-col":5,"data-sizex":2,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"pictures"},"content":{"title":"Latest Pic","templates":{"picture":{}}},"layout":{"data-row":3,"data-col":5,"data-sizex":2,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"wiredcraft values","templates":{"delta":{"prepend":"","append":""},"sum":{"prepend":"","append":"K","subtitle":"visitors"}}},"layout":{"data-row":1,"data-col":11,"data-sizex":2,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"devo.ps values","templates":{"sum":{"prepend":"","append":"K","subtitle":"visitors"},"delta":{}}},"layout":{"data-row":3,"data-col":11,"data-sizex":2,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"mailchimp values","templates":{"sum":{"prepend":"","append":"K","subtitle":"visitors"},"delta":{}}},"layout":{"data-row":5,"data-col":11,"data-sizex":2,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"wiredcraft.com metrics","templates":{"linechart":{"points":7}}},"layout":{"data-row":1,"data-col":7,"data-sizex":4,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"devo.ps metrics","templates":{"linechart":{"points":7}}},"layout":{"data-row":3,"data-col":7,"data-sizex":4,"data-sizey":2} }'
-curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{ "config":{"refresh":1000,"source":"githubrepos"},"content":{"title":"MailChimp Stats","templates":{"linechart":{"points":7}}},"layout":{"data-row":5,"data-col":7,"data-sizex":4,"data-sizey":2} }'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "Announcements"
+   },
+   "content": [
+       {
+           "template": "markdown",
+           "refresh": 0,
+           "options": {
+               "markdown": "# Hello World!"
+           }
+       },
+       {
+           "template": "countdown",
+           "refresh": 0,
+           "options": {
+               "enddate": "2014-03-15"
+           }
+       }
+   ],
+   "layout": {
+       "row": 1,
+       "column": 3,
+       "width": 4,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "Builds"
+   },
+   "content": [
+       {
+           "template": "list",
+           "source": "builds",
+           "refresh": 5000,
+           "options": {
+           }
+       }
+   ],
+   "layout": {
+       "row": 1,
+       "column": 1,
+       "width": 2,
+       "height": 6
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "GitHub Commits"
+   },
+   "content": [
+       {
+           "template": "list",
+           "source": "commits",
+           "refresh": 5000,
+           "options": {
+           }
+       }
+   ],
+   "layout": {
+       "row": 3,
+       "column": 3,
+       "width": 2,
+       "height": 4
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "internet speed"
+   },
+   "content": [
+       {
+           "template": "gauge",
+           "source": "internet",
+           "refresh": 2000,
+           "options": {
+               "max": 800,
+               "min": 0
+           }
+       }
+   ],
+   "layout": {
+       "row": 5,
+       "column": 5,
+       "width": 2,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "Latest Pic"
+   },
+   "content": [
+       {
+           "template": "picture",
+           "source": "pictures",
+           "refresh": 5000,
+           "options": {
+           }
+       }
+   ],
+   "layout": {
+       "row": 3,
+       "column": 5,
+       "width": 2,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "wiredcraft values"
+   },
+   "content": [
+       {
+           "template": "sum",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+               "prepend": "",
+               "append": "K",
+               "subtitle": "visitors"
+           }
+       },
+       {
+           "template": "delta",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+           }
+       }
+   ],
+   "layout": {
+       "row": 1,
+       "column": 11,
+       "width": 2,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "devo.ps values"
+   },
+   "content": [
+       {
+           "template": "sum",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+               "prepend": "",
+               "append": "K",
+               "subtitle": "visitors"
+           }
+       },
+       {
+           "template": "delta",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+           }
+       }
+   ],
+   "layout": {
+       "row": 3,
+       "column": 11,
+       "width": 2,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "MailChimp Values"
+   },
+   "content": [
+       {
+           "template": "sum",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+               "prepend": "",
+               "append": "K",
+               "subtitle": "visitors"
+           }
+       },
+       {
+           "template": "delta",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+           }
+       }
+   ],
+   "layout": {
+       "row": 5,
+       "column": 11,
+       "width": 2,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "Wiredcraft Metrics"
+   },
+   "content": [
+       {
+           "template": "linechart",
+           "options": {
+               "points": 7
+           },
+           "refresh": 2000,
+           "source": "githubrepos"
+       }
+   ],
+   "layout": {
+       "row": 1,
+       "column": 7,
+       "height": 2,
+       "width": 4
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "devo.ps metrics"
+   },
+   "content": [
+       {
+           "template": "linechart",
+           "source": "githubrepos",
+           "refresh": 5000,
+           "options": {
+               "points": 7
+           }
+       }
+   ],
+   "layout": {
+       "row": 3,
+       "column": 7,
+       "width": 4,
+       "height": 2
+   }
+}'
+curl -X POST http://127.0.0.1:5984/widgets -H "Content-Type: application/json" -d '{
+   "config": {
+       "title": "MailChimp Stats"
+   },
+   "content": [
+       {
+           "template": "linechart",
+           "options": {
+               "points": 7
+           },
+           "source": "githubrepos",
+           "refresh": 5000
+       }
+   ],
+   "layout": {
+       "row": 5,
+       "column": 7,
+       "width": 4,
+       "height": 2
+   }
+}'
+
+
 echo "Widget Data Complete."
 
 echo "Posting Sources Data..."
