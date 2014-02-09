@@ -1,0 +1,8 @@
+name: Dashy
+description: A sample web application
+dependencies:
+  angular: any
+  browser: any
+  di: any
+  http: any
+  redis_client: any
