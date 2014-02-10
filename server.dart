@@ -16,7 +16,7 @@ class DashyServer {
 class DashyRouter extends Router {
   DashyRouter(HttpServer server) : super(server) {
     defaultStream.listen(serveDirectory('web', as: '../../../../'));
-    
+     
   }
 }
 
