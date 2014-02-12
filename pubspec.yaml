@@ -6,3 +6,5 @@ dependencies:
   di: any
   http: any
   redis_client: any
+  uuid: any
+  yaml: any

@@ -1,6 +1,3 @@
-
-import 'package:angular/angular.dart';
-
 class Widget {
   String content;
 
