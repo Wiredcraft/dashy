@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:route_hierarchical/server.dart';
 import 'package:path/path.dart' as path;
 import 'package:dashy/common/timed_event.dart';
+import 'package:uuid/uuid.dart';
 
 
 part 'dashy_router.dart';
