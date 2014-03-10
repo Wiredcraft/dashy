@@ -5,6 +5,7 @@ dependencies:
   browser: any
   di: any
   http: any
+  http_server: any
   redis_client: any
   uuid: any
   yaml: any

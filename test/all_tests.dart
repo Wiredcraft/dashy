@@ -1,7 +1,7 @@
 library all_tests;
 
-import 'components.dart' as components;
+import 'server/dashy/server_tests.dart' as server_tests;
 
 main() {
-  components.main();
+  server_tests.main();
 }

@@ -1,20 +1,73 @@
 part of dashy_server;
 
-
-
-var timedEventRoutePattern = new UrlPattern(r'/event/(\d+)');
-var tokenRequestRoutePattern = new UrlPattern(r'/token');
-
+var timedEventPattern = new UrlPattern(r'/event/(\d+)');
+var tokenRequestPattern = new UrlPattern(r'/token');
+var widgetStreamPattern = new UrlPattern(r'/widgets');
+var random = new Random();
+/**
+ * Sets up all the routes to their handlers. 
+ */
 class DashyRouter extends Router {
   DashyRouter(http, timedEventFlow, uuid) : super(http) {
-    serve(timedEventRoutePattern, method: 'POST')
+    serve(timedEventPattern, method: 'POST')
       .listen(handleTimedEventRequest(timedEventFlow));
-    serve(tokenRequestRoutePattern, method: 'GET')
+    serve(tokenRequestPattern, method: 'GET')
       .listen(handleTokenRequest(uuid));
-    defaultStream.listen(serveDirectory('web', as: '../../../../'));
+    serve(widgetStreamPattern, method: 'GET')
+      .listen((req) => WebSocketTransformer.upgrade(req).then(print));
+    serve('/ws')
+      .transform(new WebSocketTransformer())
+      .listen(handleWebSocket);
+    var buildPath = Platform.script.resolve('../build/web').toFilePath();
+      if (!new Directory(buildPath).existsSync()) {
+        print("The 'build/' directory was not found. Please run 'pub build'.");
+        return;
+      }    
+      
+
+    // Set up default handler. This will serve files from our 'build' directory.
+     var virDir = new VirtualDirectory(buildPath);
+     // Disable jail root, as packages are local symlinks.
+     virDir.jailRoot = false;
+     virDir.allowDirectoryListing = true;
+     virDir.directoryHandler = (dir, request) {
+       // Redirect directory requests to index.html files.
+       var indexUri = new Uri.file(dir.path).resolve('index.html');
+       virDir.serveFile(new File(indexUri.toFilePath()), request);
+     };
+     
+     virDir.errorPageHandler = (HttpRequest request) {
+           print("Resource not found: ${request.uri.path}");
+           request.response.statusCode = HttpStatus.NOT_FOUND;
+           request.response.close();
+         };  
+         
+     virDir.serve(defaultStream);
+     
+// Special handling of client.dart. Running 'pub build' generates
+ // JavaScript files but does not copy the Dart files, which are
+ // needed for the Dartium browser.
+ serve("/dashy.dart").listen((request) {
+   Uri clientScript = Platform.script.resolve("../web/dashy.dart");
+   virDir.serveFile(new File(clientScript.toFilePath()), request);
+ });
   }
 }
 
+handleWebSocket(WebSocket webSocket) {
+  print('new WebSocket connection');
+  webSocket.map((messageString) => JSON.decode(messageString))
+  .listen((messageJson) {
+    var request = messageJson['request'];
+    switch (request) {
+      case 'CPU':
+        var input = messageJson['input'];
+        print(input);
+        webSocket.add(JSON.encode({ 'response' :  random.nextDouble(1.0)}));
+      break;
+    }
+  });
+}
 
 handleTimedEventRequest(TimedEventFlows timedEventFlows)
   => (HttpRequest req) {
@@ -23,7 +76,7 @@ handleTimedEventRequest(TimedEventFlows timedEventFlows)
         onDone: () { 
           req.response.write('kthxbai');
           req.response.close();
-          timedEventFlows.add(timedEventRoutePattern.parse(req.uri.path)[0], 
+          timedEventFlows.add(timedEventPattern.parse(req.uri.path)[0], 
               JSON.decode(UTF8.decode(body)));
         });
 };

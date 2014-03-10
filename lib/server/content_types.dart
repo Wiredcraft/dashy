@@ -83,7 +83,6 @@ Function serveDirectory(String dirPath, {String as,
     var reqPath = req.uri.path;
     var relativePath = path.relative(reqPath, from: prefix);
     var filePath = path.join(dirPath, relativePath);
-    print(filePath);
     // don't serve hidden files or allow ../ shenanigans
     if (filePath.startsWith('.') ||
         reqPath.toString().contains('..')) {

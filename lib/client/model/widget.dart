@@ -1,11 +1,7 @@
-class Widget {
-  String content;
+library widgets;
 
-  Widget.fromJson(Map json) {
-    content = json['content'];
-  }
+part 'gauge.dart';
 
-  Map toJson() {
-    return {'content' : content};
-  }
+abstract class Widget {
+
 }

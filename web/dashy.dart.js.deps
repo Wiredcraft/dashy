@@ -125,6 +125,7 @@ file:///Users/baruch/Downloads/dart 2/dart-sdk/lib/web_audio/dart2js/web_audio_d
 file:///Users/baruch/Downloads/dart 2/dart-sdk/lib/web_gl/dart2js/web_gl_dart2js.dart
 file:///Users/baruch/Downloads/dart 2/dart-sdk/lib/web_sql/dart2js/web_sql_dart2js.dart
 file:///Users/baruch/Wiredcraft/dashy/web/dashy.dart
+file:///Users/baruch/Wiredcraft/dashy/web/packages/Dashy/client/directive/gauge.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/angular/angular.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/angular/bootstrap.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/angular/core/cache.dart
@@ -205,8 +206,8 @@ file:///Users/baruch/Wiredcraft/dashy/web/packages/angular/routing/routing.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/angular/utils.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/collection/src/unmodifiable_wrappers.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/collection/wrappers.dart
-file:///Users/baruch/Wiredcraft/dashy/web/packages/dashy/client/component/widgets/widgets_component.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/dashy/client/dashy.dart
+file:///Users/baruch/Wiredcraft/dashy/web/packages/dashy/client/lib/d3js.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/di/di.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/di/dynamic_injector.dart
 file:///Users/baruch/Wiredcraft/dashy/web/packages/di/errors.dart
