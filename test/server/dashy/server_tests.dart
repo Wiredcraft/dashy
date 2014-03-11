@@ -1,7 +1,6 @@
 library dashy_server_tests;
 
 import 'dart:async';
-import 'dart:html' as Http;
 import 'package:uuid/uuid.dart';
 import 'package:unittest/unittest.dart';
 import 'package:dashy/server/dashy_server.dart';
@@ -19,7 +18,7 @@ main() {
   setUp(() {
     controller = new StreamController.broadcast();
     timedEventFlows = new TimedEventFlows();
-    uuid = new Uuid();
+    uuid = new UuidBase();
     router = new DashyRouter(controller.stream, timedEventFlows, 
                              uuid);
     dashyServer = new DashyServerMock(controller.stream, router, null);
@@ -36,13 +35,17 @@ main() {
       });
       
       it('should transform HttpRequests to WebSockets connections', () {
-//         var webSocket = new Http.WebSocket
-//             ('ws://${Uri.base.host}:${Uri.base.port}/ws');
-//         TODO (bbss) work on mockHttpRequest or spin up server with actual client
+      //TODO (bbss) decide to test on server or mock out
+      });
+    });
+    describe('key request handler', () {
+      it('should respond with a unique ID for GET key-requests', () {
+        
+      });
+      it('should deny requests with an existing ID' , () {
         
       });
     });
-
     
   });
 }

@@ -1,8 +1,8 @@
 part of dashy_server;
 
-var timedEventPattern = new UrlPattern(r'/event/(\d+)');
-var tokenRequestPattern = new UrlPattern(r'/token');
-var widgetStreamPattern = new UrlPattern(r'/widgets');
+var timedEventPattern = r'/event/(\d+)';
+var tokenRequestPattern = r'/token';
+var widgetStreamPattern = r'/widgets';
 var random = new Random();
 /**
  * Sets up all the routes to their handlers. 
@@ -22,7 +22,7 @@ class DashyRouter extends Router {
       if (!new Directory(buildPath).existsSync()) {
         print("The 'build/' directory was not found. Please run 'pub build'.");
         return;
-      }    
+      }
       
 
     // Set up default handler. This will serve files from our 'build' directory.
@@ -81,7 +81,7 @@ handleTimedEventRequest(TimedEventFlows timedEventFlows)
         });
 };
 
-handleTokenRequest(Uuid uuid) =>
+handleTokenRequest(UuidBase uuid) =>
     (HttpRequest req) {
     req.response.write(uuid.v1());
     req.response.close();

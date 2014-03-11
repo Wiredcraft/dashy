@@ -3,7 +3,7 @@ library gauge_component;
 import 'dart:html';
 import 'package:angular/angular.dart';
 import '../../model/widget.dart';
-import '../../lib/d3js.dart';
+import '../../js_lib/d3js.dart';
 
 
 @NgComponent(

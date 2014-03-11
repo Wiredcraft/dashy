@@ -25,8 +25,7 @@ main() {
       
       RedisClient.connect('127.0.0.1:6379')
         .then((redis) => new DashyServer(server, 
-            new DashyRouter(server, new TimedEventFlows(), new Uuid()), redis));
-      
+            new DashyRouter(server, new TimedEventFlows(), new UuidBase()), redis));
        });
   
   
