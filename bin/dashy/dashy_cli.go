@@ -52,5 +52,11 @@ func storeDataSourcesInRedis(dataSources []*DataSource) {
 		panic(err)
 	}
 	defer connection.Close()
-	connection.Do("HSET", "datasource/" + dataSources[0].ID, "Name",  dataSources[0].Name)
+	for _, datasource := range dataSources {
+		connection.Do("HSET", "datasource/" + datasource.ID, "Name",  datasource.Name)
+		for _, webhook := range datasource.Webhooks {
+			connection.Do("SADD", "datasource/" + datasource.ID + "/webhooks", webhook)
+		}
+	}
 }
+

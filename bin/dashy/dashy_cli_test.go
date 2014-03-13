@@ -42,6 +42,16 @@ func TestStoreDataSource(t *testing.T) {
 		//Getting checking if the fields have been set correctly
 		name, _ := redis.String(connection.Do("HGET", "datasource/" + idString, "Name"))
 		So(name, ShouldEqual, "Pretty Name")
-			
+		Convey("and should do so for multiple dataSources", func() {
+		var otherIdString = "some-other-id"
+		dataSources = []*DataSource{&DataSource{idString, "Pretty Name", []string{"test-webhook"}}, {otherIdString, "Pretty Name", []string{"test-other-webhook"}}}	
+		storeDataSourcesInRedis(dataSources)
+		
+		connection, _ := redis.Dial("tcp", ":6379")
+		defer connection.Close()
+		webhooks, _ := redis.Strings(connection.Do("SMEMBERS", "datasource/" + otherIdString + "/webhooks"))
+		So(webhooks, ShouldResemble, []string{"test-other-webhook"})
+		})
 	})
 }
+
