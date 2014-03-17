@@ -1,4 +1,3 @@
-id: gh
 name: GitHub
-webhooks: -asd
+webhooks: -guessable-webhook
           -asdf

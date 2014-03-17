@@ -1,4 +1,4 @@
-package dashy
+package datasource_configurator
 
 import (
 	"fmt"
@@ -12,6 +12,10 @@ import (
 type DataSource struct {
 	ID, Name  string
 	Webhooks []string
+}
+
+func DataSourcesFromConfigurationFiles() []*DataSource {
+	return dataSourcesGetter(directoryIndexer("sources/*.yaml"))
 }
 
 func directoryIndexer(directory string) []string {

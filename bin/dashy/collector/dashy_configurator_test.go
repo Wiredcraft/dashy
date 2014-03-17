@@ -1,4 +1,4 @@
-package dashy 
+package datasource_configurator
 
 import(
 	"fmt"
