@@ -1,49 +1,76 @@
 package dashy
 
 import (
+	"fmt"
+	"errors"
 	"path/filepath"
 	"github.com/kylelemons/go-gypsy/yaml"
 	"strconv"
 	"github.com/garyburd/redigo/redis"
 )
 
-func DataSourcesGetter(paths []string) []*DataSource {
-	dataSources := make([]*DataSource, len(paths))
-	for i, v := range paths {
-		dataSources[i] = NewDataSourceFromPath(v)
-	}
-
-	return dataSources
-}
-
-func DirectoryIndexer(directory string) []string {
-	files, _ := filepath.Glob(directory) 
-	return files
-}
-
 type DataSource struct {
 	ID, Name  string
 	Webhooks []string
 }
 
-func NewDataSourceFromPath(path string) *DataSource {
-	result, _ := yaml.ReadFile(path)
-	id, _ := result.Get("id")
-	name, _ := result.Get("name")
-	length, _  := result.Count("webhooks")
+func directoryIndexer(directory string) []string {
+	files, _ := filepath.Glob(directory) 
+	return files
+}
+
+func dataSourcesGetter(paths []string) []*DataSource {
+	dataSources := make([]*DataSource, len(paths))
+	for i, v := range paths {
+		dataSources[i] = newDataSourceFromPath(v)
+	}
+	err := allWebhooksUnique(dataSources)
+	if err != nil {
+		panic(err)
+	}
+	return dataSources
+}
+
+func newDataSourceFromPath(path string) *DataSource {
+	file, _ := yaml.ReadFile(path)
+	fName := filepath.Base(path)
+	extName := filepath.Ext(path)
+	bName := fName[:len(fName)-len(extName)]
+	id := bName
+
+	name, _ := file.Get("name")
+	length, _  := file.Count("webhooks")
 	if length < 0 {
 		length = 0
 	}
 	webhooks := make([]string, length)
 	for i := 0 ; i < length ; i++  {
 		it := strconv.Itoa(i)
-		webhooks[i], _ = result.Get("webhooks[" + it + "]")	
+		webhooks[i], _ = file.Get("webhooks[" + it + "]")
 	}
 	dataSource := new(DataSource)
 	dataSource.ID = id
 	dataSource.Name = name
 	dataSource.Webhooks = webhooks
 	return dataSource
+}
+
+func allWebhooksUnique(dataSources []*DataSource) error {
+	webhooks := make(map[string]bool)
+
+	for _, dataSource := range dataSources {
+		 for _, val := range dataSource.Webhooks {
+		 	_, alreadyInWebhooks := webhooks[val]
+		 	if alreadyInWebhooks == true {
+		 		return errors.New("webhook " + val + " already registered")
+		 	}
+		 	//set a value to store webhook in map
+		 	webhooks[val] = true
+		}
+	}
+
+
+	return nil 
 }
 
 func storeDataSourcesInRedis(dataSources []*DataSource) {
@@ -60,3 +87,6 @@ func storeDataSourcesInRedis(dataSources []*DataSource) {
 	}
 }
 
+func shutUpCompiler() {
+	fmt.Println("I am not used")
+}
