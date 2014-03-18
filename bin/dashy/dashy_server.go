@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 	// "fmt"
+	"io"
 	"encoding/json"
 )
 
@@ -34,18 +35,19 @@ func ListenForRequests(dataSources []*datasource_configurator.DataSource) http.H
 	
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		if request.Method == "POST" && dashySession.webhooksDataSourcesMap[request.URL.Path] != nil {
-			
+			newTimedEventFromRequest(request.Body)
 		} else {
 			writer.WriteHeader(404)
 		}
  	})
 }
 
-func newTimedEventsFromJsonData(jsonData []byte) []TimedEvent{
-		var timedEvents []TimedEvent
-		err := json.Unmarshal(jsonData, &timedEvents)
+func newTimedEventFromRequest(body io.Reader) TimedEvent {
+		var timedEvent TimedEvent
+		decoder := json.NewDecoder(body)
+		err := decoder.Decode(&timedEvent)
 		if err != nil {
 			panic(err)
 		}
-		return timedEvents
+		return timedEvent
 }
