@@ -1,7 +1,6 @@
 package datasource_configurator
 
 import (
-	"fmt"
 	"errors"
 	"path/filepath"
 	"github.com/kylelemons/go-gypsy/yaml"
@@ -89,8 +88,4 @@ func storeDataSourcesInRedis(dataSources []*DataSource) {
 			connection.Do("SADD", "datasource/" + datasource.ID + "/webhooks", webhook)
 		}
 	}
-}
-
-func shutUpCompiler() {
-	fmt.Println("I am not used")
 }

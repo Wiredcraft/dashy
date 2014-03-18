@@ -1,13 +1,15 @@
 package dashy_server
 
 import( 
-	"fmt"
+	// "fmt"
 	"testing"
 	"github.com/bbss/dashy/bin/dashy/collector"
 	. "github.com/smartystreets/goconvey/convey"
 	"net/http/httptest"
 	"net/http"
 	"net/url"
+	"time"
+	"encoding/json"
 )
 
 func TestListenForRequests(t *testing.T) {
@@ -34,7 +36,28 @@ func TestListenForRequests(t *testing.T) {
 
 }
 
+func TestNewTimedEventsFromJsonData(t *testing.T) {
+	Convey("Timed Events should be created from correct format JSON data", t, func() {
+		var rightNow = time.Now().UTC().Format(time.RFC3339Nano)
+		var rightNowString = string(rightNow)
+		var jsonData = []byte(`[
+			{"eventType" : "commit", "time" : "` + rightNowString + `",
+			 "data" : {"some-field" : "some-value",
+					   "some-other-field" : "some-other-value"}}
+			]`)
+		var jsonDataDataField = []byte(`
+			 {"some-field" : "some-value",
+					   "some-other-field" : "some-other-value"}
+			`)
+		var dat map[string]string
+		if err := json.Unmarshal(jsonDataDataField, &dat); err !=nil {
+			panic(err)
+		}
 
-func sshutUpCompiler () {
-	fmt.Println("")
+		timedEvents := newTimedEventsFromJsonData(jsonData)
+		So(timedEvents[0].Time.UTC().Format(time.RFC3339Nano), ShouldEqual, rightNow)
+		So(timedEvents[0].EventType, ShouldEqual, "commit")
+		So(timedEvents[0].Data, ShouldResemble, dat)
+	})
 }
+

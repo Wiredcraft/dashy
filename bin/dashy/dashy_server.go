@@ -4,10 +4,20 @@ package dashy_server
 import (
 	"github.com/bbss/dashy/bin/dashy/collector"
 	"net/http"
+	"time"
+	// "fmt"
+	"encoding/json"
 )
 
 type DashySession struct {
 	webhooksDataSourcesMap map[string]*datasource_configurator.DataSource
+}
+
+
+type TimedEvent struct {
+	EventType string `json "eventType"`
+	Time time.Time   `json:"time"`
+	Data map[string]string `json: "data"`
 }
 
 func ListenForRequests(dataSources []*datasource_configurator.DataSource) http.Handler {
@@ -29,4 +39,13 @@ func ListenForRequests(dataSources []*datasource_configurator.DataSource) http.H
 			writer.WriteHeader(404)
 		}
  	})
+}
+
+func newTimedEventsFromJsonData(jsonData []byte) []TimedEvent{
+		var timedEvents []TimedEvent
+		err := json.Unmarshal(jsonData, &timedEvents)
+		if err != nil {
+			panic(err)
+		}
+		return timedEvents
 }
