@@ -1,13 +1,12 @@
-name: Dashy
+name: dashy
 description: A sample web application
 dependencies:
-  angular: any
+  angular:
+    git:
+      url: git://github.com/angular/angular.dart.git
   browser: any
-  di: any
-  http: any
-  http_server: any
-  redis_client: any
-  uuid: any
+  unittest: any
   yaml: any
-  args: any
-  route: ">=0.4.0 <0.5.0"
+
+transformers:
+- angular
