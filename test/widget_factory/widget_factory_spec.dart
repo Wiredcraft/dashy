@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:unittest/unittest.dart' as unit;
 import 'package:yaml/yaml.dart';
-import 'package:dashy/client/widget_factory.dart';
+import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/widget/widget.dart';

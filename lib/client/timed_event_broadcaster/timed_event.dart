@@ -1,6 +1,9 @@
 part of timed_event_broadcaster;
 
-
+/**
+ * The [TimedEvent] is what all the new update messages from the dashy server
+ * get translated to.
+ */
 class TimedEvent {
   String id;
   String dataSource;

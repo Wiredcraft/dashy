@@ -1,4 +1,4 @@
-library websocket_wrapper;
+library dashy.websocket_wrapper;
 
 import 'dart:async';
 import 'dart:convert';
@@ -9,6 +9,12 @@ import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dar
 
 const RECONNECT_DELAY = 500;
 
+/**
+ * The [WebSocketWrapper] has the responsibility of keeping the messages from
+ * the back-end flowing to the [MessageRouter]. It maintains the connection
+ * and deserializes incoming messages before sending them of to the
+ * [MessageRouter]
+ */
 @Injectable()
 class WebSocketWrapper {
   bool connectPending = false;

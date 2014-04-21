@@ -5,7 +5,7 @@ import 'package:dashy/client/app/app.dart';
 import 'package:dashy/client/app/app_component.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
 import 'package:dashy/client/widget/widget_component.dart';
-import 'package:dashy/client/widget_factory.dart';
+import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import '../_test_module.dart';
 import '../_specs.dart';

@@ -1,4 +1,5 @@
-library widget_factory;
+library dashy.widget_factory;
+
 
 import 'dart:html';
 import 'dart:async';
@@ -9,8 +10,14 @@ import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 
+part 'widget_configuration.dart';
+
 /**
- * The [WidgetModelFactory] creates widgets based on configuration.
+ * The [WidgetFactory] creates widgets based on configuration. It
+ * converts a configuration yaml string to new widgets which need the
+ * [TimedEventBroadcaster] to subscribe to the datasources they
+ * are interested in. Finally it uses the newWidgets [StreamController] to
+ * add new widgets to the [App]s' model
  */
 @Injectable()
 class WidgetFactory {
@@ -48,24 +55,5 @@ class WidgetFactory {
 
 }
 
-class WidgetConfiguration {
-  String id;
-  Set dataSources = new Set();
-  String type;
-
-  WidgetConfiguration.fromMap(map) {
-    map.forEach((k, settings) {
-      id = k;
-      type = settings['type'];
-
-      settings['attributes'].forEach((attributeOnWidget, dataSource) {
-        dataSource.forEach((dataSource, attributeOnTimedEvent) {
-          dataSources.add(dataSource);
-        });
-      });
-
-    });
-  }
-}
 
 

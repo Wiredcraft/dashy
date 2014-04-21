@@ -1,67 +1,98 @@
-##New direction for dashy
+#Dashy
 
-New version of dashy using Dart & Redis
+Dashy is a low profile dashboard app. It is a simple API endpoint that
+listens to post requests with new _events_. Dashy tries to be as non invasive as
+ possible when it comes to data collection, data collection will be done by
+ workers that the user provides himself. These workers are _DataSources_ in
+ Dashy lingo, and push their _events_ to a "webhook" address that the dashy
+ server listens to.
+ This dashy server also hosts the dashboard web app and lets the user
+ configure _widgets_. The different types of widgets can make known which
+ attributes on which datasources they want to subscribe to. By attributes is
+ meant the keys of the "data" map that an event contains:
+```
+{
+"time" : UTCTIMESTAMP,
+"data" : {
+  "some-attribute" : "some-value",
+  "some-other-attribute" : "some-value"
+  }
+}
+```
 
-Running project:
 
-Install:
-Dart & Redis
+##Development dependencies:
+Dart, Go & Redis
 
 You can download the official [Dart Editor](https://www.dartlang.org/tools/download.html),
  download plug-ins for your favorite IDE, or just download the dart-sdk and run
  the scripts from the command line.
 
-Dart, just like JavaScript runs on the server and client. In order to run you 
-need to have the `dart-sdk` binaries installed and run the following command from 
-the root directory:
-
-    `dart server.dart' 
-
-this will start the WebServer, connect to Redis and starts
-listening to webrequests on `localhost:1337/index.html`.
+Go is installed by following the steps at  [http://golang.org/doc/install]
+(http://golang.org/doc/install)
 
 
-##Accessing the API.
-The Web-App will provide the user with a datasource-identifying `DataSourceToken`.
-This token can be used to link a datasource/worker that is making POST requests 
-to the the following URL: `localhost:1337/event/SOME_TOKEN`
+##Using dashy
+  - Write a .yaml file outlining the configuration of a datasource and put it
+   in the web/sources/ folder. A configuration for the CPU datasource would
+   look like this:
+```yaml
+name: Cpu Pretty Name
+webhooks:
+        - h31i-asdj-23ja-zxm9 #obscure webhook
+        - CPU-webhook
+```
+
+ - Write a .yaml file outlining the widgets configurations. The widget
+ declares in which looks like the following:
+
+```yaml
+widgets:
+- some-widget-id:
+    attributes:
+      attribute-name:
+        DATASOURCE_ID: attribute-name
+    type: Gauge
+```
+
+  - Start the server, which will set up listeners for all the webhooks found in
+  the .yaml files. So now the workers can push POST requests to the webhooks
+  they registered in the datasource configuration yaml.
+  - Go to localhost:8081 to view dashboard.
 
 
 ##The architecture
 
-The architecture can be described by these concepts:
+The architecture of the server revolves for a great deal around Channels.
+On the client side this is comparable to the StreamController. They are
+asynchronous messaging mechanisms.
 
-A _TimedEvent_ which can be serialized to the following JSON format:
+The Client side:
 
-A _DashyServer_ that listens to incoming HTTP requests, handling serving the 
-web-assets and providing an API for incoming _TimedEvents_.
+App
+The App model is responsible for maintaining a collection of Widgets.
 
-Handling the HttpRequests is the _DashyRouter_, it listens to the HttpServer and
-spins up handler functions that move the HttpRequests where they need to go.
+WebSocketWrapper
+The WebSocketWrapper has the responsibility of keeping the messages from the back-end flowing to the MessageRouter. It maintains the connection and deserializes incoming messages before sending them of to the MessageRouter
 
-When a _DataSource_ makes a call to the API the handler will invoke the 
-_TimedEventFlows_ object to match the _DataSourceToken_ to a StreamController.
-The HttpRequest will then be read and transformed into a TimedEvent, which will
-be added to the StreamController.
+MessageRouter
+The MessageRouter is responsible for sending the incoming messages from the right recipient. For instance on a new "update" type message from the WebSocketsWrapper, this will send a new TimedEvent to the TimedEventBroadcaster.
 
--below not implemented yet-
-Interested in this _TimedEventFlow_ (StreamController) is _RedisStorage_ which 
-stores the TimedEvents.
+TimedEvent
+The TimedEvent is what all the new update messages from the dashy server get translated to.
 
-Also interested in this _TimedEventFlow_ will be the WebApp, which will receive 
-an event via WebSockets and update it's widgets accordingly. 
+TimedEventBroadcaster
+The TimedEventBroadcaster is responsible for coordinating the flow of new TimedEvents to the registered objects. It is a step in the configuration of a new WidgetModel where it maps the DataSources to StreamControllers and then listens to new TimedEvent on the [newMessages] [StreamController].
 
-In order to register the datasource the configuring user receives from the 
-_WebApp_ a _DataSourceToken_. Which the datasource service uses in the URL of its' POST 
-request to the API.
+Widget
+Contains information on the layout of the widget and which type it is. Its "type" is inferred by the model variable.
 
-The _WebApp_ has a _DataSourceConfigurationView_ in which the
-_DataSourceToken(s)_ are presented. The user can add new widgets in the 
-_WidgetsView_ where pressing the add button will show the _WidgetMappingView_ 
-which will contain 2 views: one to select a _WidgetType_ and the other to map 
-required/optional configuration options for the _WidgetType_.
+WidgetComponent
+The widgetComponent has the responsibility of keeping the widgets model to the view and loading the correct type of widget.
 
-An additional _DashboardsView_ enables the configuring user to import and 
-export dashboards and widgets using a YAML format.
+WidgetConfiguration
+The WidgetConfiguration object is responsible for deserialising a widget
+configuration from a map parsed from the widgets configuration file by the WidgetFactory.
 
-
+WidgetFactory
+The WidgetFactory creates widgets based on configuration. It converts a configuration yaml string to new widgets which need the TimedEventBroadcaster to subscribe to the datasources they are interested in. Finally it uses the newWidgets StreamController to add new widgets to the Apps' model

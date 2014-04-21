@@ -13,14 +13,12 @@ module.exports = function(config) {
       'test/**/*_spec.dart',
       {pattern: '**/*.dart', watched: true, included: false, served: true},
       'packages/browser/dart.js',
-      'packages/browser/interop.js',
       'packages/shadow_dom/shadow_dom.debug.js'
     ],
 
-//    exclude: [
-//      'test/io/**',
-//      'test/tools/transformer/**'
-//    ],
+    exclude: [
+      'dartdoc-viewer/*'
+    ],
 
     autoWatch: false,
 
@@ -42,10 +40,6 @@ module.exports = function(config) {
     },
 
     browsers: ['Dartium'],
-
-//    preprocessors: {
-//      'test/core/parser/generated_getter_setter.dart': ['parser-getter-setter']
-//    },
 
     junitReporter: {
       outputFile: 'test_out/unit.xml',

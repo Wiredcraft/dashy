@@ -1,12 +1,15 @@
-library timed_event_broadcaster;
+library dashy.timed_event_broadcaster;
 
 import 'dart:async';
 import 'package:angular/angular.dart';
 
 part 'timed_event.dart';
+
 /**
- * The TimedEventFactory is responsible for coordinating the flow of new
- * [TimedEvent]s to the registered objects.
+ * The [TimedEventBroadcaster] is responsible for coordinating the flow of new
+ * [TimedEvent]s to the registered objects. It is a step in the configuration of a new
+ * [WidgetModel] where it maps the [DataSource]s to [StreamController]s and
+ * then listens to new [TimedEvent] on the [newMessages] [StreamController].
  */
 @Injectable()
 class TimedEventBroadcaster {

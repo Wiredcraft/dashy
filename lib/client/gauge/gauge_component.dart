@@ -4,7 +4,9 @@ import 'dart:html';
 import 'dart:svg';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/gauge/gauge.dart';
-
+/**
+ * The [GaugeComponent] is the glue between the view template and the model.
+ */
 @Component(
   selector: 'gauge',
   templateUrl: 'packages/dashy/client/gauge/gauge.html',
