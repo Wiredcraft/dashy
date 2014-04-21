@@ -4,6 +4,8 @@
 !.gitmodules
 npm-debug.log
 /node_modules
+/packages
+/build
 
 # OS generated files #
 ######################

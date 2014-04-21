@@ -1,0 +1,12 @@
+name: dashy
+description: A sample web application
+dependencies:
+  angular:
+    git:
+      url: git://github.com/angular/angular.dart.git
+  browser: any
+  unittest: any
+  yaml: any
+
+transformers:
+- angular

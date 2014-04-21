@@ -1,148 +1,98 @@
-##Install these first!
+#Dashy
 
-NodeJS & CouchDB
-
-Dev - Grunt must be installed, Ruby must be installed for the compass gem.
-Compass - `gem update && gem install compass`
-
-
-##Start it up
-Read INSTALL.md for latest installation instructions
-
-1. Clone the repo
-2. `cd` into repo
-3. `npm install`
-4. `./install/dashr`
-4. `npm start`
-5. Go to `http://localhost:4000/`
-6. Dev: Open a new terminal window and run grunt when working on css
-
-
-##Known Bugs + To Do
-
-Can be found in the wiki or [here](https://hackpad.com/Dashy-jjdu6nzpWnk) (hackpad.com)
+Dashy is a low profile dashboard app. It is a simple API endpoint that
+listens to post requests with new _events_. Dashy tries to be as non invasive as
+ possible when it comes to data collection, data collection will be done by
+ workers that the user provides himself. These workers are _DataSources_ in
+ Dashy lingo, and push their _events_ to a "webhook" address that the dashy
+ server listens to.
+ This dashy server also hosts the dashboard web app and lets the user
+ configure _widgets_. The different types of widgets can make known which
+ attributes on which datasources they want to subscribe to. By attributes is
+ meant the keys of the "data" map that an event contains:
+```
+{
+"time" : UTCTIMESTAMP,
+"data" : {
+  "some-attribute" : "some-value",
+  "some-other-attribute" : "some-value"
+  }
+}
+```
 
 
-##API
+##Development dependencies:
+Dart, Go & Redis
 
-`/widget` - returns list of widgets
+You can download the official [Dart Editor](https://www.dartlang.org/tools/download.html),
+ download plug-ins for your favorite IDE, or just download the dart-sdk and run
+ the scripts from the command line.
 
-`/widget/:id` - returns a widget by Id
-
-`/sources` - returns list of sources (must be manually set up, settings.js)
-
-`/:database` (eg. `/githubrepos`) - returns data set of datasource using the view that is created when adding to the /sources
-
-- /widget
-	- GET - `/widget`
-	- POST - `/widget`
-	- PUT - `/widget/:id`
-	- DELETE - `/widget/:id`
-- /sources
-	- GET - `/sources`
-- /:database
-	- GET - `/:database`
-	- POST - `/:database`
-	- PUT - `/:database/:id`
-	- DELETE - `/:database/:id`
-	
-
-##Files
-*Controllers*
-
-- `main_controller.js` - Main controller, handles getting getting the list of widgets and their data.
-- `admin_controller.js` - Admin controller, contains logic for adding and updating widgets.
-
-*Directives*
-
-- `tags_directives.js` - Directives for Widget tags, contains logic for all widgets. (eg. update & delete buttons active functions in the directive controllers)
-- `charts_directives.js` - Directives for templates, contains the logic for all templates that can be placed on a widget (eg. linechart, gauge, countdown, etc…)
-
-*Factories*
-
-- `formatters.js` - Formatting functions that can be used by anything, however mainly made for templates in `charts_directives.js` (eg. the "sum" template uses the "Number" formatter, a quick look at the code should give you a good idea of how to utilize this.)
-- `widgets_factory.js` - Where the app meets database, all calls for data, sources happen here. Also the functions for adding, updating and deleting widgets are here. There are 3 Sections to it: Widgets, Sources, Admin. Widgets contains functions for getting widget information, either all or by ID. Sources contains a function for getting the source databases.
-
-*Filters*
-
-- `filters.js` - General filters that can be used on templates/partials.
-
-*Utils*
-
-- `utils.js` - not used at the moment, may replace formatters.js in the future.
-
-*Other*
-
-- `routes.js` - handles routing for dashy.
-
-*Partials* - contains html pages / templates that make up the structure of dashy.
-
-*Templates* - contains html templates for widget templates (aka `charts_directives`) that need a template.
+Go is installed by following the steps at  [http://golang.org/doc/install]
+(http://golang.org/doc/install)
 
 
-## Adding a Widget Template
-Steps to successfully add a widget template;
+##Using dashy
+  - Write a .yaml file outlining the configuration of a datasource and put it
+   in the web/sources/ folder. A configuration for the CPU datasource would
+   look like this:
+```yaml
+name: Cpu Pretty Name
+webhooks:
+        - h31i-asdj-23ja-zxm9 #obscure webhook
+        - CPU-webhook
+```
 
-1. Add a directive for your template into `charts_directives.js`.
-2. If it needs an html template add it into the `/templates` folder.
-3. As of v0.0.2, If you want your directive to be selectable in the admin interface, you must add your directive information (name & possible options) into `$scope.dbWidgets` inside `admin_controllers.js`. A solution for this is being worked on, however if you plan to add your widget via couchDB you can skip this step.
+ - Write a .yaml file outlining the widgets configurations. The widget
+ declares in which looks like the following:
 
-## Adding a Source Database
-In order to add a new datasource to the widget, you must first define it in the `settings.js` file. Below is an example of the database `githubrepos` being defined inside `settings.js`
+```yaml
+widgets:
+- some-widget-id:
+    attributes:
+      attribute-name:
+        DATASOURCE_ID: attribute-name
+    type: Gauge
+```
 
-        githubrepos: {
-            // couchdb view content
-            viewDocContent : {
-                all : {
-                    map : function(doc) {
-                        if (doc.time && doc.data) {
-                            emit(doc._rev,{
-                                'time' : doc.time,
-                                'data' : doc.data
-                            });
-                        }
-                    }
-                }
-            },
-            // for basic validation at router side
-            validate : function (oData) {
-                if (oData && oData.time && oData.data) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
-        
-Now `http://apiUrl.com/githubrepos` will retrun an array of objects. Each one looking similar to the object below.
-        
-	{
-		id: "5520d3749727a68339b7eac5ff02b955",
-		key: "1-02ae2b48cd8ec63984f323ec0846c086",
-		value: {
-			time: "2013-08-30T21:42:21+0800",
-			data: {
-				value: 582.13
-			}
-		}
-	}
-        
-
-It is recommended that this be the first thing you do as this will create the CouchDB database for you, and also add the design/view defined in the settings. Restarting `npm start` will be required for changes to take effect.
-
-`Needs verification` - To change the design/view at a later time you must manually add it into CouchDB yourself.
+  - Start the server, which will set up listeners for all the webhooks found in
+  the .yaml files. So now the workers can push POST requests to the webhooks
+  they registered in the datasource configuration yaml.
+  - Go to localhost:8081 to view dashboard.
 
 
-##CouchDB
-Names of Databases in use:
- 
- - `widgets` - Widget configuration documents
- - `sources` - Documents containing source information
- - And various user-defined datasource databases.
+##The architecture
 
-###Replication
-Should you need to replicate a database from another machine use the following code
+The architecture of the server revolves for a great deal around Channels.
+On the client side this is comparable to the StreamController. They are
+asynchronous messaging mechanisms.
 
-`curl -H 'Content-Type: application/json' -X POST http://localhost:5984/_replicate -d ' {"source": "http://SOURCE-URL:5984/DATABASE_TO_REPLICATE", "target": "db_to_replicate_into", "create_target":true} '`
+The Client side:
 
-create target creates the database if you have not yet created it.
+App
+The App model is responsible for maintaining a collection of Widgets.
+
+WebSocketWrapper
+The WebSocketWrapper has the responsibility of keeping the messages from the back-end flowing to the MessageRouter. It maintains the connection and deserializes incoming messages before sending them of to the MessageRouter
+
+MessageRouter
+The MessageRouter is responsible for sending the incoming messages from the right recipient. For instance on a new "update" type message from the WebSocketsWrapper, this will send a new TimedEvent to the TimedEventBroadcaster.
+
+TimedEvent
+The TimedEvent is what all the new update messages from the dashy server get translated to.
+
+TimedEventBroadcaster
+The TimedEventBroadcaster is responsible for coordinating the flow of new TimedEvents to the registered objects. It is a step in the configuration of a new WidgetModel where it maps the DataSources to StreamControllers and then listens to new TimedEvent on the [newMessages] [StreamController].
+
+Widget
+Contains information on the layout of the widget and which type it is. Its "type" is inferred by the model variable.
+
+WidgetComponent
+The widgetComponent has the responsibility of keeping the widgets model to the view and loading the correct type of widget.
+
+WidgetConfiguration
+The WidgetConfiguration object is responsible for deserialising a widget
+configuration from a map parsed from the widgets configuration file by the WidgetFactory.
+
+WidgetFactory
+The WidgetFactory creates widgets based on configuration. It converts a configuration yaml string to new widgets which need the TimedEventBroadcaster to subscribe to the datasources they are interested in. Finally it uses the newWidgets StreamController to add new widgets to the Apps' model

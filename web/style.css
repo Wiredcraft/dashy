@@ -1,0 +1,14 @@
+
+body {
+  background-color: #5C5C5C;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.2em;
+  margin: 15px;
+  color:white;
+}
+
+h1, p {
+  color: white;
+}
