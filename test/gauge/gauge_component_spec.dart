@@ -1,6 +1,7 @@
 library gauge_component_spect;
 
 import '../_specs.dart';
+import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'dart:async';
@@ -17,19 +18,18 @@ main() {
     });
 
     it('component should update percentage with data it gets from the model', async(
-      inject((Scope scope, MockHttpBackend backend, VmTurnZone zone,
+      inject((MockHttpBackend backend, VmTurnZone zone,
               Compiler compile,
               Injector injector, DirectiveMap directives) {
-        var __ = new StreamController();
+        var mockTimedEvents = new StreamController();
+        var valueOne = new TimedEvent(null, null, null, {"value":1});
+        var valueTwo = new TimedEvent(null, null, null, {"value":2});
 
-        Gauge gauge = new Gauge([__.stream]);
-        gauge.value = 1;
+        Gauge gauge = new Gauge([mockTimedEvents.stream]);
 
         backend.whenGET('packages/dashy/client/gauge/gauge.html')
-      .respond(
-            '<svg>'
-            '{{comp.gauge.currentValue}}'
-            '</svg>'
+        .respond(200,
+        '{{comp.gauge.currentValue}}'
         );
 
         var element = e('<gauge gauge="g" probe="i"></gauge>');
@@ -41,15 +41,19 @@ main() {
 
         GaugeComponent gaugeComponent = probe.directive(GaugeComponent);
 
+        microLeap();
         backend.flush();
         microLeap();
-
         _.rootScope.apply();
-        expect(gaugeComponent.gauge.currentValue).toBe(1);
-        gauge.value = 99;
+        mockTimedEvents.add(valueOne);
+        microLeap();
+        _.rootScope.apply();
         expect(element).toHaveText('1');
-        scope.apply();
-        expect(element).toHaveText('99');
+        mockTimedEvents.add(valueTwo);
+        microLeap();
+        expect(gaugeComponent.gauge.currentValue).toBe(2);
+        _.rootScope.apply();
+        expect(element).toHaveText('2');
     })));
 
   });

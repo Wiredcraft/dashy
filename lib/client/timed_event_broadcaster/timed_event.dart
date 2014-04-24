@@ -1,4 +1,4 @@
-part of timed_event_broadcaster;
+part of dashy.timed_event_broadcaster;
 
 /**
  * The [TimedEvent] is what all the new update messages from the dashy server

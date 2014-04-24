@@ -31,16 +31,15 @@ main() {
           gauge.value = 5;
 
           backend
-            ..whenGET('packages/dashy/client/widget/widget.html').respond('''
+            ..whenGET('packages/dashy/client/widget/widget.html').respond(200,
+          '''
             <gauge gauge="widg.model" probe="gp" ng-if="widg.isGauge()">
             </gauge>
         ''')
-            ..whenGET('packages/dashy/client/gauge/gauge.html').respond('''
-          <svg>
+            ..whenGET('packages/dashy/client/gauge/gauge.html').respond(200,
+          '''
             {{comp.gauge.currentValue}}
-            </svg>
         ''');
-
           var element = e('<widget model="g" probe="wp"></widget>');
           compile([element], directives)(injector, [element]);
 
@@ -49,10 +48,11 @@ main() {
 
           context['g'] = gauge;
 
-          var widgetComponent = widgetProbe.directive(WidgetComponent);
-
+          microLeap();
           backend.flush();
           microLeap();
+
+          var widgetComponent = widgetProbe.directive(WidgetComponent);
 
           _.rootScope.apply();
           Probe gaugeProbe = context['gp'];
