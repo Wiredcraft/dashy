@@ -1,0 +1,25 @@
+type: server  
+name: 'Dashy server' 
+id: 'dashy'
+disabled: false
+
+provider:
+  image: 'ubuntu13.10'
+  name: 'digitalocean'
+  region: 6
+  size: 66
+
+services: 
+  go: '*'
+  dart: '*'
+  xvfb: '*'
+  nodejs: '*'
+  redis: '*'
+
+configuration: 
+  server:
+    packages:
+      - unzip 
+      - chromium-browser
+      - libxss1
+
