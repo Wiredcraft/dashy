@@ -1,11 +1,7 @@
-#
-# NOTE: Add servers pub key to your github account before running this.
-#       Use 'devops details default server' to see the pub key.
-#
-
 type: task
 id: deploy_dashy
 name: Deploy dashy
+
 vars:
   dashy: /opt/dashy_src
   dashy_build: /opt/dashy
@@ -13,13 +9,20 @@ vars:
 when:
   webhook: 
     - path: /hard_to_guess/deploy_dashy
+
+# Where to run the task
 'on':
   - dashy
+
 do:
+  # Prepare the src and build folders
   - run: sudo mkdir -p {{ dashy }} && sudo chown devops. {{ dashy }}
   - run: sudo mkdir -p {{ dashy_build }} && sudo chown devops. {{ dashy_build }}
+  # Fetch the code from GH - note, it requires to have added the devops ssh key
+  # to a user able to read the specified repo
   - run: devops common git_clone
     options:
       git_repo_address: git@github.com:Wiredcraft/dashy.git
       git_repo_dest: "{{ dashy }}"
+  # Run the build process
   - run: devops scripts/build_dashy.sh
