@@ -14,7 +14,7 @@ when:
   webhook: 
     - path: /hard_to_guess/deploy_dashy
 'on':
-  - testgo
+  - dashy
 do:
   - run: sudo mkdir -p {{ dashy }} && sudo chown devops. {{ dashy }}
   - run: sudo mkdir -p {{ dashy_build }} && sudo chown devops. {{ dashy_build }}
