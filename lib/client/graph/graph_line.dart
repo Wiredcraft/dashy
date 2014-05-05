@@ -18,10 +18,7 @@ class GraphLine {
 
   set graph(graph) {
     element.classes.add('line');
-    scope.watch('d', (_new, _) {;
-    print(_new);
-    print(_);
-    print(graph.d);
+    scope.watch('d', (_new, _) {
       if(_new != null) {
         element.attributes['d']= _new;
       }
