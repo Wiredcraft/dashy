@@ -2,8 +2,8 @@ library widget_component;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
-import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/gauge/gauge.dart';
+import 'package:dashy/client/graph/graph.dart';
 
 /**
  * The [WidgetComponent] is the glue between the view template and the model.
@@ -14,8 +14,9 @@ import 'package:dashy/client/gauge/gauge.dart';
     templateUrl: 'packages/dashy/client/widget/widget.html',
     publishAs: 'widg',
     map: const {
-        'model' : '=>setModel'
-    }
+        'model' : '=>model'
+    },
+    useShadowDom: false
 )
 class WidgetComponent {
   Element element;
@@ -23,9 +24,6 @@ class WidgetComponent {
 
   WidgetComponent(this.element);
 
-  set setModel(dynamic _model) {
-    model = _model;
-  }
-
-  isGauge() => model.runtimeType == Gauge;
+  get isGauge => model.runtimeType == Gauge;
+  get isGraph => model.runtimeType == Graph;
 }

@@ -4,9 +4,7 @@ import '_specs.dart';
 import 'dart:async';
 import 'package:dashy/client/app/app.dart';
 import 'package:dashy/client/app/app_component.dart';
-import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
-import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/widget/widget_component.dart';
 import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
@@ -24,9 +22,9 @@ const configYaml =
 
 class MockDashyModule extends Module {
   MockDashyModule() {
-    value(TimedEventBroadcaster, new TimedEventBroadcaster(new StreamController.broadcast()));
+    bind(TimedEventBroadcaster);
 
-    factory(WidgetFactory,(i) {
+    bind(WidgetFactory,toFactory: (i) {
       return new WidgetFactory(
         i.get(TimedEventBroadcaster),
         new StreamController.broadcast(),
@@ -34,12 +32,12 @@ class MockDashyModule extends Module {
       );
     });
 
-    type(App);
-    type(AppComponent);
-    type(GaugeComponent);
-    type(WidgetComponent);
-    type(MessageRouter);
-    factory(WebSocketWrapper, (i) => new WebSocketWrapper(i.get
+    bind(App);
+    bind(AppComponent);
+    bind(GaugeComponent);
+    bind(WidgetComponent);
+    bind(MessageRouter);
+    bind(WebSocketWrapper, toFactory: (i) => new WebSocketWrapper(i.get
     (MessageRouter), new StreamController.broadcast()));
   }
 }

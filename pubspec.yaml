@@ -1,5 +1,5 @@
 name: dashy
-description: A sample web application
+description: An awesome dashboard application
 dependencies:
   angular:
     git:
@@ -7,6 +7,7 @@ dependencies:
   browser: any
   unittest: any
   yaml: any
+  d3: any
 
 transformers:
 - angular

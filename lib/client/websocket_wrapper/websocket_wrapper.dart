@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/message_router/message_router.dart';
-import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 
 const RECONNECT_DELAY = 500;
 

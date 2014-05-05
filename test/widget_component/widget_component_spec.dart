@@ -3,7 +3,6 @@ library widget_component_spec;
 import 'dart:async';
 import '../_specs.dart';
 import 'package:dashy/client/widget/widget_component.dart';
-import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 
@@ -15,8 +14,8 @@ main() {
     TestBed _;
     beforeEachModule((Module module) {
       module
-        ..type(WidgetComponent)
-        ..type(GaugeComponent);
+        ..bind(WidgetComponent)
+        ..bind(GaugeComponent);
 
       return (TestBed tb) => _ = tb;
     });
@@ -33,7 +32,7 @@ main() {
           backend
             ..whenGET('packages/dashy/client/widget/widget.html').respond(200,
           '''
-            <gauge gauge="widg.model" probe="gp" ng-if="widg.isGauge()">
+            <gauge gauge="widg.model" probe="gp" ng-if="widg.isGauge">
             </gauge>
         ''')
             ..whenGET('packages/dashy/client/gauge/gauge.html').respond(200,
