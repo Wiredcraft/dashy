@@ -12,7 +12,7 @@ main() {
   describe('gauge', () {
     TestBed _;
     beforeEachModule((Module module) {
-      module..type(GaugeComponent);
+      module..bind(GaugeComponent);
 
       return (TestBed tb) => _ = tb;
     });
@@ -38,12 +38,12 @@ main() {
         var context = _.rootScope.context;
         Probe probe = context['i'];
         context['g'] = gauge;
-
-        GaugeComponent gaugeComponent = probe.directive(GaugeComponent);
-
         microLeap();
         backend.flush();
         microLeap();
+
+        GaugeComponent gaugeComponent = probe.directive(GaugeComponent);
+
         _.rootScope.apply();
         mockTimedEvents.add(valueOne);
         microLeap();

@@ -1,7 +1,6 @@
 library gauge_component;
 
 import 'dart:html';
-import 'dart:svg';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 /**
@@ -13,7 +12,8 @@ import 'package:dashy/client/gauge/gauge.dart';
   publishAs: 'comp',
   map: const {
     'gauge' : '=>setGauge'
-  }
+  },
+  useShadowDom: false
 )
 class GaugeComponent {
   Element element;

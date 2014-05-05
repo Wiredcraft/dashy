@@ -15,9 +15,9 @@ part 'timed_event.dart';
 class TimedEventBroadcaster {
   Map<String, StreamController> dataSourceStreamControllers = new Map<String,
   StreamController>();
-  StreamController newMessages;
+  StreamController newMessages = new StreamController.broadcast();
 
-  TimedEventBroadcaster(StreamController this.newMessages) {
+  TimedEventBroadcaster() {
     newMessages.stream.asBroadcastStream().listen(newTimedEvent);
   }
 

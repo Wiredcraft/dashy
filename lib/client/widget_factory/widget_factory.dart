@@ -1,12 +1,11 @@
 library dashy.widget_factory;
 
 
-import 'dart:html';
 import 'dart:async';
-import 'dart:math';
 import 'package:yaml/yaml.dart';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/gauge/gauge.dart';
+import 'package:dashy/client/graph/graph.dart';
 import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 
@@ -39,18 +38,21 @@ class WidgetFactory {
   _createWidget(widgetConfigurationMap) {
     var subscribeToStreams = new Set();
 
-    WidgetConfiguration widgetConfiguration =
-    new WidgetConfiguration.fromMap(widgetConfigurationMap);
+    WidgetConfiguration widgetConfiguration = new WidgetConfiguration.fromMap(widgetConfigurationMap);
 
-    widgetConfiguration.dataSources
-      .forEach((dataSourceString) {
-        subscribeToStreams.
-        add(timedEventBroadcaster.registerDataSource(dataSourceString).stream);
+    widgetConfiguration.dataSources.forEach((dataSourceString) {
+      subscribeToStreams.add(timedEventBroadcaster.registerDataSource(dataSourceString).stream);
     });
 
-    if (widgetConfiguration.type == 'Gauge') {
+    switch (widgetConfiguration.type) {
+    case 'Gauge' :
       newWidgets.add(new Widget(new Gauge(subscribeToStreams)));
+      break;
+    case 'Graph' :
+      newWidgets.add(new Widget(new Graph(subscribeToStreams)));
+      break;
     }
+
   }
 
 }
