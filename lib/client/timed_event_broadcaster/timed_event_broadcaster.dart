@@ -34,5 +34,4 @@ class TimedEventBroadcaster {
     dataSourceStreamControllers[timedEvent.dataSource].add(timedEvent);
   }
 
-
 }

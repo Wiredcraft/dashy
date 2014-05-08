@@ -9,18 +9,18 @@ class WidgetConfiguration {
   String id;
   Set dataSources = new Set();
   String type;
+  Map settings = new Map();
 
   WidgetConfiguration.fromMap(map) {
-    map.forEach((k, settings) {
+    map.forEach((k, configurationOptions) {
       id = k;
-      type = settings['type'];
-
-      settings['attributes'].forEach((attributeOnWidget, dataSource) {
+      type = configurationOptions['type'];
+      configurationOptions['attributes'].forEach((attributeOnWidget, dataSource) {
         dataSource.forEach((dataSource, attributeOnTimedEvent) {
           dataSources.add(dataSource);
         });
       });
-
+      if (configurationOptions['settings'] != null) settings = configurationOptions['settings'];
     });
   }
 }

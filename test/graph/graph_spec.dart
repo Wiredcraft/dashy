@@ -2,13 +2,20 @@ library graph_spec;
 
 
 import '../_specs.dart';
+import '../_test_module.dart';
 import 'package:dashy/client/graph/graph.dart';
+import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
+import 'package:yaml/yaml.dart';
 import 'dart:async';
 import 'dart:math';
 
 main() {
   describe('graph', () {
+    beforeEachModule((Module module) {
+      module.install(new MockDashyModule());
+    });
+
     it('model should recalculate path on new value', async(() {
       var mockTimedEvents = new StreamController();
 
@@ -16,7 +23,9 @@ main() {
 
       var emptyModelD = graph.d;
 
-      mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), { "value" : null}));
+      mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
+          "value" : null
+      }));
 
       microLeap();
 
@@ -29,14 +38,121 @@ main() {
 
       Graph graph = new Graph([mockTimedEvents.stream]);
 
-      mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), { "value" :new Random().nextInt(100)}));
+      mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
+          "value" :new Random().nextInt(100)
+      }));
       microLeap();
       expect(graph.d.startsWith('M 0')).toBeTruthy();
     }));
 
-    it('model should adjust the time to a given duration', () {
+    it('should inject settings into widget', async(inject((WidgetFactory factory, TimedEventBroadcaster timedEventBroadcaster) {
+      var graphConfig = '''
+graph-widget-id:
+  type: Graph
+  attributes:
+    value:
+      time-test: value
+  settings:
+    duration:
+      seconds: 40
+    drawFromFirstEvent: false
+        ''';
+
+      factory.newWidgets.stream.listen((widget) {
+        microLeap();
+        expect(widget.model.drawFromFirstEvent).toBeFalsy();
+      });
+
+      factory.createWidget(loadYaml(graphConfig));
+
+    })));
+
+    describe('scale start time should be configurable', () {
+      const twentySeconds = const Duration(seconds: 20);
+      const fortySeconds = const Duration(seconds: 40);
+
+      var beginTime;
+
+      var now = new DateTime.now();
+      var nowInMs = now.millisecondsSinceEpoch;
+      var twentySecondsAgoInMs = now.subtract(twentySeconds).millisecondsSinceEpoch;
+      var fortySecondsAgoInMs = now.subtract(fortySeconds).millisecondsSinceEpoch;
+      GraphTimeScale scale = new GraphTimeScale();
+
+      it('should start at first event if no duration is specified', () {
+        beginTime = scale.decideFirstTime(
+          twentySecondsAgoInMs,
+          now.millisecondsSinceEpoch,
+          null,
+          null,
+          null
+        );
+
+        expect(beginTime).toBe(twentySecondsAgoInMs);
+      });
+
+      it('should start at the duration if specified', () {
+        beginTime = scale.decideFirstTime(
+            fortySecondsAgoInMs,
+            now.millisecondsSinceEpoch,
+            true,
+            twentySeconds,
+            null
+        );
+
+        expect(beginTime).toBe(twentySecondsAgoInMs);
+      });
+
+      it('should not start at the duration if first event is within duration', () {
+        beginTime = scale.decideFirstTime(
+            twentySecondsAgoInMs,
+            now.millisecondsSinceEpoch,
+            true,
+            fortySeconds,
+            null
+        );
+
+        expect(beginTime).not.toBe(fortySecondsAgoInMs);
+      });
+
+      it('should start at the first event if it is within duration and drawFromFirstEvent is true', () {
+        beginTime = scale.decideFirstTime(
+            twentySecondsAgoInMs,
+            now.millisecondsSinceEpoch,
+            true,
+            fortySeconds,
+            null
+        );
+
+        expect(beginTime).toBe(twentySecondsAgoInMs);
+      });
+
+      it('should start at the duration if the first event is within duration and drawFromFirstEvent is false', () {
+        beginTime = scale.decideFirstTime(
+            twentySecondsAgoInMs,
+            now.millisecondsSinceEpoch,
+            false,
+            fortySeconds,
+            null
+        );
+
+        expect(beginTime).toBe(fortySecondsAgoInMs);
+      });
+
+      it('should prefer to use a date if a duration is also specified', () {
+        beginTime = scale.decideFirstTime(
+            0,
+            now.millisecondsSinceEpoch,
+            false,
+            twentySeconds,
+            now.subtract(fortySeconds)
+        );
+
+        expect(beginTime).toBe(fortySecondsAgoInMs);
+      });
 
     });
 
   });
+
 }

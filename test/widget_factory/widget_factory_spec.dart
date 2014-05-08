@@ -21,16 +21,16 @@ main() {
     });
 
     it('should create a widget', async(
-        inject((WidgetFactory widgetFactory,
-                TimedEventBroadcaster timedEventFactory) {
+        inject((WidgetFactory widgetFactory) {
 
           const configYaml =
-'''widgets:
-   - some-widget-id:
-       attributes:
-         some-attribute:
-           $DATASOURCE_NAME: some-attribute-on-datasource
-       type: Gauge
+'''
+widgets:
+ - some-widget-id:
+     attributes:
+       some-attribute:
+         $DATASOURCE_NAME: some-attribute-on-datasource
+     type: Gauge
 ''';
 
           var asyncExpectation = unit.expectAsync((element) {

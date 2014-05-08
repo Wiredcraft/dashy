@@ -22,33 +22,30 @@ main() {
     });
 
     it('should update the model on receiving a new update message', async(() {
+      inject((TimedEventBroadcaster timedEventBroadcaster) {
+        StreamController mockNewMessages = timedEventBroadcaster.newMessages;
 
+        var timedEventStream = timedEventBroadcaster.registerDataSource('some-datasource').stream.asBroadcastStream();
 
-      TimedEventBroadcaster timedEventBroadcaster =
-      new TimedEventBroadcaster();
+        Widget widget = new Widget(new Gauge([timedEventStream]));
 
-      StreamController mockNewMessages = timedEventBroadcaster.newMessages;
+        mockNewMessages.add({
+            "time" : new DateTime.now().toIso8601String(), "datasource" : "some-datasource", "data" : {
+                "value" : 2
+            }
+        });
 
-      var timedEventStream = timedEventBroadcaster.registerDataSource
-      ('some-datasource').stream.asBroadcastStream();
+        timedEventStream.first.then((timedEvent) {
+          mockNewMessages.close();
+        });
 
-      Widget widget = new Widget(new Gauge([timedEventStream]));
+        var asyncExpectation = unit.expectAsync(() {
+          expect(widget.model.currentValue).toBe(2);
+        });
+        mockNewMessages.stream.listen((_) {
+        }, onDone: asyncExpectation);
 
-      mockNewMessages.add({
-      "time" : new DateTime.now().toIso8601String(),
-      "datasource" : "some-datasource",
-      "data" : {"value" : 2}
       });
-
-      timedEventStream.first.then((timedEvent) {
-        mockNewMessages.close();
-      });
-
-      var asyncExpectation = unit.expectAsync(() {
-        expect(widget.model.currentValue).toBe(2);
-      });
-      mockNewMessages.stream.listen((_) {}, onDone: asyncExpectation );
-
     }));
   });
 }

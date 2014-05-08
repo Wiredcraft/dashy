@@ -23,15 +23,12 @@ const configYaml =
 class MockDashyModule extends Module {
   MockDashyModule() {
     bind(TimedEventBroadcaster);
-
-    bind(WidgetFactory,toFactory: (i) {
+    bind(WidgetFactory, toFactory: (i) {
       return new WidgetFactory(
         i.get(TimedEventBroadcaster),
-        new StreamController.broadcast(),
         configYaml
       );
     });
-
     bind(App);
     bind(AppComponent);
     bind(GaugeComponent);

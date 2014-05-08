@@ -3,6 +3,7 @@ library dashy.module;
 import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
+import 'package:dashy/client/gauge/gauge_arc.dart';
 import 'package:dashy/client/graph/graph_line.dart';
 import 'package:dashy/client/graph/graph_widget.dart';
 import 'package:dashy/client/widget_factory/widget_factory.dart';
@@ -25,6 +26,9 @@ const configYaml =
        value:
          CPU: value
      type: Graph
+     settings:
+      duration:
+        seconds: 10
 ''';
 
 class DashyModule extends Module {
@@ -33,13 +37,13 @@ class DashyModule extends Module {
     bind(WidgetFactory, toFactory: (i) {
       return new WidgetFactory(
           i.get(TimedEventBroadcaster),
-          new StreamController.broadcast(),
           configYaml
       );
     });
     bind(App);
     bind(AppComponent);
     bind(GaugeComponent);
+    bind(GaugeArc);
     bind(GraphLine);
     bind(GraphWidget);
     bind(WidgetComponent);
