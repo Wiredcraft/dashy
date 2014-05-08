@@ -4,7 +4,6 @@ import '../_specs.dart';
 import '../_test_module.dart';
 import 'package:unittest/unittest.dart' as unit;
 import 'package:dashy/client/widget_factory/widget_factory.dart';
-import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/widget/widget.dart';
 

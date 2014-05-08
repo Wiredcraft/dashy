@@ -77,10 +77,10 @@ graph-widget-id:
       var nowInMs = now.millisecondsSinceEpoch;
       var twentySecondsAgoInMs = now.subtract(twentySeconds).millisecondsSinceEpoch;
       var fortySecondsAgoInMs = now.subtract(fortySeconds).millisecondsSinceEpoch;
-      GraphTimeScale scale = new GraphTimeScale();
+      FirstTimeDecider firstTime = new FirstTimeDecider();
 
       it('should start at first event if no duration is specified', () {
-        beginTime = scale.decideFirstTime(
+        beginTime = firstTime.decideFirstTime(
           twentySecondsAgoInMs,
           now.millisecondsSinceEpoch,
           null,
@@ -92,7 +92,7 @@ graph-widget-id:
       });
 
       it('should start at the duration if specified', () {
-        beginTime = scale.decideFirstTime(
+        beginTime = firstTime.decideFirstTime(
             fortySecondsAgoInMs,
             now.millisecondsSinceEpoch,
             true,
@@ -104,7 +104,7 @@ graph-widget-id:
       });
 
       it('should not start at the duration if first event is within duration', () {
-        beginTime = scale.decideFirstTime(
+        beginTime = firstTime.decideFirstTime(
             twentySecondsAgoInMs,
             now.millisecondsSinceEpoch,
             true,
@@ -116,7 +116,7 @@ graph-widget-id:
       });
 
       it('should start at the first event if it is within duration and drawFromFirstEvent is true', () {
-        beginTime = scale.decideFirstTime(
+        beginTime = firstTime.decideFirstTime(
             twentySecondsAgoInMs,
             now.millisecondsSinceEpoch,
             true,
@@ -128,7 +128,7 @@ graph-widget-id:
       });
 
       it('should start at the duration if the first event is within duration and drawFromFirstEvent is false', () {
-        beginTime = scale.decideFirstTime(
+        beginTime = firstTime.decideFirstTime(
             twentySecondsAgoInMs,
             now.millisecondsSinceEpoch,
             false,
@@ -140,7 +140,7 @@ graph-widget-id:
       });
 
       it('should prefer to use a date if a duration is also specified', () {
-        beginTime = scale.decideFirstTime(
+        beginTime = firstTime.decideFirstTime(
             0,
             now.millisecondsSinceEpoch,
             false,
@@ -150,9 +150,6 @@ graph-widget-id:
 
         expect(beginTime).toBe(fortySecondsAgoInMs);
       });
-
     });
-
   });
-
 }
