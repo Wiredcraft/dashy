@@ -28,6 +28,7 @@ class WidgetComponent {
   var x;
   var y;
   var w;
+  var h;
 
   Grid grid;
   var _appHeight = 0;
@@ -35,7 +36,12 @@ class WidgetComponent {
   int get cellSize  => (_appHeight / grid.rows).floor();
 
   set appHeight(appHeight) {
-    scope.watch('cellSize', (_,__) {}, canChangeModel: false);
+    scope.watch('cellSize', (_,__) {
+      element.style.left = '${x * cellSize}px';
+      element.style.top = '${y * cellSize}px';
+      element.style.width = '${w * cellSize}px';
+      element.style.height = '${h * cellSize}px';
+    }, canChangeModel: false);
 
     _appHeight = appHeight;
   }
@@ -60,7 +66,7 @@ class WidgetComponent {
     }, context: widget, canChangeModel: false)
 
     ..watch('h', (newH, _) {
-      w = newH;
+      h = newH;
       element.style.height = '${newH * cellSize}px';
     }, context: widget, canChangeModel: false)
 
