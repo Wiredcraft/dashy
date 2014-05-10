@@ -6,7 +6,7 @@ import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/message_router/message_router.dart';
 
-const RECONNECT_DELAY = 500;
+const RECONNECT_DELAY = 10;
 
 /**
  * The [WebSocketWrapper] has the responsibility of keeping the messages from
@@ -51,6 +51,6 @@ class WebSocketWrapper {
   onDisconnected() {
     if(connectPending) return;
     connectPending = true;
-    new Timer(new Duration(milliseconds: RECONNECT_DELAY), connect);
+    new Timer(new Duration(seconds: RECONNECT_DELAY), connect);
   }
 }

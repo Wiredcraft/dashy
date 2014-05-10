@@ -6,7 +6,6 @@ import 'package:unittest/unittest.dart' as unit;
 import 'dart:async';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:dashy/client/gauge/gauge.dart';
-import 'package:dashy/client/widget/widget.dart';
 
 
 main() {
@@ -27,7 +26,7 @@ main() {
 
         var timedEventStream = timedEventBroadcaster.registerDataSource('some-datasource').stream.asBroadcastStream();
 
-        Widget widget = new Widget(new Gauge([timedEventStream]));
+        Gauge gauge = new Gauge([timedEventStream]);
 
         mockNewMessages.add({
             "time" : new DateTime.now().toIso8601String(), "datasource" : "some-datasource", "data" : {
@@ -40,7 +39,7 @@ main() {
         });
 
         var asyncExpectation = unit.expectAsync(() {
-          expect(widget.model.currentValue).toBe(2);
+          expect(gauge.currentValue).toBe(2);
         });
         mockNewMessages.stream.listen((_) {
         }, onDone: asyncExpectation);

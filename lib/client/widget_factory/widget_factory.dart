@@ -8,6 +8,7 @@ import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/graph/graph.dart';
 import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
+import 'package:dashy/client/grid/grid.dart';
 
 part 'widget_configuration.dart';
 
@@ -22,36 +23,58 @@ part 'widget_configuration.dart';
 class WidgetFactory {
   TimedEventBroadcaster timedEventBroadcaster;
   StreamController newWidgets = new StreamController.broadcast();
+  GridPosition gridPositioner;
+  Grid grid;
   String yaml;
 
-  WidgetFactory(this.timedEventBroadcaster, String this.yaml);
+    WidgetFactory(this.timedEventBroadcaster, this.grid, this.gridPositioner, String this.yaml);
 
   init() {
     widgetsFromYaml(yaml);
   }
 
   widgetsFromYaml(yaml) {
-    var decoded = loadYaml(yaml);
-    decoded['widgets'].forEach(createWidget);
+    var widgetConfigurations,
+        widgets,
+        decoded = loadYaml(yaml);
+
+    widgetConfigurations = decoded['widgets'].map(createWidgetConfiguration);
+    grid.regenerateGrid(items: widgetConfigurations);
+    widgetConfigurations.forEach(broadcastWidget);
+
+    return widgets;
   }
 
-  createWidget(widgetConfigurationMap) {
-    var subscribeToStreams = new Set();
+  createWidgetConfiguration(widgetConfigurationMap) {
 
     WidgetConfiguration widgetConfiguration =
-      new WidgetConfiguration.fromMap(widgetConfigurationMap);
+    new WidgetConfiguration.fromMap(widgetConfigurationMap);
+
+    return widgetConfiguration;
+  }
+
+
+  broadcastWidget(widgetConfiguration) {
+    var subscribeToStreams = new Set();
 
     widgetConfiguration.dataSources.forEach((dataSourceString) {
       subscribeToStreams.add(timedEventBroadcaster.registerDataSource(dataSourceString).stream);
     });
 
     switch (widgetConfiguration.type) {
-    case 'Gauge' :
-      newWidgets.add(new Widget(new Gauge(subscribeToStreams)));
-      break;
-    case 'Graph' :
-      newWidgets.add(new Widget(graphModelFactory(subscribeToStreams, widgetConfiguration)));
-      break;
+      case 'Gauge' :
+        newWidgets.add(new Widget(
+            new Gauge(subscribeToStreams),
+            widgetConfiguration.id,
+            gridPositioner
+        ));
+        break;
+      case 'Graph' :
+        newWidgets.add(new Widget(
+            graphModelFactory(subscribeToStreams, widgetConfiguration),
+            widgetConfiguration.id,
+            gridPositioner));
+        break;
     }
   }
 

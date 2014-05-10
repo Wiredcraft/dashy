@@ -8,6 +8,7 @@ module.exports = function(config) {
     // all tests must be 'included', but all other libraries must be 'served' and
     // optionally 'watched' only.
     files: [
+      'web/grid.js',
       'web/d3.js',
       'test/jasmine_syntax.dart',
       'test/*.dart',

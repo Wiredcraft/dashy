@@ -1,5 +1,6 @@
 library app_component;
 
+import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/app/app.dart';
 
@@ -14,7 +15,12 @@ import 'package:dashy/client/app/app.dart';
   useShadowDom: false
 )
 class AppComponent {
+  var clientHeight;
   App model;
+  Scope scope;
 
-  AppComponent(this.model);
+  AppComponent(Element element, this.scope, this.model) {
+    clientHeight = window.document.documentElement.clientHeight;
+    window.onResize.listen((_) => clientHeight = window.document.documentElement.clientHeight);
+  }
 }

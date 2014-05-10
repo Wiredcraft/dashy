@@ -18,12 +18,12 @@ class GaugeArc {
   GaugeArc(this.element, this.scope);
 
   set gauge(gauge) {
+    var path = new PathElement()
+      ..classes.add('gauge-arc-background')
+      ..attributes['d'] = gauge.backgroundArcD
+      ..attributes['transform'] = 'translate(150, 150)';
+
     element.classes.add('gauge-arc');
-
-    var path = new PathElement();
-    path.attributes['d'] = gauge.backgroundArcD;
-    path.attributes['transform'] = 'translate(150, 150)';
-
     element.parent.insertBefore(path, element);
 
     scope.watch('d', (_new, _) {

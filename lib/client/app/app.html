@@ -1,1 +1,18 @@
-<widget ng-repeat="widget in app.model.widgets" model="widget.model"></widget>
+<widget ng-repeat="widget in app.model.widgets"
+        app-height="app.clientHeight"
+        widget="widget"></widget>
+<style>
+  html {
+    height:100%;
+  }
+  body {
+    height:100%;
+  }
+  app {
+    display:block;
+    height:100%;
+  }
+  widget {
+    position: absolute;
+  }
+</style>
