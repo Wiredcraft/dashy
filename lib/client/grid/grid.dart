@@ -4,8 +4,6 @@ import 'dart:js';
 import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:dashy/client/widget/widget.dart';
 
-part 'position.dart';
-
 class Grid {
   int _rows = 2;
   get rows => _rows;

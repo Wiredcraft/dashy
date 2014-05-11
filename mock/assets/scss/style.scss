@@ -38,6 +38,7 @@ a {
   }
 }
 
+
 h1,
 h2,
 h3,
@@ -81,6 +82,7 @@ small {
   @include font-size($small);
 }
 
+
 /* WIDGETS */
 
 #widgets {
@@ -100,7 +102,6 @@ small {
     }
     .body {
       display: block;
-      padding: $gutter/2;
       position: relative;
     }
     &.alert {
@@ -124,10 +125,6 @@ small {
 /* Gauge */
 
 .gauge {
-  /* HACK FOR NOW, SHOULD BE ATTRIBUTED WITH GRID */
-  height: 300px;
-  width: 300px;
-  /* /END HACK */
   .body {
     h2 {
       bottom: 0;
@@ -156,10 +153,6 @@ small {
 /* Line chart */
 
 .linechart {
-  /* HACK FOR NOW, SHOULD BE ATTRIBUTED WITH GRID */
-  height: 300px;
-  width: 900px;
-  /* /END HACK */
   .body {
     .line {
       fill: none;

@@ -1,3 +1,13 @@
-<gauge gauge="widg.model" ng-if="widg.isGauge"></gauge>
-<graph model="widg.model" ng-if="widg.isGraph"></graph>
-{{widg.cellSize}}
+<header class="header">
+  <h2>CPU on Web1</h2>
+</header>
+<gauge gauge='widg.model' ng-if='widg.isGauge' class='body'></gauge>
+<graph model='widg.model' ng-if='widg.isGraph'></graph>
+
+<style>
+  gauge {
+    display:block;
+    height:100%;
+    width:100%;
+  }
+</style>

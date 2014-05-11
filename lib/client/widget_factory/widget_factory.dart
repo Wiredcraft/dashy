@@ -23,11 +23,10 @@ part 'widget_configuration.dart';
 class WidgetFactory {
   TimedEventBroadcaster timedEventBroadcaster;
   StreamController newWidgets = new StreamController.broadcast();
-  GridPosition gridPositioner;
   Grid grid;
   String yaml;
 
-    WidgetFactory(this.timedEventBroadcaster, this.grid, this.gridPositioner, String this.yaml);
+    WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
 
   init() {
     widgetsFromYaml(yaml);
@@ -66,14 +65,14 @@ class WidgetFactory {
         newWidgets.add(new Widget(
             new Gauge(subscribeToStreams),
             widgetConfiguration.id,
-            gridPositioner
+            grid
         ));
         break;
       case 'Graph' :
         newWidgets.add(new Widget(
             graphModelFactory(subscribeToStreams, widgetConfiguration),
             widgetConfiguration.id,
-            gridPositioner));
+            grid));
         break;
     }
   }

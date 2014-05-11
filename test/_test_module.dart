@@ -28,7 +28,6 @@ class MockDashyModule extends Module {
       return new WidgetFactory(
         i.get(TimedEventBroadcaster),
         i.get(Grid),
-        i.get(GridPosition),
         configYaml
       );
     });
@@ -40,7 +39,6 @@ class MockDashyModule extends Module {
     bind(WebSocketWrapper, toFactory: (i) => new WebSocketWrapper(i.get
     (MessageRouter), new StreamController.broadcast()));
     bind(Grid);
-    bind(GridPosition);
   }
 }
 

@@ -38,7 +38,7 @@ const configYaml =
     layout:
       x: 1
       y: 1
-      w: 1
+      w: 2
       h: 1
 ''';
 
@@ -46,12 +46,10 @@ class DashyModule extends Module {
   DashyModule() {
     bind(TimedEventBroadcaster);
     bind(Grid);
-    bind(GridPosition);
     bind(WidgetFactory, toFactory: (i) {
       return new WidgetFactory(
           i.get(TimedEventBroadcaster),
           i.get(Grid),
-          i.get(GridPosition),
           configYaml
       );
     });

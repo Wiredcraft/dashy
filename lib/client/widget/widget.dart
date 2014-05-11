@@ -10,16 +10,16 @@ class Widget {
   var model;
   var id;
 
-  GridPosition gridPositioner;
+  Grid grid;
 
-  get x => gridPositioner.getX(this);
+  get x => grid[id]['x'];
 
-  get y => gridPositioner.getY(this);
+  get y => grid[id]['y'];
 
-  get w => gridPositioner.getW(this);
+  get w => grid[id]['w'];
 
-  get h => gridPositioner.getH(this);
+  get h => grid[id]['h'];
 
-  Widget(this.model, this.id, this.gridPositioner);
+  Widget(this.model, this.id, this.grid);
 
 }

@@ -1,15 +1,15 @@
 library widget_component;
 
 import 'dart:html';
+import 'dart:math';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/grid/grid.dart';
-import 'dart:math';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/graph/graph.dart';
 
 /**
  * The [WidgetComponent] is the glue between the view template and the model.
- * It is responsible for rendering the correct type of widget.
+ * It is responsible for rendering the location and correct type of widget.
  */
 @Component(
     selector: 'widget',

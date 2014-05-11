@@ -15,21 +15,24 @@ class Gauge {
   int _maxValue;
   int _minValue;
   int currentValue;
+  int smallestDimension;
+
   JsFunction arc = context['d3']['svg']['arc'].apply(null);
   JsFunction backgroundArc = context['d3']['svg']['arc'].apply(null);
   
   Gauge(Iterable<Stream> timedEventStreams) {
     timedEventStreams.forEach((stream) => stream.listen(update));
-    arc..callMethod('innerRadius', [300 / 2 * 0.9])
-       ..callMethod('outerRadius', [300 / 2 * 0.85])
-       ..callMethod('startAngle', [-0.37 * TAU]);
+  }
 
-    backgroundArc..callMethod('innerRadius', [300 / 2 * 0.9])
-      ..callMethod('outerRadius', [300 / 2 * 0.85])
+  resize(smallestDimension) {
+    arc..callMethod('innerRadius', [smallestDimension / 2 * 0.9])
+      ..callMethod('outerRadius', [smallestDimension / 2 * 0.85])
+      ..callMethod('startAngle', [-0.37 * TAU]);
+
+    backgroundArc..callMethod('innerRadius', [smallestDimension / 2 * 0.9])
+      ..callMethod('outerRadius', [smallestDimension / 2 * 0.85])
       ..callMethod('startAngle', [-0.37 * TAU])
       ..callMethod('endAngle', [0.37 * TAU]);
-
-    backgroundArc.apply(null);
   }
 
   update(TimedEvent timedEvent) {
