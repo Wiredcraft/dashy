@@ -6,7 +6,9 @@ npm-debug.log
 /node_modules
 /packages
 /build
-/vendor
+/mock/node_modules
+/mock/vendor
+
 
 # OS generated files #
 ######################
