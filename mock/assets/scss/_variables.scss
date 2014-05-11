@@ -1,0 +1,42 @@
+/* Colors */
+
+$blue: #1F8DD6;
+$green: #50CD84;
+$yellow: #FFC65E;
+$orange: #FF8859;
+$red: #FF5F5F;
+$purple: #8B66CB;
+$black: shade(desaturate($blue, 40%), 85%);
+$line: tint($black, 85%);
+$grey: tint($black, 60%);
+$light: tint($black, 98%);
+
+/* Spacing */
+
+$gutter: 20px;
+$radius: 2px;
+
+/* Layout */
+
+$width: 900px;
+$menu: 220px;
+$sidebar: 180px;
+$modal: 600px;
+$landing: 280px;
+$editor: 720px;
+
+/* Sizes */
+
+$pico: 10;
+$micro: 11;
+$small: 12;
+$code: 14;
+$normal: 16;
+$large: 24;
+$huge: 32;
+$gigantic: 48;
+
+@mixin font-size($size: $normal) {
+  font-size: $size + px;
+  font-size: ($size/10) + rem;
+}
