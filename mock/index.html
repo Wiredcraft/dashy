@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <title>dashy</title>
+
+  <!-- CSS -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic,300,300italic' rel='stylesheet' type='text/css'>
+  <link href='./style.css' rel='stylesheet' type='text/css'/>
+</head>
+
+<body>
+  <app id='widgets'>
+    <widget class='widget gauge error'>
+      <header class='header'>
+        <h2>CPU on Web1</h2>
+      </header>
+
+      <gauge class='body'>
+        <h2><strong>41</strong>%</h2>
+
+        <svg version='1.1'
+             width='300'
+             height='300'
+             viewBox='0 0 300 300'
+             class='arcs ng-binding'>
+          <path class='background'
+                d='M-92.94349999622997,87.27975600590781A127.5,127.5 0 1,1 92.94349999622996,87.27975600590783L98.41076470189054,92.41385930037299A135,135 0 1,0 -98.41076470189056,92.41385930037298Z'
+                transform='translate(150, 150)'></path>
+          <path class='ng-binding arc'
+                d='M-92.94349999622997,87.27975600590781A127.5,127.5 0 0,1 -51.810127653143965,-116.49875824473358L-54.85778222097596,-123.35162637677672A135,135 0 0,0 -98.41076470189056,92.41385930037298Z'
+                transform='translate(150, 150)'></path>
+        </svg>
+      </gauge>
+    </widget>
+    <widget>
+      <graph>
+        <svg version="1.1" width="500" height="300" viewBox="0 0 500 300">
+          <path class="line"
+                d="M 3.85,44L 16.3,4 L 26.700000000000003,73 L 36.95,93 L 44.7,60 L 72.25000000000001,86 L 82.25,74 L 95.14999999999999,47 L 105.55000000000001,82 L 119.2,4 L 128.05,41 L 141.1,95 L 147.15,17 L 161.65,59 L 173.75000000000003,24 L 184.60000000000002,79 L 197.25,79 L 207.9,71 L 231.5,6 L 400.80000000000007,49 L 435.75,67 L 466.30000000000007,2 L 500,41 "></path>
+        </svg>
+        <style class="ng-binding">
+          .line {
+            fill: none;
+            stroke: rgba(61, 64, 200, 1);
+          }
+        </style>
+      </graph>
+    </widget>
+  </app>
+</body>
+</html>
