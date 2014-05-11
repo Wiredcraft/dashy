@@ -87,8 +87,9 @@ small {
   .widget {
     background: tint($black, 5%);
     @include border-radius($radius);
+    display: inline-block;
     .header {
-      border-bottom: 1px solid $black;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       padding: $gutter/2;
       h2 {
         @include font-size($small);
@@ -99,6 +100,7 @@ small {
     }
     .body {
       display: block;
+      padding: $gutter/2;
       position: relative;
     }
     &.alert {
@@ -123,7 +125,6 @@ small {
 
 .gauge {
   /* HACK FOR NOW, SHOULD BE ATTRIBUTED WITH GRID */
-  display: inline-block;
   height: 300px;
   width: 300px;
   /* /END HACK */
@@ -148,6 +149,21 @@ small {
     }
     .arc {
       fill: #FFF;
+    }
+  }
+}
+
+/* Line chart */
+
+.linechart {
+  /* HACK FOR NOW, SHOULD BE ATTRIBUTED WITH GRID */
+  height: 300px;
+  width: 900px;
+  /* /END HACK */
+  .body {
+    .line {
+      fill: none;
+      stroke: #FFF;
     }
   }
 }
