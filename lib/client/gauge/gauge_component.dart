@@ -33,7 +33,7 @@ class GaugeComponent {
     gauge = _gauge;
     scope.watch('smallestDimension', (newSmallestDimension,__){
       gauge.resize(newSmallestDimension);
-    }, context: this);
+    }, context: this, canChangeModel: true);
   }
 }
 

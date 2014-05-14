@@ -1,15 +1,17 @@
 library dashy.graph_model;
 
+import 'dart:js';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:d3/scale/scale.dart';
 
-@Injectable()
 class Graph {
   get d => dPathString();
+  get areaD => areaDPathString();
   DateTime date;
   int firstEventTime = new DateTime.now().millisecondsSinceEpoch;
   int lastTime = new DateTime.now().millisecondsSinceEpoch;
+  JsFunction areaFunc = context['d3']['svg']['area'].apply([]);
 
   FirstTimeDecider firstTimeDecider = new FirstTimeDecider();
 
@@ -21,6 +23,12 @@ class Graph {
     ..clamp = true
     ..range = [0, 500];
 
+
+  Linear yScale = new Linear()
+    ..domain = [0, 100]
+    ..clamp = true
+    ..range = [200, 0];
+
   bool drawFromFirstEvent;
 
   List<TimedEvent> _events = new List<TimedEvent>();
@@ -29,13 +37,34 @@ class Graph {
     streams.forEach((stream) => stream.listen(update));
   }
 
+  areaDPathString() {
+
+    areaFunc.callMethod('x', [(TimedEvent timedEvent, _) {
+      return xScale(timedEvent.time.millisecondsSinceEpoch);
+    }]);
+
+    areaFunc.callMethod('y', [(TimedEvent timedEvent, _) {
+      return yScale(timedEvent.data['value']);
+    }]);
+
+    areaFunc.callMethod('y0', [(TimedEvent timedEvent, _) {
+      return yScale(0);
+    }]);
+
+    if (_events.isNotEmpty) {
+      return areaFunc.apply([new JsArray.from(_events)]);
+    }
+  }
+
+
+
   dPathString() {
     var dString;
     if (_events.isNotEmpty) {
-      dString = "M ${xScale(_events.first.time.millisecondsSinceEpoch)},${_events.first.data['value']}";
+      dString = "M ${xScale(_events.first.time.millisecondsSinceEpoch)},${yScale(_events.first.data['value'])}";
 
       _events.skip(1).forEach((event) {
-        dString += "L ${xScale(event.time.millisecondsSinceEpoch)},${event.data['value']} ";
+        dString += "L ${xScale(event.time.millisecondsSinceEpoch)},${yScale(event.data['value'])} ";
       });
 
     }
@@ -64,8 +93,9 @@ class Graph {
     }
   }
 
-  rescale(lastTime) =>
+  rescale(lastTime) {
     xScale.domain = [firstTime, lastTime];
+  }
 
 }
 

@@ -13,6 +13,7 @@ module.exports = function(config) {
       'test/jasmine_syntax.dart',
       'test/*.dart',
       'test/**/*_spec.dart',
+      'test/config/init_guinness.dart',
       {pattern: '**/*.dart', watched: true, included: false, served: true},
       'packages/browser/dart.js',
       'packages/shadow_dom/shadow_dom.debug.js'
@@ -36,6 +37,10 @@ module.exports = function(config) {
       'karma-script-launcher',
       'karma-junit-reporter'
     ],
+
+    karmaDartImports: {
+      guinness: 'package:guinness/guinness_html.dart'
+    },
 
     customLaunchers: {
       ChromeNoSandbox: { base: 'Chrome', flags: ['--no-sandbox'] }

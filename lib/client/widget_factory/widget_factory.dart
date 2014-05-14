@@ -6,6 +6,7 @@ import 'package:yaml/yaml.dart';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/graph/graph.dart';
+import 'package:dashy/client/markdown/markdown_model.dart';
 import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:dashy/client/grid/grid.dart';
@@ -26,7 +27,7 @@ class WidgetFactory {
   Grid grid;
   String yaml;
 
-    WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
+  WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
 
   init() {
     widgetsFromYaml(yaml);
@@ -53,7 +54,7 @@ class WidgetFactory {
   }
 
 
-  broadcastWidget(widgetConfiguration) {
+  broadcastWidget(WidgetConfiguration widgetConfiguration) {
     var subscribeToStreams = new Set();
 
     widgetConfiguration.dataSources.forEach((dataSourceString) {
@@ -74,6 +75,20 @@ class WidgetFactory {
             widgetConfiguration.id,
             grid));
         break;
+      case 'Markdown' :
+      var markdown = new Markdown(subscribeToStreams);
+        newWidgets.add(new Widget(
+            markdown,
+            widgetConfiguration.id,
+            grid
+        ));
+
+        if (widgetConfiguration.settings['markdown'] != null) {
+          new Timer(new Duration(seconds:1), () {
+            markdown.setHtmlToMarkdown(widgetConfiguration.settings['markdown']);
+          });
+        }
+        break;
     }
   }
 
@@ -83,7 +98,6 @@ class WidgetFactory {
 
     if (durationSettings != null) return graphWithDuration(durationSettings, drawFromFirstEvent, subscribeToStreams);
     else return new Graph(subscribeToStreams);
-
   }
 
   Graph graphWithDuration(durationSetting, drawFromFirstEvent, subscribeToStreams) {

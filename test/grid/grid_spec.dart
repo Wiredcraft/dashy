@@ -21,7 +21,7 @@ main() {
       return (TestBed tb) => _ = tb;
     });
 
-    iit('position should find the location of a widget', async(
+    it('position should find the location of a widget', async(
     inject((Grid grid, WidgetFactory widgetFactory) {
       var conf = '''
 some-widget:
@@ -37,8 +37,8 @@ some-widget:
       ''';
 
       widgetFactory.newWidgets.stream.listen((widget) {
-        expect(widget.x).toBe(1);
-        expect(widget.y).toBe(2);
+        expect(widget.x()).toBe(1);
+        expect(widget.y()).toBe(2);
       });
 
       var widgetConfiguration = widgetFactory.createWidgetConfiguration(loadYaml(conf));

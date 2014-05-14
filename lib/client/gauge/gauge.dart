@@ -44,7 +44,7 @@ class Gauge {
 
   dPathString() {
     var dString;
-    if (currentValue != null){
+    if (currentValue != null) {
       arc.callMethod('endAngle', [currentValue/100 * TAU * 0.74 - TAU * 0.37]);
       dString = arc.apply(null);
     }

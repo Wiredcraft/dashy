@@ -22,8 +22,8 @@ main() {
               Compiler compile,
               Injector injector, DirectiveMap directives) {
         var mockTimedEvents = new StreamController();
-        var valueOne = new TimedEvent(null, null, null, {"value":1});
-        var valueTwo = new TimedEvent(null, null, null, {"value":2});
+        var valueOne = new TimedEvent(null, null, null, {"value":1}, null);
+        var valueTwo = new TimedEvent(null, null, null, {"value":2}, null);
 
         Gauge gauge = new Gauge([mockTimedEvents.stream]);
 

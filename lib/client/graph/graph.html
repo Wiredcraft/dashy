@@ -1,12 +1,16 @@
 <svg version="1.1" width="500" height="300" viewBox="0 0 500 300">
   <path graph graph-model="comp.model"></path>
+  <path graph-area graph-model="comp.model"></path>
 </svg>
 <!--hack for angular expression parser-->
-<span style="display:none">{{graph.model.d}}</span>
+<span style="display:none">{{graph.model.d}}{{graph.model.areaD}}</span>
 
 <style>
-.line {
-  fill: none;
-  stroke: rgba(61, 64, 200, 1);
-}
+  .line {
+    fill: none;
+    stroke: rgba(61, 64, 200, 1);
+  }
+  .area {
+    fill: rgba(61, 64, 200, 0.2);
+  }
 </style>

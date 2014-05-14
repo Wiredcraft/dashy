@@ -1,24 +1,25 @@
 library widget;
 
 import 'package:dashy/client/grid/grid.dart';
+import 'package:angular/angular.dart';
 
 /**
  * Contains information on the layout of the widget and which type it is.
  * Its "type" is inferred from the model variable.
  */
 class Widget {
-  var model;
+  dynamic model;
   var id;
 
   Grid grid;
 
-  get x => grid[id]['x'];
+  int x() => grid[id]['x'];
 
-  get y => grid[id]['y'];
+  int y() => grid[id]['y'];
 
-  get w => grid[id]['w'];
+  int w() => grid[id]['w'];
 
-  get h => grid[id]['h'];
+  int h() => grid[id]['h'];
 
   Widget(this.model, this.id, this.grid);
 

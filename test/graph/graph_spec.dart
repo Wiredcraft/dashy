@@ -25,7 +25,7 @@ main() {
 
       mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
           "value" : null
-      }));
+      }, null));
 
       microLeap();
 
@@ -40,7 +40,7 @@ main() {
 
       mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
           "value" :new Random().nextInt(100)
-      }));
+      }, null));
       microLeap();
       expect(graph.d.startsWith('M 0')).toBeTruthy();
     }));
@@ -63,7 +63,8 @@ graph-widget-id:
         expect(widget.model.drawFromFirstEvent).toBeFalsy();
       });
 
-      factory.createWidget(loadYaml(graphConfig));
+      factory.createWidgetConfiguration(loadYaml(graphConfig));
+
 
     })));
 

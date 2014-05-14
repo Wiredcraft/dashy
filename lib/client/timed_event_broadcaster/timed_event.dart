@@ -9,16 +9,17 @@ class TimedEvent {
   String dataSource;
   DateTime time;
   Map<String, dynamic> data;
+  String status;
   
-  TimedEvent(this.id, this.dataSource, this.time, this.data);
+  TimedEvent(this.id, this.dataSource, this.time, this.data, this.status);
 
 
   factory TimedEvent.fromJson(json) {
     return new TimedEvent(json['id'], json['datasource'],
-    DateTime.parse(json['time']), json['data']);
+    DateTime.parse(json['time']), json['data'], json['status']);
   }
 
   Map toJson() {
-    return {'data' : data, 'datasource' : dataSource, 'id' : id, 'time' : time};
+    return {'data' : data, 'datasource' : dataSource, 'id' : id, 'time' : time, status: status};
   }
 }

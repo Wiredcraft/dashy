@@ -1,9 +1,18 @@
 <header class="header">
   <h2>CPU on Web1</h2>
 </header>
-<gauge gauge='widg.model' ng-if='widg.isGauge' class='body'></gauge>
+<gauge gauge='widg.model' probe='gp' ng-if='widg.isGauge' class='body'></gauge>
 <graph model='widg.model' ng-if='widg.isGraph'></graph>
-
+<markdown model='widg.model' ng-if='widg.isMarkdown'></markdown>
+<!--hack for angular expression parser-->
+<span style='display:none'>
+{{widg.widget}}
+{{widg.cellSize}}
+{{widg.widget.x}}
+{{widg.widget.y}}
+{{widg.widget.w}}
+{{widg.widget.h}}
+</span>
 <style>
   gauge {
     display:block;

@@ -5,6 +5,7 @@ part of dashy.widget_factory;
  * configuration from a map parsed from the widgets configuration file by the
  * [WidgetFactory].
  */
+@Injectable()
 class WidgetConfiguration {
   String id;
   Set dataSources = new Set();
