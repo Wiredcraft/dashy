@@ -79,7 +79,7 @@ type TimedEvent struct {
 func (timedEvent *TimedEvent) Serialize() ([]byte) {
 	timedEventString, err := json.Marshal(timedEvent)
 	if err != nil {
-		fmt.Println("error decoding timedEvent")
+		fmt.Println("error encoding timedEvent")
 	}
 
 	return timedEventString;
@@ -154,17 +154,21 @@ func (dataSource *DataSource) run() {
 
 func (dataSource *DataSource) RegisterWebhookHandlers(router *http.ServeMux) {
 	for _, webhook := range dataSource.Webhooks {
-		router.HandleFunc("/" + webhook, func(_ http.ResponseWriter, request *http.Request) {
+		router.HandleFunc("/" + webhook, func(w http.ResponseWriter, request *http.Request) {
 				fmt.Println(webhook)
 				dataSource.propagateTimedEvent <- dataSource.NewTimedEventFromRequest(request.Body)
+				w.Write([]byte(200))
+				request.Body.Close()
 			})
 	}
 }
 
 func (dataSource *DataSource) NewTimedEventFromRequest(body io.Reader) TimedEvent {
 	var timedEvent TimedEvent
+	fmt.Println(body)
 	decoder := json.NewDecoder(body)
 	err := decoder.Decode(&timedEvent)
+	fmt.Println(err)
 	if err != nil {
 		panic(err)
 	}

@@ -32,25 +32,24 @@ main() {
 
           scope.context['md'] = markdown;
           var element = e('<markdown model="md" probe="mdp"></markdown>');
-          backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,
-          '');
+          backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'');
 
           _.compile(element);
-
           var markdownProbe = scope.context['mdp'];
-          markdownProbe.directive(MarkdownWidget);
+
           microLeap();
           scope.apply();
           backend.flush();
 
-          expect(markdownProbe.element.innerHtml).toEqual('');
-
+          expect(markdownProbe.element.innerHtml).toEqual('<div><!-- anchor --></div>');
+          scope.apply();
           messenger.add(markdownEvent);
           microLeap();
           scope.apply();
+
           expect(markdownProbe.element.innerHtml).toEqual('''
-<h2>Such mark</h2>
-<p><a href="load.markup">down</a></p>''');
+<div><!-- anchor --><h2 class="ng-binding">Such mark</h2>
+<p class="ng-binding"><a href="load.markup" class="ng-binding">down</a></p></div>''');
         })));
 
     it('element should add classes based on status updates', async(
@@ -61,8 +60,7 @@ main() {
 
               scope.context['md'] = markdown;
               var element = e('<markdown model="md" probe="mdp"></markdown>');
-              backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,
-              '');
+              backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'');
 
               _.compile(element);
 
@@ -73,7 +71,7 @@ main() {
               backend.flush();
 
               expect(markdownProbe.element.classes.contains('ok')).toBeFalsy();
-              TimedEvent statusEvent = new TimedEvent(null, null, null, null, 'ok');
+              TimedEvent statusEvent = new TimedEvent(null, null, null, {}, 'ok');
               messenger.add(statusEvent);
 
               microLeap();
@@ -83,34 +81,36 @@ main() {
             }
         )));
 
-    xit('component should compile markdown',
+    it('component should compile markdown and watch attributes',
     async(
         inject((Scope scope, MockHttpBackend backend, TestBed _) {
           const SOME_MARKDOWN = '''
-##Markup
-That resolves a {{ scope.variable }}
+##Markdown
+That resolves an, {{ comp.model['attribute'] }}
           ''';
 
-          TimedEvent markdownEvent = new TimedEvent(null, null, null, { 'markdown' : SOME_MARKDOWN}, null);
+          TimedEvent markdownEvent = new TimedEvent(null, null, null,
+            { 'attribute': 'attribute',
+            'markdown' : SOME_MARKDOWN},
+          null);
+
           var messenger = new StreamController();
           Markdown markdown = new Markdown([messenger.stream]);
           scope.context['md'] = markdown;
           var element = e('<markdown model="md" probe="mdp"></markdown>');
-          backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,
-          '');
-          backend.flush();
-          _.compile(element);
-          scope.context['variable'] = 'variable';
+          backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'');
+          _.compile(element, scope: scope);
 
           var markdownProbe = scope.context['mdp'];
-//          markdownProbe.directive(MarkdownWidget);
 
           messenger.add(markdownEvent);
+          scope.apply();
           microLeap();
           scope.rootScope.apply();
+          backend.flush();
           expect(markdownProbe.element.innerHtml).toEqual('''
-<h2>Markup</h2>
-<p>That resolves a, variable</p>''');
+<div><!-- anchor --><h2 class="ng-binding">Markdown</h2>
+<p class="ng-binding">That resolves an, attribute</p></div>''');
         })));
   });
 

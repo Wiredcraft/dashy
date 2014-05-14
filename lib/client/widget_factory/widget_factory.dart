@@ -84,8 +84,10 @@ class WidgetFactory {
         ));
 
         if (widgetConfiguration.settings['markdown'] != null) {
-          new Timer(new Duration(seconds:1), () {
-            markdown.setHtmlToMarkdown(widgetConfiguration.settings['markdown']);
+          new Timer(new Duration(seconds: 1), () {
+            markdown.update(new TimedEvent(null, null, null,
+            { 'markdown' : widgetConfiguration.settings['markdown'] },
+            null));
           });
         }
         break;

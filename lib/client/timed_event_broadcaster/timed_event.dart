@@ -8,7 +8,7 @@ class TimedEvent {
   String id;
   String dataSource;
   DateTime time;
-  Map<String, dynamic> data;
+  Map<String, dynamic> data = new Map();
   String status;
   
   TimedEvent(this.id, this.dataSource, this.time, this.data, this.status);

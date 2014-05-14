@@ -51,11 +51,11 @@ const configYaml =
     settings:
       markdown: |
         ![Wiredcraft](https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&r=x)
-              Dashy
+        Dashy {{ comp.model['some-attribute'] }}
     layout:
       x: 1
       y: 0
-      w: 1
+      w: 3
       h: 1
 ''';
 
