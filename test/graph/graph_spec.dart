@@ -19,7 +19,7 @@ main() {
     it('model should recalculate path on new value', async(() {
       var mockTimedEvents = new StreamController();
 
-      Graph graph = new Graph([mockTimedEvents.stream]);
+      Graph graph = new Graph(mockTimedEvents.stream);
 
       var emptyModelD = graph.d;
 
@@ -36,7 +36,7 @@ main() {
     it('model time scale should start at first event', async(() {
       var mockTimedEvents = new StreamController();
 
-      Graph graph = new Graph([mockTimedEvents.stream]);
+      Graph graph = new Graph(mockTimedEvents.stream);
 
       mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
           "value" :new Random().nextInt(100)
@@ -50,8 +50,7 @@ main() {
 graph-widget-id:
   type: Graph
   attributes:
-    value:
-      time-test: value
+    - time-test
   settings:
     duration:
       seconds: 40

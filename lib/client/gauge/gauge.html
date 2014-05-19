@@ -1,5 +1,7 @@
 <h2>
-  <strong ng-if='comp.gauge.currentValue'>{{comp.gauge.currentValue}}<i>%</i></strong>
+  <strong ng-if='comp.gauge.currentValue != null'>
+    {{comp.gauge.currentValue}}<i>%</i>
+  </strong>
 </h2>
 
 <svg version='1.1'

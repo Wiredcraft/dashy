@@ -1,12 +1,10 @@
-/* Compass */
+/* Bourbon */
 
-@import 'compass/css3';
-@import 'compass/css3/border-radius';
-@import 'compass/css3/filter';
-@import 'compass/css3/transition';
-@import 'compass/css3/transform';
-@import 'compass/utilities/general/clearfix';
-@import 'compass/css3/user-interface';
+@import 'bourbon';
+
+/* Bourbon */
+
+@import '_normalize.scss';
 
 /* Variables (colors, layout, spacing & typography) */
 
@@ -25,8 +23,10 @@ body {
   @include font-size();
   font-weight: 300;
   line-height: 140%;
-  padding: $gutter;
   position: relative;
+  * {
+    @include box-sizing(border-box);
+  }
 }
 
 a {
@@ -37,7 +37,6 @@ a {
     color: shade($blue, 10%);
   }
 }
-
 
 h1,
 h2,
@@ -82,16 +81,39 @@ small {
   @include font-size($small);
 }
 
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+
+widget {
+  position: absolute;
+}
+widget.moving {
+  opacity: 0.25;
+  @include transform (scale(0.9));
+  @include transition (0.2s ease-out);
+}
+
 
 /* WIDGETS */
 
-#widgets {
+app {
+  display:block;
   .widget {
-    background: tint($black, 5%);
-    @include border-radius($radius);
     display: inline-block;
+    padding-left: $gutter;
+    padding-right: $gutter;
+    .header,
+    .body {
+      background: tint($black, 5%);
+    }
     .header {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: $radius $radius 0 0;
       padding: $gutter/2;
       h2 {
         @include font-size($small);
@@ -101,62 +123,70 @@ small {
       }
     }
     .body {
+      border-radius: 0 0 $radius $radius;
       display: block;
       position: relative;
-    }
-    &.alert {
-      background: $red;
-    }
-    &.warning {
-      background: $orange;
-    }
-    &.ok {
-      background: $green;
-    }
-    &.info {
-      background: $blue;
-    }
-    &.undefined {
-      background: $purple;
+      &.alert {
+        background: $red;
+      }
+      &.warning {
+        background: $orange;
+      }
+      &.ok {
+        background: $green;
+      }
+      &.info {
+        background: $blue;
+      }
+      &.undefined {
+        background: $purple;
+      }
     }
   }
 }
 
+
 /* Gauge */
 
-.gauge {
-  .body {
-    h2 {
-      bottom: 0;
-      left: 0;
-      position: absolute;
-      right: 0;
-      text-align: center;
-      @include transform(translateY(-50%));
-      top: 50%;
-      vertical-align: middle;
-      strong {
-        @include font-size($gigantic);
-        font-weight: inherit;
-      }
+gauge {
+  h2 {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    @include transform(translateY(-50%));
+    top: 50%;
+    vertical-align: middle;
+    strong {
+      @include font-size($gigantic);
+      font-weight: inherit;
     }
-    .background {
-      fill: #FFF;
-      opacity: 0.5;
-    }
-    .arc {
-      fill: #FFF;
-    }
+  }
+  .background {
+    fill: #FFF;
+    opacity: 0.5;
+  }
+  .arc {
+    fill: #FFF;
   }
 }
 
 /* Line chart */
 
-.linechart {
-  .body {
-    .line {
-      fill: none;
-      stroke: #FFF;
-    }
+graph {
+  .line {
+    fill: none;
+    stroke: #FFF;
   }
+  .area {
+    fill: rgba(255, 255, 255, 0.2);
+  }
+
+}
+
+/* Markdown */
+
+markdown {
+  padding: $gutter;
 }

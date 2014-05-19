@@ -4,10 +4,9 @@
     "main": "Gruntfile.js",
     "dependencies" : {},
     "devDependencies" : {
-        "bower": "*",
-        "grunt-notify" : "*",
-        "grunt-contrib-watch" : "*",
-        "grunt-contrib-compass" : "*",
-        "grunt-contrib-concat" : "*"
+        "gulp" : "*",
+        "gulp-clean" : "*",
+        "gulp-sass" : "*",
+        "node-bourbon" : "*"
     }
 }

@@ -26,12 +26,12 @@ main() {
 
         var timedEventStream = timedEventBroadcaster.registerDataSource('some-datasource').stream.asBroadcastStream();
 
-        Gauge gauge = new Gauge([timedEventStream]);
+        Gauge gauge = new Gauge(timedEventStream);
 
         mockNewMessages.add({
-            "time" : new DateTime.now().toIso8601String(), "datasource" : "some-datasource", "data" : {
-                "value" : 2
-            }
+          "time" : new DateTime.now().toIso8601String(),
+          "datasource" : "some-datasource",
+          "data" : { "value" : 2}
         });
 
         timedEventStream.first.then((timedEvent) {

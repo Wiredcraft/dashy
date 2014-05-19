@@ -1,13 +1,18 @@
 <header class="header">
-  <h2>CPU on Web1</h2>
+  <h2>{{widg.id}}</h2>
 </header>
-<gauge gauge='widg.model' ng-if='widg.isGauge' class='body'></gauge>
-<graph model='widg.model' ng-if='widg.isGraph'></graph>
+<div ng-repeat='model in widg.model'>
+  <gauge class='body'  gauge='model' ng-if='widg.isGauge'></gauge>
+  <graph  class='body' widget-width='widg.element.clientWidth' widget-height='widg.element.clientHeight' model='model' ng-if='widg.isGraph'></graph>
+  <markdown class='body' model='model' ng-if='widg.isMarkdown'></markdown>
+</div>
 
-<style>
-  gauge {
-    display:block;
-    height:100%;
-    width:100%;
-  }
-</style>
+<!--hack for angular expression parser-->
+<span style='display:none'>
+{{widg.widget}}
+{{widg.cellSize}}
+{{widg.widget.x}}
+{{widg.widget.y}}
+{{widg.widget.w}}
+{{widg.widget.h}}
+</span>

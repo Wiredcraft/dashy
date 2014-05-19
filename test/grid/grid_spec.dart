@@ -26,8 +26,7 @@ main() {
       var conf = '''
 some-widget:
    attributes:
-     value:
-       DS: value
+       - DS
    type: Gauge
    layout:
      x: 1

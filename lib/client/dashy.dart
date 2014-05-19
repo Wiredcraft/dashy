@@ -2,12 +2,16 @@ library dashy.module;
 
 import 'dart:async';
 import 'package:angular/angular.dart';
+import 'package:dashy/client/time_from_now/time_from_now.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
 import 'package:dashy/client/gauge/gauge_arc.dart';
 import 'package:dashy/client/graph/graph_line.dart';
+import 'package:dashy/client/graph/graph_area.dart';
 import 'package:dashy/client/graph/graph_widget.dart';
 import 'package:dashy/client/widget_factory/widget_factory.dart';
+import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/widget/widget_component.dart';
+import 'package:dashy/client/markdown/markdown_widget.dart';
 import 'package:dashy/client/app/app_component.dart';
 import 'package:dashy/client/app/app.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
@@ -15,31 +19,51 @@ import 'package:dashy/client/message_router/message_router.dart';
 import 'package:dashy/client/websocket_wrapper/websocket_wrapper.dart';
 import 'package:dashy/client/grid/grid.dart';
 
+
+//'''widgets:
+//- gauge:
+//    attributes:
+//       - CPU
+//    type: Gauge
+//    layout:
+//      x: 0
+//      y: 0
+//      w: 1
+//      h: 1
+//- graph:
+//    attributes:
+//      - CPU
+//    type: Graph
+//    settings:
+//      duration:
+//        seconds: 10
+//    layout:
+//      x: 1
+//      y: 1
+//      w: 2
+//      h: 1''';
+
 const configYaml =
 '''widgets:
-- some-widget-id:
+- github feed:
     attributes:
-     value:
-       CPU: value
-    type: Gauge
-    layout:
-      x: 0
-      y: 0
-      w: 1
-      h: 1
-- graph-widget-id:
-    attributes:
-     value:
-       CPU: value
-    type: Graph
+       - git
+       - CPU
+    type: Markdown
     settings:
-    duration:
-      seconds: 10
+      markdown: |
+        <img ng-if="comp.model['image'] != null" ng-src="{{comp.model['image']}}" width="100" height="100"/>
+
+        <span ng-if="comp.model['user'] != null"> {{ comp.model['user'] }} </span>
+
+        <p ng-if="comp.model['title'] != null">Latest commit: {{ comp.model['title'] }} </p>
+
+        <timefromnow for-date="comp.model['some-time-in-the-future']"></timefromnow>
     layout:
       x: 1
-      y: 1
-      w: 2
-      h: 1
+      y: 0
+      w: 3
+      h: 2
 ''';
 
 class DashyModule extends Module {
@@ -53,12 +77,16 @@ class DashyModule extends Module {
           configYaml
       );
     });
+    bind(Widget);
     bind(App);
+    bind(TimeFrom);
     bind(AppComponent);
     bind(GaugeComponent);
     bind(GaugeArc);
     bind(GraphLine);
+    bind(GraphArea);
     bind(GraphWidget);
+    bind(MarkdownWidget);
     bind(WidgetComponent);
     bind(MessageRouter);
     bind(WebSocketWrapper, toFactory: (i) => new WebSocketWrapper(i.get

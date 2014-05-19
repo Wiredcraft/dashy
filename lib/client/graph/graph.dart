@@ -1,41 +1,76 @@
 library dashy.graph_model;
 
+import 'dart:async';
+import 'dart:js';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:d3/scale/scale.dart';
 
-@Injectable()
 class Graph {
   get d => dPathString();
+  get areaD => areaDPathString();
   DateTime date;
   int firstEventTime = new DateTime.now().millisecondsSinceEpoch;
   int lastTime = new DateTime.now().millisecondsSinceEpoch;
+  JsFunction areaFunc = context['d3']['svg']['area'].apply([]);
 
+  var width = 500;
+  var height = 200;
   FirstTimeDecider firstTimeDecider = new FirstTimeDecider();
 
   get firstTime => firstTimeDecider(this);
 
   Duration duration;
 
-  Linear xScale = new Linear()
-    ..clamp = true
-    ..range = [0, 500];
+  Linear xScale = new Linear();
+
+  Linear yScale = new Linear();
 
   bool drawFromFirstEvent;
 
   List<TimedEvent> _events = new List<TimedEvent>();
 
-  Graph(Iterable streams, { this.drawFromFirstEvent: true, this.date, this.duration}) {
-    streams.forEach((stream) => stream.listen(update));
+  Graph(Stream stream, { this.drawFromFirstEvent: true, this.date, this.duration}) {
+    stream.listen(update);
+    rescaleRange();
   }
+
+  rescaleRange() {
+  yScale..domain = [0, 100]
+        ..clamp = true
+        ..range = [height, 0];
+
+  xScale..clamp = true
+        ..range = [0, width];
+  }
+  areaDPathString() {
+
+    areaFunc.callMethod('x', [(TimedEvent timedEvent, _) {
+      return xScale(timedEvent.time.millisecondsSinceEpoch);
+    }]);
+
+    areaFunc.callMethod('y', [(TimedEvent timedEvent, _) {
+      return yScale(timedEvent.data['value']);
+    }]);
+
+    areaFunc.callMethod('y0', [(TimedEvent timedEvent, _) {
+      return yScale(0);
+    }]);
+
+    if (_events.isNotEmpty) {
+      return areaFunc.apply([new JsArray.from(_events)]);
+    }
+  }
+
+
 
   dPathString() {
     var dString;
     if (_events.isNotEmpty) {
-      dString = "M ${xScale(_events.first.time.millisecondsSinceEpoch)},${_events.first.data['value']}";
+      dString = "M ${xScale(_events.first.time.millisecondsSinceEpoch)},${yScale(_events.first.data['value'])}";
 
       _events.skip(1).forEach((event) {
-        dString += "L ${xScale(event.time.millisecondsSinceEpoch)},${event.data['value']} ";
+        dString += "L ${xScale(event.time.millisecondsSinceEpoch)},${yScale(event.data['value'])} ";
       });
 
     }
@@ -43,13 +78,14 @@ class Graph {
   }
 
   update(TimedEvent timedEvent) {
+    const TIME_OFFSET = 100;
     maybeUpdateFirstAndLastTime(timedEvent);
 
-    rescale(lastTime);
+    rescaleDomain(lastTime);
 
     var maxTimeBack = new DateTime.fromMillisecondsSinceEpoch(firstTime);
 
-    _events.removeWhere((timedEvent) => timedEvent.time.isBefore(maxTimeBack));
+    _events.removeWhere((timedEvent) => timedEvent.time.isBefore(maxTimeBack.subtract(new Duration(seconds: TIME_OFFSET))));
 
     _events.add(timedEvent);
 
@@ -64,8 +100,9 @@ class Graph {
     }
   }
 
-  rescale(lastTime) =>
+  rescaleDomain(lastTime) {
     xScale.domain = [firstTime, lastTime];
+  }
 
 }
 

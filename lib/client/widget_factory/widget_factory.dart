@@ -6,6 +6,7 @@ import 'package:yaml/yaml.dart';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/graph/graph.dart';
+import 'package:dashy/client/markdown/markdown_model.dart';
 import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
 import 'package:dashy/client/grid/grid.dart';
@@ -26,7 +27,7 @@ class WidgetFactory {
   Grid grid;
   String yaml;
 
-    WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
+  WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
 
   init() {
     widgetsFromYaml(yaml);
@@ -52,9 +53,8 @@ class WidgetFactory {
     return widgetConfiguration;
   }
 
-
-  broadcastWidget(widgetConfiguration) {
-    var subscribeToStreams = new Set();
+  broadcastWidget(WidgetConfiguration widgetConfiguration) {
+    var subscribeToStreams = new List();
 
     widgetConfiguration.dataSources.forEach((dataSourceString) {
       subscribeToStreams.add(timedEventBroadcaster.registerDataSource(dataSourceString).stream);
@@ -62,31 +62,55 @@ class WidgetFactory {
 
     switch (widgetConfiguration.type) {
       case 'Gauge' :
+      //need to make list because of ng-repeat bug
+      var gauges = new List.from(subscribeToStreams.map((stream) => new Gauge(stream)));
         newWidgets.add(new Widget(
-            new Gauge(subscribeToStreams),
+            gauges,
             widgetConfiguration.id,
             grid
         ));
         break;
+
       case 'Graph' :
-        newWidgets.add(new Widget(
-            graphModelFactory(subscribeToStreams, widgetConfiguration),
-            widgetConfiguration.id,
-            grid));
-        break;
+      var graphs = new List.from(subscribeToStreams.map((stream) => graphModelFactory(stream, widgetConfiguration)));
+      newWidgets.add(new Widget(
+          graphs,
+          widgetConfiguration.id,
+          grid));
+      break;
+
+      case 'Markdown' :
+      var markdowns = new List.from(subscribeToStreams.map((stream) => new Markdown(stream)));
+
+      List widgetModels = new List.from(markdowns);
+      newWidgets.add(new Widget(
+          widgetModels,
+          widgetConfiguration.id,
+          grid
+      ));
+
+      if (widgetConfiguration.settings['markdown'] != null) {
+        new Timer(new Duration(seconds: 1), () {
+          markdowns.forEach((markdown) =>
+            markdown.update(
+                new TimedEvent(null, null, null,
+                  { 'markdown' : widgetConfiguration.settings['markdown'] },
+                null)));
+        });
+      }
+      break;
     }
   }
 
-  Graph graphModelFactory(subscribeToStreams, widgetConfiguration) {
+  Graph graphModelFactory(stream, widgetConfiguration) {
     var drawFromFirstEvent = widgetConfiguration.settings['drawFromFirstEvent'];
     var durationSettings = widgetConfiguration.settings['duration'];
 
-    if (durationSettings != null) return graphWithDuration(durationSettings, drawFromFirstEvent, subscribeToStreams);
-    else return new Graph(subscribeToStreams);
-
+    if (durationSettings != null) return graphWithDuration(durationSettings, drawFromFirstEvent, stream);
+    else return new Graph(stream);
   }
 
-  Graph graphWithDuration(durationSetting, drawFromFirstEvent, subscribeToStreams) {
+  Graph graphWithDuration(durationSetting, drawFromFirstEvent, stream) {
     var milliseconds = durationSetting['milliseconds'] == null ? 0 : durationSetting['milliseconds'];
     var seconds = durationSetting['seconds'] == null ? 0 : durationSetting['seconds'];
     var minutes = durationSetting['minutes'] == null ? 0 : durationSetting['minutes'];
@@ -101,12 +125,12 @@ class WidgetFactory {
 
     if (drawFromFirstEvent != null) return
       new Graph(
-          subscribeToStreams,
+          stream,
           drawFromFirstEvent: drawFromFirstEvent,
           duration: duration
       );
     else return
-      new Graph(subscribeToStreams, duration: duration);
+      new Graph(stream, duration: duration);
 
   }
 
