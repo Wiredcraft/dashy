@@ -25,14 +25,15 @@ main() {
         inject((Scope scope, MockHttpBackend backend, TestBed _, Grid grid) {
           var __ = new StreamController();
 
-          Gauge gauge = new Gauge([__.stream]);
+          Gauge gauge = new Gauge(__.stream);
           gauge.value = 5;
 
           Widget widget = new Widget(
-              gauge,
+              [gauge],
               null,
               grid
           );
+
           backend
             ..whenGET('packages/dashy/client/widget/widget.html').respond(200,
           '''
@@ -43,12 +44,13 @@ main() {
           '''
             {{comp.gauge.currentValue}}
         ''');
+
 //          scope.context['gw'] = widget;
 //          var element = e('<widget widget="gw" probe="wp"></widget>');
-
+//
 //          _.compile(element);
 //          scope.apply();
-
+//
 //          Probe widgetProbe = scope.context['wp'];
 //          microLeap();
 //          backend.flush();

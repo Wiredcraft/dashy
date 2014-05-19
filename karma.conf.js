@@ -4,7 +4,7 @@ module.exports = function(config) {
     basePath: '.',
     frameworks: ['dart-unittest'],
 
-    // list of files / patterns to load in the browser
+    // list of files1 / patterns to load in the browser
     // all tests must be 'included', but all other libraries must be 'served' and
     // optionally 'watched' only.
     files: [

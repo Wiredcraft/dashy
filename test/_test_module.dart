@@ -4,6 +4,7 @@ import '_specs.dart';
 import 'dart:async';
 import 'package:dashy/client/app/app.dart';
 import 'package:dashy/client/app/app_component.dart';
+import 'package:dashy/client/time_from_now/time_from_now.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
 import 'package:dashy/client/markdown/markdown_widget.dart';
 import 'package:dashy/client/widget/widget_component.dart';
@@ -17,8 +18,7 @@ const configYaml =
 '''widgets:
  - some-widget-id:
      attributes:
-       some-attribute:
-         some-datasource: some-attribute-on-datasource
+       - some-datasource
      type: Gauge
 ''';
 
@@ -34,6 +34,7 @@ class MockDashyModule extends Module {
     });
     bind(App);
     bind(AppComponent);
+    bind(TimeFrom);
     bind(MarkdownWidget);
     bind(GaugeComponent);
     bind(WidgetComponent);

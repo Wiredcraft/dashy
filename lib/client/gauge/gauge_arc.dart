@@ -19,16 +19,18 @@ class GaugeArc {
 
   set gauge(gauge) {
     var path = new PathElement()
-      ..classes.add('gauge-arc-background')
+      ..classes.add('background')
       ..attributes['d'] = gauge.backgroundArcD
-      ..attributes['transform'] = 'translate(${element.parent.clientWidth}, ${element.parent.clientHeight})';
+      ..attributes['transform'] = 'translate(${element.clientWidth}, ${element.clientHeight})';
 
-    element.classes.add('gauge-arc');
+    element.classes.add('arc');
     element.parent.insertBefore(path, element);
 
     scope.watch('clientHeight', (_,__) {
-      path.attributes['transform'] = 'translate(${element.parent.clientWidth/2}, ${element.parent.clientHeight/2})';
-      element.attributes['transform'] = 'translate(${element.parent.clientWidth/2}, ${element.parent.clientHeight/2})';
+      path.attributes['transform'] =
+      'translate(${element.parent.clientWidth/2}, ${element.parent.clientHeight/2})';
+      element.attributes['transform'] =
+      'translate(${element.parent.clientWidth/2}, ${element.parent.clientHeight/2})';
     }, context: element.parent, canChangeModel: false);
 
     scope.watch('d', (_newD, _) {

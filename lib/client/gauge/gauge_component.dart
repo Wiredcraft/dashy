@@ -30,10 +30,12 @@ class GaugeComponent {
   GaugeComponent(this.element, this.scope);
 
   set setGauge(Gauge _gauge) {
-    gauge = _gauge;
-    scope.watch('smallestDimension', (newSmallestDimension,__){
-      gauge.resize(newSmallestDimension);
-    }, context: this, canChangeModel: true);
+    if(_gauge != null) {
+      gauge = _gauge;
+      scope.watch('smallestDimension', (newSmallestDimension,__){
+        gauge.resize(newSmallestDimension);
+      }, context: this, canChangeModel: true);
+    }
   }
 }
 

@@ -8,14 +8,13 @@ part of dashy.widget_factory;
 @Injectable()
 class WidgetConfiguration {
   String id;
-  Set dataSources = new Set();
+  List dataSources = new List();
   String type;
   Map settings = new Map();
   int x;
   int y;
   int w;
   int h;
-
 
   WidgetConfiguration();
 
@@ -24,11 +23,10 @@ class WidgetConfiguration {
       id = k;
       type = configurationOptions['type'];
 
-      configurationOptions['attributes'].forEach((attributeOnWidget, dataSource) {
-        dataSource.forEach((dataSource, attributeOnTimedEvent) {
+      configurationOptions['attributes'].forEach((dataSource) {
           dataSources.add(dataSource);
-        });
       });
+
       if (configurationOptions['settings'] != null) settings = configurationOptions['settings'];
       if (configurationOptions['layout'] != null) {
         x = configurationOptions['layout']['x'] != null ? configurationOptions['layout']['x'] : 0;

@@ -2,6 +2,7 @@ library dashy.module;
 
 import 'dart:async';
 import 'package:angular/angular.dart';
+import 'package:dashy/client/time_from_now/time_from_now.dart';
 import 'package:dashy/client/gauge/gauge_component.dart';
 import 'package:dashy/client/gauge/gauge_arc.dart';
 import 'package:dashy/client/graph/graph_line.dart';
@@ -18,45 +19,51 @@ import 'package:dashy/client/message_router/message_router.dart';
 import 'package:dashy/client/websocket_wrapper/websocket_wrapper.dart';
 import 'package:dashy/client/grid/grid.dart';
 
+
+//'''widgets:
+//- gauge:
+//    attributes:
+//       - CPU
+//    type: Gauge
+//    layout:
+//      x: 0
+//      y: 0
+//      w: 1
+//      h: 1
+//- graph:
+//    attributes:
+//      - CPU
+//    type: Graph
+//    settings:
+//      duration:
+//        seconds: 10
+//    layout:
+//      x: 1
+//      y: 1
+//      w: 2
+//      h: 1''';
+
 const configYaml =
 '''widgets:
-- some-widget-id:
+- github feed:
     attributes:
-     value:
-       CPU: value
-    type: Gauge
-    layout:
-      x: 0
-      y: 0
-      w: 1
-      h: 1
-- graph-widget-id:
-    attributes:
-     value:
-       CPU: value
-    type: Graph
-    settings:
-      duration:
-        seconds: 10
-    layout:
-      x: 1
-      y: 1
-      w: 2
-      h: 1
-- markdown-widget-id:
-    attributes:
-     value:
-       CPU: value
+       - git
+       - CPU
     type: Markdown
     settings:
       markdown: |
-        ![Wiredcraft](https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&r=x)
-        Dashy {{ comp.model['some-attribute'] }}
+        <img ng-if="comp.model['image'] != null" ng-src="{{comp.model['image']}}" width="100" height="100"/>
+
+        <span ng-if="comp.model['user'] != null"> {{ comp.model['user'] }} </span>
+
+        <p ng-if="comp.model['title'] != null">Latest commit: {{ comp.model['title'] }} </p>
+
+        <timefromnow for-date="comp.model['some-time-in-the-future']"></timefromnow>
     layout:
       x: 1
       y: 0
       w: 3
-      h: 1
+      h: 2
 ''';
 
 class DashyModule extends Module {
@@ -72,6 +79,7 @@ class DashyModule extends Module {
     });
     bind(Widget);
     bind(App);
+    bind(TimeFrom);
     bind(AppComponent);
     bind(GaugeComponent);
     bind(GaugeArc);

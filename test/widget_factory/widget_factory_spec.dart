@@ -10,6 +10,7 @@ import 'package:dashy/client/widget/widget.dart';
 main() {
   describe('widget factory', () {
     const DATASOURCE_NAME = 'some-datasource';
+    const OTHER_DATASOURCE_NAME = 'some-datasource';
 
     TestBed _;
 
@@ -19,7 +20,7 @@ main() {
       return (TestBed tb) => _ = tb;
     });
 
-    it('should create a widget', async(
+    it('should create a widget with multiple sources', async(
         inject((WidgetFactory widgetFactory) {
 
           const configYaml =
@@ -27,19 +28,18 @@ main() {
 widgets:
  - some-widget-id:
      attributes:
-       some-attribute:
-         $DATASOURCE_NAME: some-attribute-on-datasource
+       - $DATASOURCE_NAME
+       - $OTHER_DATASOURCE_NAME
      type: Gauge
 ''';
 
           var asyncExpectation = unit.expectAsync((element) {
             expect(element.runtimeType).toBe(Widget);
-            expect(element.model.runtimeType).toBe(Gauge);
+            expect(element.model is Iterable).toBeTruthy();
           }, count: 1);
 
           widgetFactory.newWidgets.stream.listen(asyncExpectation);
           widgetFactory.widgetsFromYaml(configYaml);
-
         })));
   });
 }

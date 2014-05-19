@@ -1,5 +1,6 @@
 library dashy.graph_model;
 
+import 'dart:async';
 import 'dart:js';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
@@ -13,30 +14,35 @@ class Graph {
   int lastTime = new DateTime.now().millisecondsSinceEpoch;
   JsFunction areaFunc = context['d3']['svg']['area'].apply([]);
 
+  var width = 500;
+  var height = 200;
   FirstTimeDecider firstTimeDecider = new FirstTimeDecider();
 
   get firstTime => firstTimeDecider(this);
 
   Duration duration;
 
-  Linear xScale = new Linear()
-    ..clamp = true
-    ..range = [0, 500];
+  Linear xScale = new Linear();
 
-
-  Linear yScale = new Linear()
-    ..domain = [0, 100]
-    ..clamp = true
-    ..range = [200, 0];
+  Linear yScale = new Linear();
 
   bool drawFromFirstEvent;
 
   List<TimedEvent> _events = new List<TimedEvent>();
 
-  Graph(Iterable streams, { this.drawFromFirstEvent: true, this.date, this.duration}) {
-    streams.forEach((stream) => stream.listen(update));
+  Graph(Stream stream, { this.drawFromFirstEvent: true, this.date, this.duration}) {
+    stream.listen(update);
+    rescaleRange();
   }
 
+  rescaleRange() {
+  yScale..domain = [0, 100]
+        ..clamp = true
+        ..range = [height, 0];
+
+  xScale..clamp = true
+        ..range = [0, width];
+  }
   areaDPathString() {
 
     areaFunc.callMethod('x', [(TimedEvent timedEvent, _) {
@@ -72,13 +78,14 @@ class Graph {
   }
 
   update(TimedEvent timedEvent) {
+    const TIME_OFFSET = 100;
     maybeUpdateFirstAndLastTime(timedEvent);
 
-    rescale(lastTime);
+    rescaleDomain(lastTime);
 
     var maxTimeBack = new DateTime.fromMillisecondsSinceEpoch(firstTime);
 
-    _events.removeWhere((timedEvent) => timedEvent.time.isBefore(maxTimeBack));
+    _events.removeWhere((timedEvent) => timedEvent.time.isBefore(maxTimeBack.subtract(new Duration(seconds: TIME_OFFSET))));
 
     _events.add(timedEvent);
 
@@ -93,7 +100,7 @@ class Graph {
     }
   }
 
-  rescale(lastTime) {
+  rescaleDomain(lastTime) {
     xScale.domain = [firstTime, lastTime];
   }
 

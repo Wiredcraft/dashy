@@ -1,7 +1,0 @@
-{
-  "name": "Dashy",
-  "version": "0.1.0",
-  "devDependencies": {
-    "normalize-css": "*"
-  }
-}

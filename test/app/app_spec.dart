@@ -25,7 +25,7 @@ main() {
         .model"></widget>
         ''')
           ..whenGET('packages/dashy/client/widget/widget.html').respond('''
-            <gauge gauge="widg.model" probe="gp" ng-if="widg.isGauge()">
+            <gauge gauge="model" ng-repeat="model in widg.model" probe="gp" ng-if="widg.isGauge()">
             </gauge>
         ''')
           ..whenGET('packages/dashy/client/gauge/gauge.html').respond('''

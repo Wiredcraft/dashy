@@ -8,7 +8,7 @@ import 'package:angular/angular.dart';
  * Its "type" is inferred from the model variable.
  */
 class Widget {
-  dynamic model;
+  Iterable model;
   var id;
 
   Grid grid;

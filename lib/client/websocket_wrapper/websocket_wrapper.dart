@@ -43,7 +43,7 @@ class WebSocketWrapper {
       });
     });
     webSocket.onError.listen((e) {
-      print("Error on ${webSocket.url} -  $e");
+      print("Error on ${webSocket.url} -  $e. Reconnecting");
       onDisconnected();
     });
   }

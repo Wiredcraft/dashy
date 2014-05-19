@@ -20,8 +20,8 @@ class Gauge {
   JsFunction arc = context['d3']['svg']['arc'].apply(null);
   JsFunction backgroundArc = context['d3']['svg']['arc'].apply(null);
   
-  Gauge(Iterable<Stream> timedEventStreams) {
-    timedEventStreams.forEach((stream) => stream.listen(update));
+  Gauge(Stream stream) {
+    stream.listen(update);
   }
 
   resize(smallestDimension) {
