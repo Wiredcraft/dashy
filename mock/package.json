@@ -1,0 +1,12 @@
+{
+    "name": "Wiredcraft",
+    "version": "0.0.1",
+    "main": "Gruntfile.js",
+    "dependencies" : {},
+    "devDependencies" : {
+        "gulp" : "*",
+        "gulp-clean" : "*",
+        "gulp-sass" : "*",
+        "node-bourbon" : "*"
+    }
+}

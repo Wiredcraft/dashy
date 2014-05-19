@@ -1,0 +1,3 @@
+name: Cpu Pretty Name
+webhooks:
+        - git-datasource

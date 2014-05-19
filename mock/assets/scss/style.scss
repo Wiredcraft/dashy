@@ -1,0 +1,192 @@
+/* Bourbon */
+
+@import 'bourbon';
+
+/* Bourbon */
+
+@import '_normalize.scss';
+
+/* Variables (colors, layout, spacing & typography) */
+
+@import '_variables.scss';
+
+/* GENERAL */
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background: $black;
+  color: #FFF;
+  font-family: 'Roboto', Arial, sans-serif;
+  @include font-size();
+  font-weight: 300;
+  line-height: 140%;
+  position: relative;
+  * {
+    @include box-sizing(border-box);
+  }
+}
+
+a {
+  cursor: pointer;
+  color: $blue;
+  text-decoration: none;
+  &:hover {
+    color: shade($blue, 10%);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #FFF;
+  font-weight: inherit;
+  line-height: 1;
+  margin: 0;
+}
+
+h1 {
+  @include font-size($huge);
+}
+
+h2 {
+  @include font-size($large);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  @include font-size($normal);
+}
+
+p {
+  margin: 0 0 $gutter;
+}
+
+ul {
+  margin: 0 0 $gutter/2 $gutter;
+  padding: 0;
+  li {
+    padding: 0 0 $gutter/2;
+  }
+}
+
+small {
+  @include font-size($small);
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+
+widget {
+  position: absolute;
+}
+widget.moving {
+  opacity: 0.25;
+  @include transform (scale(0.9));
+  @include transition (0.2s ease-out);
+}
+
+
+/* WIDGETS */
+
+app {
+  display:block;
+  .widget {
+    display: inline-block;
+    padding-left: $gutter;
+    padding-right: $gutter;
+    .header,
+    .body {
+      background: tint($black, 5%);
+    }
+    .header {
+      border-radius: $radius $radius 0 0;
+      padding: $gutter/2;
+      h2 {
+        @include font-size($small);
+        margin: 0;
+        opacity: 0.8;
+        text-transform: uppercase;
+      }
+    }
+    .body {
+      border-radius: 0 0 $radius $radius;
+      display: block;
+      position: relative;
+      &.alert {
+        background: $red;
+      }
+      &.warning {
+        background: $orange;
+      }
+      &.ok {
+        background: $green;
+      }
+      &.info {
+        background: $blue;
+      }
+      &.undefined {
+        background: $purple;
+      }
+    }
+  }
+}
+
+
+/* Gauge */
+
+gauge {
+  h2 {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    @include transform(translateY(-50%));
+    top: 50%;
+    vertical-align: middle;
+    strong {
+      @include font-size($gigantic);
+      font-weight: inherit;
+    }
+  }
+  .background {
+    fill: #FFF;
+    opacity: 0.5;
+  }
+  .arc {
+    fill: #FFF;
+  }
+}
+
+/* Line chart */
+
+graph {
+  .line {
+    fill: none;
+    stroke: #FFF;
+  }
+  .area {
+    fill: rgba(255, 255, 255, 0.2);
+  }
+
+}
+
+/* Markdown */
+
+markdown {
+  padding: $gutter;
+}
