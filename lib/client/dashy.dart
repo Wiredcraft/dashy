@@ -59,6 +59,10 @@ const configYaml =
         <p ng-if="comp.model['title'] != null">Latest commit: {{ comp.model['title'] }} </p>
 
         <timefromnow for-date="comp.model['some-time-in-the-future']"></timefromnow>
+
+        <br /><br />
+
+        <timefromnow for-date="comp.model['some-time-in-the-past']"></timefromnow>
     layout:
       x: 1
       y: 0

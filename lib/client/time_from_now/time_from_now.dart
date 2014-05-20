@@ -1,5 +1,6 @@
 library time_from_now;
 
+import 'dart:async';
 import 'package:angular/angular.dart';
 
 @Component(
@@ -11,9 +12,17 @@ import 'package:angular/angular.dart';
     },
     useShadowDom: false
 )
-class TimeFrom {
+class TimeFrom implements DetachAware {
   String fromTimeString;
-  TimeFrom();
+  Timer timer;
+
+  Scope scope;
+
+  TimeFrom(this.scope) {
+    timer = new Timer.periodic(new Duration(seconds:1), (_) {
+      scope.apply();
+    });
+  }
 
 
   set setDateString(dateString) {
@@ -22,20 +31,24 @@ class TimeFrom {
 
   get timeFromNow => toTimeLeft();
 
+  detach() {
+    timer.cancel();
+  }
 
   String toTimeLeft() {
     if (fromTimeString == null) return '';
+    if (timer != null) timer.cancel();
 
     var milestoneMoment = DateTime.parse(fromTimeString);
     var now = new DateTime.now();
     String _displayString;
 
+    var timeRemaining;
     if (now.isAfter(milestoneMoment)) {
-      _displayString = 'no time';
-      return _displayString;
+      timeRemaining = now.difference(milestoneMoment);
+    } else {
+      timeRemaining = milestoneMoment.difference(now);
     }
-
-    var timeRemaining = milestoneMoment.difference(now);
 
     int d = timeRemaining.inDays;
     int h = timeRemaining.inHours.remainder(Duration.HOURS_PER_DAY);
@@ -48,6 +61,9 @@ class TimeFrom {
     String seconds = '$s seconds';
 
     _displayString = '$days$hours$minutes$seconds';
+    if (now.isAfter(milestoneMoment)) _displayString += ' ago';
+
+
     return _displayString;
   }
 }
