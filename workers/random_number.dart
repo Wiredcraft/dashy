@@ -7,7 +7,7 @@ DateTime futureTime = new DateTime.now().add(new Duration(days: 28, minutes:23))
 DateTime pastTime = new DateTime.now().subtract(new Duration(minutes:23, seconds: 50));
 void main() {
   HttpClient client = new HttpClient();
-  new Timer.periodic(new Duration(milliseconds:2000), (_) { doCpuRequest(client); });
+  new Timer.periodic(new Duration(milliseconds:10), (_) { doCpuRequest(client); });
   new Timer.periodic(new Duration(seconds:10), (_) { doGitRequest(client); });
 }
 

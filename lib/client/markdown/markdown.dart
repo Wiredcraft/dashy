@@ -6,7 +6,7 @@ import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dar
 
 class Markdown {
   String html;
-  String status;
+  String status = '';
   Map attributes = new Map();
 
   Markdown(stream) {

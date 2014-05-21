@@ -20,6 +20,6 @@ class TimedEvent {
   }
 
   Map toJson() {
-    return {'data' : data, 'datasource' : dataSource, 'id' : id, 'time' : time, status: status};
+    return {'data' : data, 'datasource' : dataSource, 'id' : id, 'time' : time, 'status': status};
   }
 }

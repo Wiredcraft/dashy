@@ -45,6 +45,27 @@ import 'package:dashy/client/grid/grid.dart';
 
 const configYaml =
 '''widgets:
+- gauge:
+    attributes:
+       - CPU
+    type: Gauge
+    layout:
+      x: 0
+      y: 0
+      w: 1
+      h: 1
+- graph:
+    attributes:
+      - CPU
+    type: Graph
+    settings:
+      duration:
+        seconds: 10
+    layout:
+      x: 1
+      y: 1
+      w: 2
+      h: 1
 - github feed:
     attributes:
        - git

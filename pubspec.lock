@@ -8,7 +8,7 @@ packages:
   angular:
     description:
       ref: null
-      resolved-ref: "669d47ce8dd9c1df1033a7f0715be76843be67a3"
+      resolved-ref: a35561223ad244a0064e38f90b38d2a9922b5ac7
       url: "git://github.com/angular/angular.dart.git"
     source: git
     version: "0.11.0"
@@ -27,7 +27,7 @@ packages:
   code_transformers:
     description: code_transformers
     source: hosted
-    version: "0.1.3"
+    version: "0.1.3+1"
   collection:
     description: collection
     source: hosted
@@ -43,7 +43,7 @@ packages:
   guinness:
     description: guinness
     source: hosted
-    version: "0.1.3"
+    version: "0.1.4"
   html5lib:
     description: html5lib
     source: hosted
@@ -103,4 +103,4 @@ packages:
   yaml:
     description: yaml
     source: hosted
-    version: "0.9.0"
+    version: "0.9.0+2"

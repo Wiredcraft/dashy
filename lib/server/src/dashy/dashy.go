@@ -17,7 +17,7 @@ import (
 var session Session;
 
 func main() {
-	fmt.Println("starting dashy server")
+	fmt.Println("starting dashy server on 8081 ab")
 	router := http.NewServeMux()
 
 	conn, _ := redis.Dial("tcp", ":6379")
@@ -38,7 +38,15 @@ func main() {
 	router.Handle("/", http.FileServer(http.Dir("build/web/")))
 	router.HandleFunc("/ws", wsHandler)
 
-	panic(http.ListenAndServe(":8081", router))
+	s := &http.Server{
+		Addr: ":8081",
+		Handler: router,
+		ReadTimeout: 10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	panic(s.ListenAndServe())
+
 }
 
 
@@ -49,9 +57,14 @@ type Session struct {
 
 func (session Session) registerConnection(conn *connection) {
 	session.connections[conn] = true
-	fmt.Println(session.dataSources)
 	for _, dataSource := range session.dataSources {
 		dataSource.registerConnection <- conn
+	}
+}
+
+func (session Session) unregisterConnection(conn *connection) {
+	for _, dataSource := range session.dataSources {
+		dataSource.unregisterConnection <- conn
 	}
 }
 
@@ -74,6 +87,7 @@ type TimedEvent struct {
 	WsType string `json:"type"`
 	Time time.Time   `json:"time"`
 	Data map[string]interface{} `json:"data"`
+	Status string `json:"status"`
 }
 
 func (timedEvent *TimedEvent) Serialize() ([]byte) {
@@ -81,7 +95,7 @@ func (timedEvent *TimedEvent) Serialize() ([]byte) {
 	if err != nil {
 		fmt.Println("error encoding timedEvent")
 	}
-
+	fmt.Println(timedEventString)
 	return timedEventString;
 }
 
@@ -117,6 +131,18 @@ func (conn *connection) writer() {
 	conn.ws.Close()
 }
 
+func (c *connection) nullReader() {
+	for {
+		_, _, err := c.ws.ReadMessage()
+		if err != nil {
+			break
+		}
+	}
+	c.ws.Close()
+}
+
+
+
 func wsHandler(writer http.ResponseWriter, request *http.Request) {
 	ws, err := websocket.Upgrade(writer, request, nil, 1024, 1024)
 	if _, ok := err.(websocket.HandshakeError); ok {
@@ -128,6 +154,12 @@ func wsHandler(writer http.ResponseWriter, request *http.Request) {
 	conn := &connection{send: make(chan []byte, 256), ws: ws}
 	session.registerConnection(conn)
 	go conn.writer()
+	defer func() {
+		delete(session.connections, conn)
+		session.unregisterConnection(conn)
+		close(conn.send)
+	} ()
+	conn.nullReader()
 }
 
 func (dataSource *DataSource) run() {
@@ -140,6 +172,9 @@ func (dataSource *DataSource) run() {
 		case connection := <-dataSource.registerConnection:
 			fmt.Println("registering connection")
 			dataSource.connections[connection] = true
+		case connection := <- dataSource.unregisterConnection:
+			fmt.Println("unregistering connection")
+			delete(dataSource.connections, connection)
 		case timedEvent := <-dataSource.propagateTimedEvent:
 			for conn, _ := range session.connections {
 				conn.send <- []byte(timedEvent.Serialize())
@@ -154,10 +189,9 @@ func (dataSource *DataSource) run() {
 
 func (dataSource *DataSource) RegisterWebhookHandlers(router *http.ServeMux) {
 	for _, webhook := range dataSource.Webhooks {
-		router.HandleFunc("/" + webhook, func(w http.ResponseWriter, request *http.Request) {
+		router.HandleFunc("/" + webhook, func(_ http.ResponseWriter, request *http.Request) {
 				fmt.Println(webhook)
 				dataSource.propagateTimedEvent <- dataSource.NewTimedEventFromRequest(request.Body)
-				w.Write([]byte(200))
 				request.Body.Close()
 			})
 	}
@@ -165,11 +199,10 @@ func (dataSource *DataSource) RegisterWebhookHandlers(router *http.ServeMux) {
 
 func (dataSource *DataSource) NewTimedEventFromRequest(body io.Reader) TimedEvent {
 	var timedEvent TimedEvent
-	fmt.Println(body)
 	decoder := json.NewDecoder(body)
 	err := decoder.Decode(&timedEvent)
-	fmt.Println(err)
 	if err != nil {
+		fmt.Println(err)
 		panic(err)
 	}
 	timedEvent.WsType = "update"
@@ -223,6 +256,7 @@ func newDataSourceFromPath(path string) *DataSource {
 	dataSource.propagateTimedEvent = make(chan TimedEvent)
 	dataSource.registerPersistor = make(chan *Persistor)
 	dataSource.registerConnection = make(chan *connection)
+	dataSource.unregisterConnection = make(chan *connection)
 	dataSource.persistors = make(map[*Persistor]bool)
 	dataSource.connections = make(map[*connection]bool)
 	return dataSource
