@@ -41,8 +41,6 @@ func main() {
 	s := &http.Server{
 		Addr: ":8081",
 		Handler: router,
-		ReadTimeout: 10 * time.Second,
-		WriteTimeout: 10 * time.Second,
 	}
 
 	panic(s.ListenAndServe())
