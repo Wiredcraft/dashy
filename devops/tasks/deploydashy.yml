@@ -1,5 +1,5 @@
 type: task
-id: deploy_dashy
+id: deploydashy
 name: Deploy dashy
 
 vars:
