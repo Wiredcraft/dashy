@@ -35,8 +35,10 @@ func main() {
 		dataSource.RegisterWebhookHandlers(router)
 	}
 
-	router.Handle("/", http.FileServer(http.Dir("build/web/")))
+
 	router.HandleFunc("/ws", wsHandler)
+	router.HandleFunc("/reset-dashy-server", resetHandler)
+	router.Handle("/", http.FileServer(http.Dir("build/web/")))
 
 	s := &http.Server{
 		Addr: ":8081",
@@ -46,7 +48,6 @@ func main() {
 	panic(s.ListenAndServe())
 
 }
-
 
 type Session struct {
 	dataSources []*DataSource
@@ -93,10 +94,8 @@ func (timedEvent *TimedEvent) Serialize() ([]byte) {
 	if err != nil {
 		fmt.Println("error encoding timedEvent")
 	}
-	fmt.Println(timedEventString)
 	return timedEventString;
 }
-
 
 type DataSource struct {
 	ID, Name  string
@@ -139,7 +138,16 @@ func (c *connection) nullReader() {
 	c.ws.Close()
 }
 
+func resetHandler(_ http.ResponseWriter, request *http.Request) {
+	timedEvent := new(TimedEvent)
+	timedEvent.WsType = "reload"
+	serializedTimedEvent := []byte(timedEvent.Serialize())
 
+	for connection := range session.connections {
+		connection.send <- serializedTimedEvent
+		request.Body.Close()
+	}
+}
 
 func wsHandler(writer http.ResponseWriter, request *http.Request) {
 	ws, err := websocket.Upgrade(writer, request, nil, 1024, 1024)

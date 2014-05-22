@@ -12,13 +12,13 @@ import 'package:angular/angular.dart';
     },
     useShadowDom: false
 )
-class TimeFrom implements DetachAware {
+class TimeFromNow implements DetachAware {
   String fromTimeString;
   Timer timer;
 
   Scope scope;
 
-  TimeFrom(this.scope) {
+  TimeFromNow(this.scope) {
     timer = new Timer.periodic(new Duration(seconds:1), (_) {
       scope.apply();
     });
@@ -42,7 +42,6 @@ class TimeFrom implements DetachAware {
     var milestoneMoment = DateTime.parse(fromTimeString);
     var now = new DateTime.now();
     String _displayString;
-
     var timeRemaining;
     if (now.isAfter(milestoneMoment)) {
       timeRemaining = now.difference(milestoneMoment);

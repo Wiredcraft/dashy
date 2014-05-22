@@ -54,7 +54,7 @@ main() {
           scope.apply();
           microLeap();
 
-          TimeFrom component = markdownProbe.directive(TimeFrom);
+          TimeFromNow component = markdownProbe.directive(TimeFromNow);
           clockTick(seconds: 1);
           expect(markdownProbe.element.innerHtml).toEqual('''
 <!-- anchor --><timefromnow for-date="comp.model['event-in-the-future']" class="ng-binding">2 days, 2 minutes, 59 seconds</timefromnow>''');
@@ -97,7 +97,7 @@ main() {
           scope.apply();
           microLeap();
 
-          TimeFrom component = markdownProbe.directive(TimeFrom);
+          TimeFromNow component = markdownProbe.directive(TimeFromNow);
           clockTick(seconds: 1);
           expect(markdownProbe.element.innerHtml).toEqual('''
 <!-- anchor --><timefromnow for-date="comp.model['event-in-the-future']" class="ng-binding">2 days, 3 minutes, 0 seconds ago</timefromnow>''');

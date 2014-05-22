@@ -1,5 +1,7 @@
 library dashy.message_router;
 
+import 'dart:html';
+import 'dart:async';
 import 'dart:convert';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
@@ -21,7 +23,11 @@ class MessageRouter {
     var type = json['type'];
     switch (type) {
       case 'update':
-      timedEventBroadcaster.newTimedEvent(json);
+        timedEventBroadcaster.newTimedEvent(json);
+        break;
+      case 'reload':
+        print('resetting server in 2 minutes');
+        new Timer(new Duration(minutes: 2), window.location.reload);
     }
   }
 }

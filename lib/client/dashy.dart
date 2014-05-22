@@ -104,7 +104,7 @@ class DashyModule extends Module {
     });
     bind(Widget);
     bind(App);
-    bind(TimeFrom);
+    bind(TimeFromNow);
     bind(AppComponent);
     bind(GaugeComponent);
     bind(GaugeArc);

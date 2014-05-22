@@ -34,7 +34,7 @@ class MockDashyModule extends Module {
     });
     bind(App);
     bind(AppComponent);
-    bind(TimeFrom);
+    bind(TimeFromNow);
     bind(MarkdownWidget);
     bind(GaugeComponent);
     bind(WidgetComponent);

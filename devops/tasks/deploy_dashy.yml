@@ -12,7 +12,7 @@ when:
 
 # Where to run the task
 'on':
-  - dashy
+  - dashy-staging
 
 do:
   # Prepare the src and build folders

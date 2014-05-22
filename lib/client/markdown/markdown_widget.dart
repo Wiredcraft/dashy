@@ -26,6 +26,7 @@ class MarkdownWidget {
   DirectiveMap directives;
   String latestStatus;
 
+
   MarkdownWidget(this.element, this.scope, this.compile, this.directives, this.injector);
 
   set setModel(_model) {
