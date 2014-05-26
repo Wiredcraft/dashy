@@ -25,13 +25,8 @@ class WidgetFactory {
   TimedEventBroadcaster timedEventBroadcaster;
   StreamController newWidgets = new StreamController.broadcast();
   Grid grid;
-  String yaml;
 
-  WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
-
-  init() {
-    widgetsFromYaml(yaml);
-  }
+  WidgetFactory(this.timedEventBroadcaster, this.grid);
 
   widgetsFromYaml(yaml) {
     var widgetConfigurations,
@@ -63,7 +58,9 @@ class WidgetFactory {
     switch (widgetConfiguration.type) {
       case 'Gauge' :
       //need to make list because of ng-repeat bug
-      var gauges = new List.from(subscribeToStreams.map((stream) => new Gauge(stream)));
+      var gauges = new List.from(subscribeToStreams.map((stream) {
+        new Gauge()..addStream(stream);
+      }));
         newWidgets.add(new Widget(
             gauges,
             widgetConfiguration.id,

@@ -25,7 +25,8 @@ main() {
         var valueOne = new TimedEvent(null, null, null, {"value":1}, null);
         var valueTwo = new TimedEvent(null, null, null, {"value":2}, null);
 
-        Gauge gauge = new Gauge(mockTimedEvents.stream);
+        Gauge gauge = new Gauge();
+        gauge.addStream(mockTimedEvents.stream);
 
         backend.whenGET('packages/dashy/client/gauge/gauge.html')
         .respond(200,

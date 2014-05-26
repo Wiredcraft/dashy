@@ -16,11 +16,11 @@ main() {
       module.install(new MockDashyModule());
     });
 
-    it('model should recalculate path on new value', async(() {
+    iit('model should recalculate path on new value', async(() {
       var mockTimedEvents = new StreamController();
 
-      Graph graph = new Graph(mockTimedEvents.stream);
-
+      Graph graph = new Graph();
+      graph.addStream(mockTimedEvents.stream);
       var emptyModelD = graph.d;
 
       mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
@@ -33,10 +33,11 @@ main() {
       expect(emptyModelD).not.toEqual(calculatedD);
     }));
 
-    it('model time scale should start at first event', async(() {
+    iit('model time scale should start at first event', async(() {
       var mockTimedEvents = new StreamController();
 
-      Graph graph = new Graph(mockTimedEvents.stream);
+      Graph graph = new Graph();
+      graph.addStream(mockTimedEvents.stream);
 
       mockTimedEvents.add(new TimedEvent(null, null, new DateTime.now(), {
           "value" :new Random().nextInt(100)
@@ -45,7 +46,7 @@ main() {
       expect(graph.d.startsWith('M 0')).toBeTruthy();
     }));
 
-    it('should inject settings into widget', async(inject((WidgetFactory factory, TimedEventBroadcaster timedEventBroadcaster) {
+    iit('should inject settings into widget', async(inject((WidgetFactory factory, TimedEventBroadcaster timedEventBroadcaster) {
       var graphConfig = '''
 graph-widget-id:
   type: Graph
@@ -63,7 +64,6 @@ graph-widget-id:
       });
 
       factory.createWidgetConfiguration(loadYaml(graphConfig));
-
 
     })));
 

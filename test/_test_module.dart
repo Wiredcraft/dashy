@@ -25,13 +25,7 @@ const configYaml =
 class MockDashyModule extends Module {
   MockDashyModule() {
     bind(TimedEventBroadcaster);
-    bind(WidgetFactory, toFactory: (i) {
-      return new WidgetFactory(
-        i.get(TimedEventBroadcaster),
-        i.get(Grid),
-        configYaml
-      );
-    });
+    bind(WidgetFactory);
     bind(App);
     bind(AppComponent);
     bind(TimeFromNow);

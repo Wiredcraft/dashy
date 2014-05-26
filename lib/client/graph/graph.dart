@@ -7,6 +7,7 @@ import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dar
 import 'package:d3/scale/scale.dart';
 
 class Graph {
+  StreamController incomingTimedEvents = new StreamController();
   get d => dPathString();
   get areaD => areaDPathString();
   DateTime date;
@@ -30,10 +31,12 @@ class Graph {
 
   List<TimedEvent> _events = new List<TimedEvent>();
 
-  Graph(Stream stream, { this.drawFromFirstEvent: true, this.date, this.duration}) {
-    stream.listen(update);
+  Graph({ this.drawFromFirstEvent: true, this.date, this.duration}) {
+    incomingTimedEvents.stream.listen(update);
     rescaleRange();
   }
+
+  addStream(stream) => incomingTimedEvents.addStream(stream);
 
   rescaleRange() {
   yScale..domain = [0, 100]
