@@ -35,3 +35,8 @@ class TimedEventBroadcaster {
   }
 
 }
+
+
+abstract class TimedEventAware {
+  addStream(Stream stream);
+}

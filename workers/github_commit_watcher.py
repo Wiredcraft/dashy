@@ -34,7 +34,7 @@ Sent entries should look like:
    "data": {
       "user": "Jamesford",
       "title": "Super Commit!",
-      "image": "https://secure.gravatar.com/avatar/cfdfd092fdad6be1a2d80bdbea98d9ead=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"
+      "image": "https://secure.gr~avatar.com/avatar/cfdfd092fdad6be1a2d80bdbea98d9ead=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"
    }
 }
 '''

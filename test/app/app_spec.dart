@@ -45,7 +45,6 @@ main() {
 
         expect(app.widgets.length).toBe(1);
 
-
       })));
 
   });

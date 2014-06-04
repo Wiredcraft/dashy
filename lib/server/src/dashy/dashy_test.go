@@ -120,10 +120,8 @@ func TestDataSourceListeners(t *testing.T) {
 			dataSource.RegisterWebhookHandlers(router)
 			persistor := Persistor{connection: connection, incomingTimedEvents: make(<-chan *TimedEvent)}
 
-
 			dataSource.registerPersistor <- &persistor
 			fmt.Println("registered persistor to datasource")
-
 
 			server := httptest.NewServer(router)
 			defer server.Close()

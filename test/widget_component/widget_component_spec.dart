@@ -25,7 +25,7 @@ main() {
         inject((Scope scope, MockHttpBackend backend, TestBed _, Grid grid) {
           var __ = new StreamController();
 
-          Gauge gauge = new Gauge(__.stream);
+          Gauge gauge = new Gauge()..addStream(__.stream);
           gauge.value = 5;
 
           Widget widget = new Widget(

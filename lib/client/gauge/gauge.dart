@@ -11,7 +11,7 @@ const TAU =  PI * 2;
  * The [Gauge] class is responsible for updating the Gauge type components
  * model in an appropriate manner.
  */
-class Gauge {
+class Gauge implements TimedEventAware {
   int _maxValue;
   int _minValue;
   int currentValue;
@@ -20,7 +20,9 @@ class Gauge {
   JsFunction arc = context['d3']['svg']['arc'].apply(null);
   JsFunction backgroundArc = context['d3']['svg']['arc'].apply(null);
   
-  Gauge(Stream stream) {
+  Gauge();
+
+  addStream(Stream stream) {
     stream.listen(update);
   }
 

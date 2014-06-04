@@ -63,7 +63,7 @@ class WidgetFactory {
     switch (widgetConfiguration.type) {
       case 'Gauge' :
       //need to make list because of ng-repeat bug
-      var gauges = new List.from(subscribeToStreams.map((stream) => new Gauge(stream)));
+      var gauges = new List.from(subscribeToStreams.map((stream) => new Gauge()..addStream(stream)));
         newWidgets.add(new Widget(
             gauges,
             widgetConfiguration.id,
@@ -80,7 +80,11 @@ class WidgetFactory {
       break;
 
       case 'Markdown' :
-      var markdowns = new List.from(subscribeToStreams.map((stream) => new Markdown(stream)));
+      var markdowns = new List.from(subscribeToStreams.map((stream) {
+        var markdown = new Markdown()..addStream(stream);
+
+        return markdown;
+      }));
 
       List widgetModels = new List.from(markdowns);
       newWidgets.add(new Widget(
@@ -107,7 +111,7 @@ class WidgetFactory {
     var durationSettings = widgetConfiguration.settings['duration'];
 
     if (durationSettings != null) return graphWithDuration(durationSettings, drawFromFirstEvent, stream);
-    else return new Graph(stream);
+    else return new Graph()..addStream(stream);
   }
 
   Graph graphWithDuration(durationSetting, drawFromFirstEvent, stream) {
@@ -125,12 +129,11 @@ class WidgetFactory {
 
     if (drawFromFirstEvent != null) return
       new Graph(
-          stream,
           drawFromFirstEvent: drawFromFirstEvent,
           duration: duration
-      );
+      )..addStream(stream);
     else return
-      new Graph(stream, duration: duration);
+      new Graph(duration: duration)..addStream(stream);
 
   }
 

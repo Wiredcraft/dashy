@@ -28,7 +28,7 @@ main() {
 
           TimedEvent markdownEvent = new TimedEvent(null, null, null, { 'markdown' : SOME_MARKDOWN}, null);
           var messenger = new StreamController();
-          Markdown markdown = new Markdown(messenger.stream);
+          Markdown markdown = new Markdown()..addStream(messenger.stream);
 
           scope.context['md'] = markdown;
           backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'<!-- anchor -->');
@@ -56,7 +56,7 @@ main() {
         inject(
                 (TestBed _, MockHttpBackend backend, Scope scope, WidgetFactory factory, TimedEventBroadcaster timedEventBroadcaster) {
               var messenger = new StreamController();
-              Markdown markdown = new Markdown(messenger.stream);
+              Markdown markdown = new Markdown()..addStream(messenger.stream);
 
               scope.context['md'] = markdown;
               var element = e('<markdown model="md" probe="mdp"></markdown>');
@@ -95,7 +95,7 @@ That resolves an, {{ comp.model['attribute'] }}
           null);
 
           var messenger = new StreamController();
-          Markdown markdown = new Markdown(messenger.stream);
+          Markdown markdown = new Markdown()..addStream(messenger.stream);
           scope.context['md'] = markdown;
           var element = e('<markdown model="md" probe="mdp"></markdown>');
           backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'<!-- anchor -->');

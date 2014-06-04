@@ -87,8 +87,8 @@ const configYaml =
     layout:
       x: 1
       y: 0
-      w: 3
-      h: 2
+      w: 2
+      h: 1
 ''';
 
 class DashyModule extends Module {
