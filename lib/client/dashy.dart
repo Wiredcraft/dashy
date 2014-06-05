@@ -114,6 +114,7 @@ class DashyModule extends Module {
     bind(MarkdownWidget);
     bind(WidgetComponent);
     bind(MessageRouter);
+    bind(ScopeDigestTTL, toValue: new ScopeDigestTTL.value(30));
     bind(WebSocketWrapper, toFactory: (i) => new WebSocketWrapper(i.get
     (MessageRouter), new StreamController.broadcast()));
   }
