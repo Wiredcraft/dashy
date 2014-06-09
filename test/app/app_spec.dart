@@ -27,11 +27,6 @@ main() {
           ..whenGET('packages/dashy/client/widget/widget.html').respond('''
             <gauge gauge="model" ng-repeat="model in widg.model" probe="gp" ng-if="widg.isGauge()">
             </gauge>
-        ''')
-          ..whenGET('packages/dashy/client/gauge/gauge.html').respond('''
-          <svg>
-            {{comp.gauge.currentValue}}
-            </svg>
         ''');
 
         var element = e('<app probe="ap"></app>');
@@ -43,7 +38,8 @@ main() {
         App app = appComponent.model;
         microLeap();
 
-        expect(app.widgets.length).toBe(1);
+        expect(app.widgets.length).toBe(3);
+        clockTick(seconds:1);
 
       })));
 

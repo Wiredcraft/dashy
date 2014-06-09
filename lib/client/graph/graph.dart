@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:js';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dart';
+import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:d3/scale/scale.dart';
 
 class Graph implements TimedEventAware {
@@ -14,7 +15,7 @@ class Graph implements TimedEventAware {
   int firstEventTime = new DateTime.now().millisecondsSinceEpoch;
   int lastTime = new DateTime.now().millisecondsSinceEpoch;
   JsFunction areaFunc = context['d3']['svg']['area'].apply([]);
-
+  String configuration;
   var width = 500;
   var height = 200;
   FirstTimeDecider firstTimeDecider = new FirstTimeDecider();
@@ -31,10 +32,12 @@ class Graph implements TimedEventAware {
 
   List<TimedEvent> _events = new List<TimedEvent>();
 
-  Graph({ this.drawFromFirstEvent: true, this.date, this.duration}) {
+  Graph({ this.drawFromFirstEvent: true, this.date, this.duration, this.configuration}) {
     incomingTimedEvents.stream.listen(update);
     rescaleRange();
   }
+
+  toYaml() => configuration;
 
   addStream(stream) => incomingTimedEvents.addStream(stream);
 

@@ -19,9 +19,12 @@ class GaugeComponent {
   Element element;
   Scope scope;
 
-  int get smallestDimension =>
-    element.clientWidth < element.clientHeight?
+  int get smallestDimension {
+    var smallest = element.clientHeight <= element.clientHeight?
     element.clientWidth : element.clientHeight;
+    gauge.resize(smallest);
+    return smallest;
+  }
 
   String get viewBox => '0 0 ${element.clientWidth} ${element.clientHeight}';
 
@@ -32,9 +35,6 @@ class GaugeComponent {
   set setGauge(Gauge _gauge) {
     if(_gauge != null) {
       gauge = _gauge;
-      scope.watch('smallestDimension', (newSmallestDimension,__){
-        gauge.resize(newSmallestDimension);
-      }, context: this, canChangeModel: true);
     }
   }
 }

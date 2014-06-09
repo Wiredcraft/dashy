@@ -1,7 +1,6 @@
 library grid;
 
 import 'dart:js';
-import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/widget_factory/widget_factory.dart';
 import 'package:dashy/client/widget/widget.dart';
@@ -10,32 +9,25 @@ import 'package:dashy/client/widget/widget.dart';
 class Grid {
   int _rows = 2;
   get rows => _rows;
-  Map widgetInGrid = new Map();
 
   JsObject grid;
 
   regenerateGrid({Iterable<WidgetConfiguration> items, int rows}) {
     if (rows != null) _rows = rows;
 
-    if (items != null) {
-      var widgetIds = new List();
-      items.forEach((item) => widgetIds.add(item.id));
-      var positioningObjects = items.map(widgetPositioningObjectExtraction);
+    var widgetPositions = items.map(newWidgetPosition);
 
-      grid = new JsObject(
-      context['GridList'],
-      [new JsArray.from(positioningObjects),
-       new JsObject.jsify({'rows': _rows })]);
-      widgetIds.forEach((id) {
-        widgetInGrid[id] = grid.callMethod('_getItemByAttribute', ['id', id]);
-      });
-    }
+    _renewGrid(widgetPositions);
   }
 
-  operator [](id) => widgetInGrid[id];
+  _renewGrid(widgetPositions) {
+    grid = new JsObject(context['GridList'], [new JsArray.from(widgetPositions), new JsObject.jsify({
+        'rows': _rows
+    })]);
+  }
 
 
-  widgetPositioningObjectExtraction(WidgetConfiguration widgetConfiguration) =>
+  newWidgetPosition(WidgetConfiguration widgetConfiguration) =>
   new JsObject.jsify({
       'x': widgetConfiguration.x,
       'y': widgetConfiguration.y,

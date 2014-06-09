@@ -50,20 +50,15 @@ main() {
       var graphConfig = '''
 graph-widget-id:
   type: Graph
-  attributes:
+  datasources:
     - time-test
   settings:
     duration:
       seconds: 40
     drawFromFirstEvent: false
         ''';
-
-      factory.newWidgets.stream.listen((widget) {
-        microLeap();
-        expect(widget.model.drawFromFirstEvent).toBeFalsy();
-      });
-
-      factory.createWidgetConfiguration(loadYaml(graphConfig));
+      var widget = factory.newWidget(factory.createWidgetConfiguration(loadYaml(graphConfig)));
+      expect(widget.model.first.drawFromFirstEvent).toBeFalsy();
 
 
     })));

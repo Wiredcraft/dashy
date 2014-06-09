@@ -22,24 +22,41 @@ main() {
 
     it('should create a widget with multiple sources', async(
         inject((WidgetFactory widgetFactory) {
-
-          const configYaml =
-'''
-widgets:
- - some-widget-id:
-     attributes:
-       - $DATASOURCE_NAME
-       - $OTHER_DATASOURCE_NAME
-     type: Gauge
+      const multipleWidgetYaml =
+      '''widgets:
+- gauge:
+    datasources:
+       - CPU
+       - OTHER-SOURCE
+    type: Gauge
+    layout:
+      x: 0
+      y: 0
+      w: 1
+      h: 1
 ''';
+          var widgets = widgetFactory.widgetsFromYaml(multipleWidgetYaml);
+          expect(widgets.first.model.length).toBe(2);
+        })));
 
-          var asyncExpectation = unit.expectAsync((element) {
-            expect(element.runtimeType).toBe(Widget);
-            expect(element.model is Iterable).toBeTruthy();
-          }, count: 1);
 
-          widgetFactory.newWidgets.stream.listen(asyncExpectation);
-          widgetFactory.widgetsFromYaml(configYaml);
+    it('should update a widget', async(
+        inject((WidgetFactory widgetFactory) {
+          const multipleWidgetYaml =
+          '''widgets:
+- gauge:
+    datasources:
+       - CPU
+       - OTHER-SOURCE
+    type: Gauge
+    layout:
+      x: 0
+      y: 0
+      w: 1
+      h: 1
+''';
+          var widgets = widgetFactory.widgetsFromYaml(multipleWidgetYaml);
+          expect(widgets.first.model.length).toBe(2);
         })));
   });
 }

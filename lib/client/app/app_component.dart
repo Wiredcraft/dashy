@@ -19,7 +19,7 @@ class AppComponent {
   App model;
   Scope scope;
 
-  AppComponent(Element element, this.scope, this.model) {
+  AppComponent(this.scope, this.model) {
     clientHeight = window.document.documentElement.clientHeight;
     window.onResize.listen((_) {
       clientHeight = window.document.documentElement.clientHeight;

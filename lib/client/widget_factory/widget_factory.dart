@@ -1,6 +1,5 @@
 library dashy.widget_factory;
 
-
 import 'dart:async';
 import 'package:yaml/yaml.dart';
 import 'package:angular/angular.dart';
@@ -23,37 +22,27 @@ part 'widget_configuration.dart';
 @Injectable()
 class WidgetFactory {
   TimedEventBroadcaster timedEventBroadcaster;
-  StreamController newWidgets = new StreamController.broadcast();
+
   Grid grid;
-  String yaml;
 
-  WidgetFactory(this.timedEventBroadcaster, this.grid, String this.yaml);
+  WidgetFactory(this.timedEventBroadcaster, this.grid);
 
-  init() {
-    widgetsFromYaml(yaml);
-  }
-
-  widgetsFromYaml(yaml) {
+  List<Widget> widgetsFromYaml(yaml) {
     var widgetConfigurations,
         widgets,
         decoded = loadYaml(yaml);
 
     widgetConfigurations = decoded['widgets'].map(createWidgetConfiguration);
     grid.regenerateGrid(items: widgetConfigurations);
-    widgetConfigurations.forEach(broadcastWidget);
+    widgets = widgetConfigurations.map(newWidget);
 
-    return widgets;
+    return widgets.toList();
   }
 
-  createWidgetConfiguration(widgetConfigurationMap) {
-
-    WidgetConfiguration widgetConfiguration =
+  WidgetConfiguration createWidgetConfiguration(widgetConfigurationMap) =>
     new WidgetConfiguration.fromMap(widgetConfigurationMap);
 
-    return widgetConfiguration;
-  }
-
-  broadcastWidget(WidgetConfiguration widgetConfiguration) {
+  newWidget(WidgetConfiguration widgetConfiguration) {
     var subscribeToStreams = new List();
 
     widgetConfiguration.dataSources.forEach((dataSourceString) {
@@ -64,45 +53,55 @@ class WidgetFactory {
       case 'Gauge' :
       //need to make list because of ng-repeat bug
       var gauges = new List.from(subscribeToStreams.map((stream) => new Gauge()..addStream(stream)));
-        newWidgets.add(new Widget(
-            gauges,
-            widgetConfiguration.id,
-            grid
-        ));
-        break;
+        return new Widget(
+          gauges,
+          widgetConfiguration.id,
+          widgetConfiguration.x,
+          widgetConfiguration.y,
+          widgetConfiguration.w,
+          widgetConfiguration.h,
+          widgetConfiguration.dataSources,
+          widgetConfiguration.configuration
+      );
 
       case 'Graph' :
       var graphs = new List.from(subscribeToStreams.map((stream) => graphModelFactory(stream, widgetConfiguration)));
-      newWidgets.add(new Widget(
+      return new Widget(
           graphs,
           widgetConfiguration.id,
-          grid));
-      break;
+          widgetConfiguration.x,
+          widgetConfiguration.y,
+          widgetConfiguration.w,
+          widgetConfiguration.h,
+          widgetConfiguration.dataSources,
+          widgetConfiguration.configuration);
 
       case 'Markdown' :
-      var markdowns = new List.from(subscribeToStreams.map((stream) {
-        var markdown = new Markdown()..addStream(stream);
-
-        return markdown;
-      }));
-
-      List widgetModels = new List.from(markdowns);
-      newWidgets.add(new Widget(
-          widgetModels,
-          widgetConfiguration.id,
-          grid
-      ));
+      var markdowns = new List.from(subscribeToStreams.map((stream) => new Markdown()..addStream(stream)));
 
       if (widgetConfiguration.settings['markdown'] != null) {
-        new Timer(new Duration(seconds: 1), () {
-          markdowns.forEach((markdown) =>
-            markdown.update(
-                new TimedEvent(null, null, null,
-                  { 'markdown' : widgetConfiguration.settings['markdown'] },
-                null)));
-        });
-      }
-      break;
+              new Timer(new Duration(seconds: 1), () {
+                markdowns.forEach((markdown) =>
+                  markdown.update(
+                      new TimedEvent(null, null, null,
+                        { 'markdown' : widgetConfiguration.settings['markdown'] },
+                      null)));
+              });
+            }
+
+      List widgetModels = new List.from(markdowns);
+      return new Widget(
+          widgetModels,
+          widgetConfiguration.id,
+          widgetConfiguration.x,
+          widgetConfiguration.y,
+          widgetConfiguration.w,
+          widgetConfiguration.h,
+          widgetConfiguration.dataSources,
+          widgetConfiguration.configuration
+      );
+
+
     }
   }
 
@@ -134,8 +133,6 @@ class WidgetFactory {
       )..addStream(stream);
     else return
       new Graph(duration: duration)..addStream(stream);
-
   }
-
 
 }

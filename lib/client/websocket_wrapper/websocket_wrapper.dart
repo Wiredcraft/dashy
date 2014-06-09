@@ -17,17 +17,17 @@ const RECONNECT_DELAY = 10;
 @Injectable()
 class WebSocketWrapper {
   bool connectPending = false;
-  StreamController incomingMessageStream;
+  StreamController incomingMessageStream = new StreamController.broadcast();
   WebSocket webSocket;
 
-  WebSocketWrapper(MessageRouter messageRouter, this.incomingMessageStream) {
+  WebSocketWrapper(MessageRouter messageRouter) {
     incomingMessageStream.stream.listen(messageRouter);
     connect();
   }
 
   registerWebSocketStream(Stream webSocketsStream) {
     var splitStringStream = webSocketsStream.transform(UTF8.encoder)
-                                            .transform(const LineSplitter());
+    .transform(const LineSplitter());
 
     incomingMessageStream.addStream(splitStringStream);
   }

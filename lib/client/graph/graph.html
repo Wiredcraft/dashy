@@ -2,9 +2,8 @@
      ng-attr-width='{{comp.width}}'
      ng-attr-height='{{comp.height}}'>
      <!--ng-attr-viewBox='2 0 {{comp.width}} {{comp.height}}'>-->
-  <path graph graph-model='comp.model'></path>
-  <path graph-area graph-model='comp.model'></path>
+  <path graph graph-model='comp.graph'></path>
+  <path graph-area graph-model='comp.graph'></path>
 </svg>
 <!--hack for angular expression parser-->
-<span style='display:none'>{{graph.model.d}}{{graph.model.areaD}}</span>
-
+<span style='display:none'>{{graph.d}}{{graph.areaD}}</span>
