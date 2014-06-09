@@ -13,6 +13,8 @@ import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dar
 import 'package:dashy/client/message_router/message_router.dart';
 import 'package:dashy/client/websocket_wrapper/websocket_wrapper.dart';
 import 'package:dashy/client/grid/grid.dart';
+import 'package:dashy/client/widget/configuration.dart';
+
 
 const configYaml =
 '''widgets:
@@ -25,13 +27,7 @@ const configYaml =
 class MockDashyModule extends Module {
   MockDashyModule() {
     bind(TimedEventBroadcaster);
-    bind(WidgetFactory, toFactory: (i) {
-      return new WidgetFactory(
-        i.get(TimedEventBroadcaster),
-        i.get(Grid),
-        configYaml
-      );
-    });
+    bind(WidgetFactory);
     bind(App);
     bind(AppComponent);
     bind(TimeFromNow);
@@ -39,9 +35,9 @@ class MockDashyModule extends Module {
     bind(GaugeComponent);
     bind(WidgetComponent);
     bind(MessageRouter);
-    bind(WebSocketWrapper, toFactory: (i) => new WebSocketWrapper(i.get
-    (MessageRouter), new StreamController.broadcast()));
+    bind(WebSocketWrapper);
     bind(Grid);
+    bind(ConfigurationWidget);
   }
 }
 

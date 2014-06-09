@@ -7,6 +7,8 @@ part of dashy.widget_factory;
  */
 @Injectable()
 class WidgetConfiguration {
+  //dont want to go through trouble of having to restructure the configuration when configuring widgets so storing for reference
+  var configuration;
   String id;
   List dataSources = new List();
   String type;
@@ -19,11 +21,13 @@ class WidgetConfiguration {
   WidgetConfiguration();
 
   WidgetConfiguration.fromMap(map) {
+    configuration = map;
+
     map.forEach((k, configurationOptions) {
       id = k;
       type = configurationOptions['type'];
 
-      configurationOptions['attributes'].forEach((dataSource) {
+      configurationOptions['datasources'].forEach((dataSource) {
           dataSources.add(dataSource);
       });
 

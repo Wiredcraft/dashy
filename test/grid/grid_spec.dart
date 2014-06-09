@@ -25,7 +25,7 @@ main() {
     inject((Grid grid, WidgetFactory widgetFactory) {
       var conf = '''
 some-widget:
-   attributes:
+   datasources:
        - DS
    type: Gauge
    layout:
@@ -35,14 +35,13 @@ some-widget:
      h: 1
       ''';
 
-      widgetFactory.newWidgets.stream.listen((widget) {
-        expect(widget.x()).toBe(1);
-        expect(widget.y()).toBe(2);
-      });
-
       var widgetConfiguration = widgetFactory.createWidgetConfiguration(loadYaml(conf));
       widgetFactory.grid.regenerateGrid(items: [widgetConfiguration]);
-      widgetFactory.broadcastWidget(widgetConfiguration);
+      var widget = widgetFactory.newWidget(widgetConfiguration);
+
+      expect(widget.x).toBe(1);
+      expect(widget.y).toBe(2);
+
 
     })));
 

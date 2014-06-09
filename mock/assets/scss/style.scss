@@ -149,6 +149,7 @@ app {
 /* Gauge */
 
 gauge {
+  display:block;
   h2 {
     bottom: 0;
     left: 0;
@@ -175,6 +176,7 @@ gauge {
 /* Line chart */
 
 graph {
+  display:block;
   .line {
     fill: none;
     stroke: #FFF;
@@ -188,5 +190,6 @@ graph {
 /* Markdown */
 
 markdown {
+  display:block;
   padding: $gutter;
 }

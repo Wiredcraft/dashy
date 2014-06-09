@@ -22,10 +22,6 @@ class Gauge implements TimedEventAware {
   
   Gauge();
 
-  addStream(Stream stream) {
-    stream.listen(update);
-  }
-
   resize(smallestDimension) {
     arc..callMethod('innerRadius', [smallestDimension / 2 * 0.9])
       ..callMethod('outerRadius', [smallestDimension / 2 * 0.85])
@@ -35,6 +31,10 @@ class Gauge implements TimedEventAware {
       ..callMethod('outerRadius', [smallestDimension / 2 * 0.85])
       ..callMethod('startAngle', [-0.37 * TAU])
       ..callMethod('endAngle', [0.37 * TAU]);
+  }
+
+  addStream(Stream stream) {
+    stream.listen(update);
   }
 
   update(TimedEvent timedEvent) {

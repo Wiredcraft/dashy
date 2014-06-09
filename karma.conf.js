@@ -9,6 +9,7 @@ module.exports = function(config) {
     // optionally 'watched' only.
     files: [
       'web/grid.js',
+      'web/json2yaml.js',
       'web/d3.js',
       'test/jasmine_syntax.dart',
       'test/*.dart',

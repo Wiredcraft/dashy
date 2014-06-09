@@ -1,18 +1,53 @@
 <header class="header">
-  <h2>{{widg.id}}</h2>
+  <h2>{{widg.id}}<span ng-click='widg.displaying = !widg.displaying' class='configure'>Config {{appHeight}}</span></h2>
+
 </header>
-<div ng-repeat='model in widg.model'>
-  <gauge class='body'  gauge='model' ng-if='widg.isGauge'></gauge>
-  <graph  class='body' widget-width='widg.element.clientWidth' widget-height='widg.element.clientHeight' model='model' ng-if='widg.isGraph'></graph>
-  <markdown class='body' model='model' ng-if='widg.isMarkdown'></markdown>
+
+
+<div ng-repeat='model in widg.widget.model' class='body'>
+
+<gauge class='body' gauge='model' ng-if='widg.isGauge && widg.displaying'></gauge>
+<graph  class='body'
+        widget-width='widg.childWidth'
+        widget-height='widg.childHeight'
+        model='model'
+        ng-if='widg.isGraph && widg.displaying'></graph>
+<markdown class='body' model='model' ng-if='widg.isMarkdown&& widg.displaying'></markdown>
 </div>
 
+<widget-configuration widget-width='widg.childWidth'
+                      widget-height='widg.childHeight'
+                      configuration='widg.widget.configuration'
+                      ng-if='!widg.displaying'>
+</widget-configuration>
 <!--hack for angular expression parser-->
 <span style='display:none'>
 {{widg.widget}}
+{{widg.element}}
+{{widg.element.parent}}
 {{widg.cellSize}}
 {{widg.widget.x}}
 {{widg.widget.y}}
 {{widg.widget.w}}
 {{widg.widget.h}}
 </span>
+
+<style>
+	widget-configuration {
+		color: dimgray;
+	}
+	.body.ng-enter  {
+		transform: scale(0, 0);
+	}
+	.body.ng-enter.ng-enter-active  {
+		background-color: red;
+		transform: scale(.8, .8);
+		-webkit-transform: scale(.8, .8);
+		/* Chrome bug prevents putting opacity at 0 right now */
+		opacity: 0.000001;
+		transition: all 1000ms;
+	}
+	.configure {
+		float:right;
+	}
+</style>

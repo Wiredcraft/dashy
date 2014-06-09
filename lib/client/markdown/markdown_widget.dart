@@ -31,8 +31,9 @@ class MarkdownWidget {
 
   set setModel(_model) {
     model = _model;
+    scope.context['model'] = model;
     scope
-      ..watch('html', (newMarkdown, _) {
+      ..watch('model.html', (newMarkdown, _) {
       if (newMarkdown != null) {
         var anchor =  new ViewPort(element.childNodes[0],
         injector.get(Animate));
@@ -40,14 +41,14 @@ class MarkdownWidget {
         var compiledMarkdown = compile(newNodes, directives)(injector, newNodes);
         anchor.insert(compiledMarkdown);
         }
-    }, context: model)
-      ..watch('status', (newStatus, _) {
+      })
+      ..watch('model.status', (newStatus, _) {
       if (newStatus != null && newStatus != latestStatus) {
         if (latestStatus != null) element.classes.remove(latestStatus.toLowerCase());
         element.classes.add(newStatus.toLowerCase());
         latestStatus = newStatus;
       }
-    }, context: model);
+    });
 
   }
 
