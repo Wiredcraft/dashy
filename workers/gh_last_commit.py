@@ -24,7 +24,7 @@ import github
 
 
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
-INTERVAL = 20  # How many seconds to sleep between checks
+INTERVAL = 60  # How many seconds to sleep between checks
 DASHY_URL = 'http://127.0.0.1:8081/git-datasource'
 HEADERS = {'content-type': 'application/json'}
 

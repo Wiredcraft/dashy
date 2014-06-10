@@ -35,7 +35,7 @@ main() {
       w: 1
       h: 1
 ''';
-          var widgets = widgetFactory.widgetsFromYaml(multipleWidgetYaml);
+          var widgets = widgetFactory.widgetsFromYamlString(multipleWidgetYaml);
           expect(widgets.first.model.length).toBe(2);
         })));
 
@@ -55,7 +55,7 @@ main() {
       w: 1
       h: 1
 ''';
-          var widgets = widgetFactory.widgetsFromYaml(multipleWidgetYaml);
+          var widgets = widgetFactory.widgetsFromYamlString(multipleWidgetYaml);
           expect(widgets.first.model.length).toBe(2);
         })));
   });

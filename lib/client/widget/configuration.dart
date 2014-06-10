@@ -13,7 +13,7 @@ import 'package:dashy/client/widget_factory/widget_factory.dart';
   selector: 'widget-configuration',
   templateUrl: 'packages/dashy/client/widget/configuration.html',
   map: const {
-    'configuration' : '=>setConfiguration',
+    'configuration' : '=>setYamlConfiguration',
     'widget' : '=>setWidget',
     'widget-width' : '=>setWidth',
     'widget-height' : '=>setHeight'
@@ -26,6 +26,9 @@ class ConfigurationWidget {
   Widget widget;
   App app;
   WidgetFactory widgetFactory;
+  bool _validYaml = true;
+  String _lastTry = '';
+
 
   String height = 0.toString();
   String widthFunction() => '${width}px';
@@ -33,28 +36,37 @@ class ConfigurationWidget {
   String heightFunction() => '${height}px';
 
   get configuration {
-    return context['YAML'].callMethod('stringify', [new JsObject.jsify(yamlConfiguration), 100, 2]);
+    return _lastTry;
   }
 
   set configuration(_configuration) {
-//    try {
-//      if (JSON.encode(loadYaml(configuration)) != JSON.encode(loadYaml(_configuration))) {
-//        print('able to parse');
-//      }
-//    } catch (e) {
-//      print('parseerror');
-//    }
-    yamlConfiguration = _configuration;
+    if (JSON.encode(loadYaml(_configuration)) != null) {
+      _lastTry = _configuration;
+      yamlConfiguration = loadYaml(_configuration);
+      _validYaml = true;
+    } else {
+      _lastTry = _configuration;
+      _validYaml = false;
+    }
   }
 
+
   ConfigurationWidget(this.app, this.widgetFactory);
+
+  save() {
+    print(yamlConfiguration);
+    app.updateWidget(yamlConfiguration, widget.id);
+    print('save');
+  }
 
   set setWidth(_width) => width = _width.toString();
 
   set setHeight(_height) => height = _height.toString();
 
-  set setConfiguration(_configuration) => yamlConfiguration = _configuration;
+  set setYamlConfiguration(_configuration) {
+    _lastTry = context['YAML'].callMethod('stringify', [new JsObject.jsify(_configuration), 100, 2]);
+    yamlConfiguration = _configuration;
+  }
 
   set setWidget(_widget) => widget = _widget;
 }
-

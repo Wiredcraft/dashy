@@ -22,25 +22,38 @@ part 'widget_configuration.dart';
 @Injectable()
 class WidgetFactory {
   TimedEventBroadcaster timedEventBroadcaster;
+  List widgetConfigurationMaps = new List();
 
   Grid grid;
 
   WidgetFactory(this.timedEventBroadcaster, this.grid);
 
-  List<Widget> widgetsFromYaml(yaml) {
-    var widgetConfigurations,
-        widgets,
-        decoded = loadYaml(yaml);
+  List<Widget> widgetsFromYamlString(yaml) {
+    var decoded = loadYaml(yaml);
 
-    widgetConfigurations = decoded['widgets'].map(createWidgetConfiguration);
-    grid.regenerateGrid(items: widgetConfigurations);
-    widgets = widgetConfigurations.map(newWidget);
+    return widgetsFromWidgetMapList(decoded['widgets']).toList();
+  }
 
-    return widgets.toList();
+  widgetsFromWidgetMapList(widgetList) {
+    widgetConfigurationMaps.addAll(widgetList.map(createWidgetConfiguration));
+    regenerateGrid();
+    return widgetConfigurationMaps.map(newWidget);
+  }
+
+  widgetFromWidgetMap(widgetMap) {
+    var widgetConfiguration = createWidgetConfiguration(widgetMap);
+    widgetConfigurationMaps.add(widgetConfiguration);
+    regenerateGrid();
+    return newWidget(widgetConfiguration);
+  }
+
+  regenerateGrid() {
+    grid.regenerateGrid(items: widgetConfigurationMaps);
   }
 
   WidgetConfiguration createWidgetConfiguration(widgetConfigurationMap) =>
     new WidgetConfiguration.fromMap(widgetConfigurationMap);
+
 
   newWidget(WidgetConfiguration widgetConfiguration) {
     var subscribeToStreams = new List();
@@ -100,8 +113,6 @@ class WidgetFactory {
           widgetConfiguration.dataSources,
           widgetConfiguration.configuration
       );
-
-
     }
   }
 

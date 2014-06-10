@@ -14,9 +14,20 @@ class App {
   Set<Widget> widgets = new Set<Widget>();
   StreamSubscription _sub;
   WebSocketWrapper webSocketWrapper;
+  WidgetFactory widgetFactory;
 
-  App(WidgetFactory widgetFactory, this.webSocketWrapper) {
-    widgets.addAll(widgetFactory.widgetsFromYaml(configYaml));
+  App(this.widgetFactory, this.webSocketWrapper) {
+    widgets.addAll(widgetFactory.widgetsFromYamlString(configYaml));
+  }
+
+  updateWidget(Map widgetConfigurationMap, String id) {
+    widgets.removeWhere((w) => w.id ==  id);
+    addWidget(widgetConfigurationMap);
+  }
+
+  addWidget(widgetConfigurationMap) {
+    var widget = widgetFactory.widgetFromWidgetMap(widgetConfigurationMap);
+    widgets.add(widget);
   }
 }
 

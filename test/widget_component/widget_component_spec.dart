@@ -1,6 +1,7 @@
 library widget_component_spec;
 
 import 'dart:async';
+import 'dart:js';
 import '../_specs.dart';
 import '../_test_module.dart';
 import 'package:dashy/client/widget/widget_component.dart';
@@ -9,6 +10,7 @@ import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/widget/widget.dart';
 import 'package:dashy/client/grid/grid.dart';
 import 'package:dashy/client/graph/graph.dart';
+import 'package:dashy/client/app/app.dart';
 import 'package:yaml/yaml.dart';
 
 
@@ -118,6 +120,7 @@ main() {
           scope.apply();
           Probe viewChangingClickableProbe = scope.context['clp'];
 
+
           _.triggerEvent(viewChangingClickableProbe.element, 'click', 'MouseEvent');
 
           microLeap();
@@ -128,7 +131,7 @@ main() {
           clockTick(seconds:1);
         })));
 
-  it('should display yaml string in config view',
+    it('should display yaml string in config view',
     async(
         inject((Scope scope, MockHttpBackend backend, TestBed _, Grid grid) {
           var __ = new StreamController();
@@ -140,7 +143,7 @@ main() {
               {   'id' : 'hello',
                   'type' :'Graph',
                   'settings': ['annyeong', 'haseyo']
-          });
+              });
 
           Widget widget = new Widget(
               [gauge],
@@ -162,8 +165,8 @@ main() {
 </div>
 <widget-configuration configuration='widg.widget.configuration' ng-if='!widg.displaying'></widget-configuration>
         ''')
-          ..whenGET('packages/dashy/client/widget/configuration.html').respond(200,
-        '''
+            ..whenGET('packages/dashy/client/widget/configuration.html').respond(200,
+          '''
 <textarea ng-blur='conf.updateWidget()' ng-model='conf.configuration' probe='cfp'></textarea>
         ''');
 
@@ -171,7 +174,6 @@ main() {
           var element = e('<widget widget="gw"></widget>');
 
           _.compile(element);
-          scope.apply();
 
           microLeap();
           backend.flush();
@@ -180,7 +182,6 @@ main() {
           Probe viewChangingClickableProbe = scope.context['clp'];
 
           _.triggerEvent(viewChangingClickableProbe.element, 'click', 'MouseEvent');
-          scope.apply();
           microLeap();
           backend.flush();
           microLeap();
@@ -189,7 +190,7 @@ main() {
           Probe configProbe = scope.context['cfp'];
 
           expect((configProbe.element as TextAreaElement).value).toEqual(
-          '''id: hello
+              '''id: hello
 type: Graph
 settings:
   - annyeong
@@ -198,6 +199,91 @@ settings:
           );
           clockTick(seconds:1);
 
+        })));
+
+    it('should update a widget when editted',
+    async(
+        inject((Scope scope, MockHttpBackend backend, TestBed _, Grid grid, App app) {
+          var __ = new StreamController();
+
+          Graph graph = new Graph()..addStream(__.stream);
+
+          var widgetBefore = new Map.from(
+              {   'type' :'Graph',
+                  'datasources' : ['CPU', 'some-other'],
+                  'settings': []
+              });
+
+          Widget widget = new Widget(
+              [graph],
+              'graph widget',
+              0,
+              0,
+              0,
+              0,
+              [],
+              widgetBefore
+          );
+
+          app.widgets.add(widget);
+
+          backend
+            ..whenGET('packages/dashy/client/widget/widget.html').respond(200,
+          '''
+<span ng-click='widg.displaying = !widg.displaying' probe='clp'>Config</span>
+<div ng-repeat='model in widg.widget.model'>
+
+</div>
+<widget-configuration widget='widg.widget' configuration='widg.widget.configuration' ng-if='!widg.displaying'></widget-configuration>
+        ''')
+            ..whenGET('packages/dashy/client/widget/configuration.html').respond(200,
+          '''
+<button probe='savep' ng-click='conf.save()'>Save</button>
+<textarea ng-model='conf.configuration' probe='cfp'></textarea>
+        ''');
+
+          scope.context['gw'] = widget;
+          var element = e('<widget widget="gw"></widget>');
+
+          _.compile(element);
+
+          microLeap();
+          backend.flush();
+          microLeap();
+          scope.apply();
+          Probe viewChangingClickableProbe = scope.context['clp'];
+          expect(app.widgets.length).toBe(4);
+
+          _.triggerEvent(viewChangingClickableProbe.element, 'click', 'MouseEvent');
+
+          microLeap();
+          backend.flush();
+          microLeap();
+          scope.apply();
+
+          Probe configProbe = scope.context['cfp'];
+          InputTextLike textArea = configProbe.directive(InputTextLike);
+
+          Probe saveClickProbe = scope.context['savep'];
+
+          (configProbe.element as TextAreaElement).value =
+'''
+'graph widget':
+  type: Graph
+  datasources:
+    - CPU
+    - some-other
+  settings:
+    duration:
+      seconds: 5''';
+
+          textArea.processValue();
+
+          _.triggerEvent(saveClickProbe.element, 'click', 'MouseEvent');
+
+          var updatedWidget = app.widgets.firstWhere((w) => w.id == 'graph widget');
+          expect(updatedWidget.model.first.duration).toEqual(new Duration(seconds:5));
+          clockTick(seconds:1);
         })));
 
 
