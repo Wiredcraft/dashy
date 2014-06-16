@@ -1,0 +1,164 @@
+<html class="ng-binding"><head>
+    <meta charset="utf-8">
+    <title>Dashy</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!--<link href="http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic,300,300italic" rel="stylesheet" type="text/css">/-->
+
+</head>
+<body>
+<app
+     class="ng-binding"><!--ANCHOR: [ng-repeat]=widget in app.model.widgets--><widget ng-repeat="widget in app.model.widgets" app-height="app.clientHeight" widget="widget" class="widget ng-binding" draggable="true" style="left: 0px; top: 0px; width: 680px; height: 680px;"><header class="header ng-binding">
+    <h2 class="ng-binding">gauge<span ng-click="widg.displaying = !widg.displaying" class="configure ng-binding">Config </span></h2>
+
+</header>
+
+
+    <!--ANCHOR: [ng-repeat]=model in widg.widget.model--><div ng-repeat="model in widg.widget.model" class="body ng-binding">
+
+        <!--ANCHOR: [ng-if]=widg.isGauge && widg.displaying--><gauge class="body ng-binding" gauge="model" ng-if="widg.isGauge &amp;&amp; widg.displaying"><h2 class="ng-binding">
+        <!--ANCHOR: [ng-if]=comp.gauge.currentValue != null--><strong ng-if="comp.gauge.currentValue != null" class="ng-binding">
+        1<i>%</i>
+    </strong>
+    </h2>
+
+        <svg version="1.1" ng-attr-width="640" ng-attr-height="640" class="arcs ng-binding" width="640" height="640">
+            <!--ng-attr-viewBox='{{comp.viewBox}}'-->
+            <path class="background" d="M-198.27946665862393,186.19681281260333A272,272 0 1,1 198.2794666586239,186.19681281260335L209.9429646973665,197.1495665074624A288,288 0 1,0 -209.94296469736653,197.14956650746234Z" transform="translate(320.0, 320.0)"></path><path gauge="" gauge-model="comp.gauge" class="ng-binding arc" transform="translate(320.0, 320.0)" d="M-198.27946665862393,186.19681281260333A272,272 0 0,1 -206.71938943759034,176.77978965523664L-218.87935352215447,187.17860081142703A288,288 0 0,0 -209.94296469736653,197.14956650746234Z"></path>
+        </svg>
+        <!--hack for angular expression parser-->
+        <span style="display:none" class="ng-binding">M-198.27946665862393,186.19681281260333A272,272 0 1,1 198.2794666586239,186.19681281260335L209.9429646973665,197.1495665074624A288,288 0 1,0 -209.94296469736653,197.14956650746234Z</span>
+    </gauge>
+        <!--ANCHOR: [ng-if]=widg.isGraph && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isMarkdown&& widg.displaying-->
+    </div>
+
+    <!--ANCHOR: [ng-if]=!widg.displaying-->
+    <!--hack for angular expression parser-->
+
+
+    <style class="ng-binding">
+        widget-configuration {
+            color: dimgray;
+        }
+        .body.ng-enter  {
+            transform: scale(0, 0);
+        }
+        .body.ng-enter.ng-enter-active  {
+            background-color: red;
+            transform: scale(.8, .8);
+            -webkit-transform: scale(.8, .8);
+            /* Chrome bug prevents putting opacity at 0 right now */
+            opacity: 0.000001;
+            transition: all 1000ms;
+        }
+        .configure {
+            float:right;
+        }
+    </style>
+</widget><widget ng-repeat="widget in app.model.widgets" app-height="app.clientHeight" widget="widget" class="widget ng-binding" draggable="true" style="left: 680px; top: 680px; width: 1360px; height: 680px;"><header class="header ng-binding">
+    <h2 class="ng-binding">graph<span ng-click="widg.displaying = !widg.displaying" class="configure ng-binding">Config </span></h2>
+
+</header>
+
+
+    <!--ANCHOR: [ng-repeat]=model in widg.widget.model--><div ng-repeat="model in widg.widget.model" class="body ng-binding">
+
+        <!--ANCHOR: [ng-if]=widg.isGauge && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isGraph && widg.displaying--><graph class="body ng-binding" widget-width="widg.childWidth" widget-height="widg.childHeight" model="model" ng-if="widg.isGraph &amp;&amp; widg.displaying"><svg version="1.1" ng-attr-width="1320" ng-attr-height="648" class="ng-binding" width="1320" height="648">
+        <!--ng-attr-viewBox='2 0 {{comp.width}} {{comp.height}}'>-->
+        <path graph="" graph-model="comp.graph" class="ng-binding line" d="M 0,504.81L 0,587.88 L 0,185.31 L 65.751,549.54 L 130.20000000000002,415.34999999999997 L 195.29999999999998,210.86999999999995 L 260.40000000000003,83.07000000000005 L 325.5,313.11 L 390.4698,76.67999999999995 L 455.70000000000005,134.19 L 520.9302,242.82 L 586.1604000000001,102.24000000000001 L 650.8698,549.54 L 716.2302000000001,287.54999999999995 L 781.1999999999999,626.22 L 847.0812000000001,345.06 L 911.4000000000001,594.27 L 976.3698,287.54999999999995 L 1041.6000000000001,600.66 L 1106.9604000000002,274.77 L 1171.6698000000001,185.31 L 1236.9,95.85000000000002 L 1302,632.61 "></path>
+        <path graph-area="" graph-model="comp.graph" class="ng-binding area" d="M0,504.81L0,587.88L0,185.31L65.751,549.54L130.20000000000002,415.34999999999997L195.29999999999998,210.86999999999995L260.40000000000003,83.07000000000005L325.5,313.11L390.4698,76.67999999999995L455.70000000000005,134.19L520.9302,242.82L586.1604000000001,102.24000000000001L650.8698,549.54L716.2302000000001,287.54999999999995L781.1999999999999,626.22L847.0812000000001,345.06L911.4000000000001,594.27L976.3698,287.54999999999995L1041.6000000000001,600.66L1106.9604000000002,274.77L1171.6698000000001,185.31L1236.9,95.85000000000002L1302,632.61L1302,639L1236.9,639L1171.6698000000001,639L1106.9604000000002,639L1041.6000000000001,639L976.3698,639L911.4000000000001,639L847.0812000000001,639L781.1999999999999,639L716.2302000000001,639L650.8698,639L586.1604000000001,639L520.9302,639L455.70000000000005,639L390.4698,639L325.5,639L260.40000000000003,639L195.29999999999998,639L130.20000000000002,639L65.751,639L0,639L0,639L0,639Z"></path>
+    </svg>
+        <!--hack for angular expression parser-->
+        <span style="display:none" class="ng-binding">M 0,504.81L 0,587.88 L 0,185.31 L 65.751,549.54 L 130.20000000000002,415.34999999999997 L 195.29999999999998,210.86999999999995 L 260.40000000000003,83.07000000000005 L 325.5,313.11 L 390.4698,76.67999999999995 L 455.70000000000005,134.19 L 520.9302,242.82 L 586.1604000000001,102.24000000000001 L 650.8698,549.54 L 716.2302000000001,287.54999999999995 L 781.1999999999999,626.22 L 847.0812000000001,345.06 L 911.4000000000001,594.27 L 976.3698,287.54999999999995 L 1041.6000000000001,600.66 L 1106.9604000000002,274.77 L 1171.6698000000001,185.31 L 1236.9,95.85000000000002 L 1302,632.61 M0,504.81L0,587.88L0,185.31L65.751,549.54L130.20000000000002,415.34999999999997L195.29999999999998,210.86999999999995L260.40000000000003,83.07000000000005L325.5,313.11L390.4698,76.67999999999995L455.70000000000005,134.19L520.9302,242.82L586.1604000000001,102.24000000000001L650.8698,549.54L716.2302000000001,287.54999999999995L781.1999999999999,626.22L847.0812000000001,345.06L911.4000000000001,594.27L976.3698,287.54999999999995L1041.6000000000001,600.66L1106.9604000000002,274.77L1171.6698000000001,185.31L1236.9,95.85000000000002L1302,632.61L1302,639L1236.9,639L1171.6698000000001,639L1106.9604000000002,639L1041.6000000000001,639L976.3698,639L911.4000000000001,639L847.0812000000001,639L781.1999999999999,639L716.2302000000001,639L650.8698,639L586.1604000000001,639L520.9302,639L455.70000000000005,639L390.4698,639L325.5,639L260.40000000000003,639L195.29999999999998,639L130.20000000000002,639L65.751,639L0,639L0,639L0,639Z</span>
+    </graph>
+        <!--ANCHOR: [ng-if]=widg.isMarkdown&& widg.displaying-->
+    </div>
+
+    <!--ANCHOR: [ng-if]=!widg.displaying-->
+    <!--hack for angular expression parser-->
+
+
+    <style class="ng-binding">
+        widget-configuration {
+            color: dimgray;
+        }
+        .body.ng-enter  {
+            transform: scale(0, 0);
+        }
+        .body.ng-enter.ng-enter-active  {
+            background-color: red;
+            transform: scale(.8, .8);
+            -webkit-transform: scale(.8, .8);
+            /* Chrome bug prevents putting opacity at 0 right now */
+            opacity: 0.000001;
+            transition: all 1000ms;
+        }
+        .configure {
+            float:right;
+        }
+    </style>
+</widget><widget ng-repeat="widget in app.model.widgets" app-height="app.clientHeight" widget="widget" class="widget ng-binding" draggable="true" style="left: 680px; top: 0px; width: 1360px; height: 680px;"><header class="header ng-binding">
+    <h2 class="ng-binding">github feed<span ng-click="widg.displaying = !widg.displaying" class="configure ng-binding">Config </span></h2>
+
+</header>
+
+
+    <!--ANCHOR: [ng-repeat]=model in widg.widget.model--><div ng-repeat="model in widg.widget.model" class="body ng-binding">
+
+        <!--ANCHOR: [ng-if]=widg.isGauge && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isGraph && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isMarkdown&& widg.displaying--><markdown class="body ng-binding ok" model="model" ng-if="widg.isMarkdown&amp;&amp; widg.displaying"><!-- anchor --><!--ANCHOR: [ng-if]=comp.model['image'] != null--><img ng-if="comp.model['image'] != null" ng-src="https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&amp;r=x" width="100" height="100" class="ng-binding" src="https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&amp;r=x"><!--ANCHOR: [ng-if]=comp.model['user'] != null--><span ng-if="comp.model['user'] != null" class="ng-binding"> Wiredcraft </span><!--ANCHOR: [ng-if]=comp.model['title'] != null--><p ng-if="comp.model['title'] != null" class="ng-binding">Latest commit: Updated styling on header </p><timefromnow for-date="comp.model['some-time-in-the-future']" class="ng-binding"></timefromnow><br class=""><br class=""><timefromnow for-date="comp.model['some-time-in-the-past']" class="ng-binding"></timefromnow>
+
+
+    </markdown>
+    </div><div ng-repeat="model in widg.widget.model" class="body ng-binding">
+
+        <!--ANCHOR: [ng-if]=widg.isGauge && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isGraph && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isMarkdown&& widg.displaying--><markdown class="body ng-binding ok" model="model" ng-if="widg.isMarkdown&amp;&amp; widg.displaying"><!-- anchor --><!--ANCHOR: [ng-if]=comp.model['image'] != null--><img ng-if="comp.model['image'] != null" ng-src="https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&amp;r=x" width="100" height="100" class="ng-binding" src="https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&amp;r=x"><!--ANCHOR: [ng-if]=comp.model['user'] != null--><span ng-if="comp.model['user'] != null" class="ng-binding"> Wiredcraft </span><!--ANCHOR: [ng-if]=comp.model['title'] != null--><p ng-if="comp.model['title'] != null" class="ng-binding">Latest commit: Updated styling on header </p><timefromnow for-date="comp.model['some-time-in-the-future']" class="ng-binding"></timefromnow><br class=""><br class=""><timefromnow for-date="comp.model['some-time-in-the-past']" class="ng-binding"></timefromnow>
+
+
+    </markdown>
+    </div><div ng-repeat="model in widg.widget.model" class="body ng-binding">
+
+        <!--ANCHOR: [ng-if]=widg.isGauge && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isGraph && widg.displaying-->
+        <!--ANCHOR: [ng-if]=widg.isMarkdown&& widg.displaying--><markdown class="body ng-binding ok" model="model" ng-if="widg.isMarkdown&amp;&amp; widg.displaying"><!-- anchor --><!--ANCHOR: [ng-if]=comp.model['image'] != null--><img ng-if="comp.model['image'] != null" ng-src="https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&amp;r=x" width="100" height="100" class="ng-binding" src="https://gravatar.com/avatar/22ce4da11062511bc9a4eebbc8048c0d?d=https%3A%2F%2Fidenticons.github.com%2Fd6c567c0b18ff7bcbbaa395f5b1d1836.png&amp;r=x"><!--ANCHOR: [ng-if]=comp.model['user'] != null--><span ng-if="comp.model['user'] != null" class="ng-binding"> Wiredcraft </span><!--ANCHOR: [ng-if]=comp.model['title'] != null--><p ng-if="comp.model['title'] != null" class="ng-binding">Latest commit: Updated styling on header </p><timefromnow for-date="comp.model['some-time-in-the-future']" class="ng-binding"></timefromnow><br class=""><br class=""><timefromnow for-date="comp.model['some-time-in-the-past']" class="ng-binding"></timefromnow>
+
+
+    </markdown>
+    </div>
+
+    <!--ANCHOR: [ng-if]=!widg.displaying-->
+    <!--hack for angular expression parser-->
+
+
+    <style class="ng-binding">
+        widget-configuration {
+            color: dimgray;
+        }
+        .body.ng-enter  {
+            transform: scale(0, 0);
+        }
+        .body.ng-enter.ng-enter-active  {
+            background-color: red;
+            transform: scale(.8, .8);
+            -webkit-transform: scale(.8, .8);
+            /* Chrome bug prevents putting opacity at 0 right now */
+            opacity: 0.000001;
+            transition: all 1000ms;
+        }
+        .configure {
+            float:right;
+        }
+    </style>
+</widget>
+</app>
+<script type="application/dart" src="main.dart"></script>
+<script src="packages/browser/dart.js"></script>
+
+
+
+
+</body></html>
