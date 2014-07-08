@@ -4,6 +4,7 @@ import 'dart:html';
 import 'dart:js';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/grid/grid.dart';
+import 'package:dashy/client/grid/drag_n_drop.dart';
 import 'package:dashy/client/gauge/gauge.dart';
 import 'package:dashy/client/graph/graph.dart';
 import 'package:dashy/client/markdown/markdown.dart';
@@ -22,7 +23,7 @@ const HEIGHT_OFFSET=32;
     templateUrl: 'packages/dashy/client/widget/widget.html',
     publishAs: 'widg',
     map: const {
-        'widget' : '=>setWidget',
+        'widget-model' : '=>setWidget',
         'app-height': '=>setAppHeight'
     },
     useShadowDom: false
@@ -30,32 +31,29 @@ const HEIGHT_OFFSET=32;
 class WidgetComponent {
   Element element;
   Scope scope;
-  String get id => widget.id;
   Widget widget;
   bool displaying = true;
   var appHeight = 0;
+  DndGrid dndGrid;
 
   Grid grid;
 
-  int get cellSize  => (appHeight / grid.rows).floor();
+  int get cellSize  => (appHeight / grid.maxRow).floor();
 
   set setAppHeight(_appHeight) {
     appHeight = _appHeight;
     scope.context['cellSize'] = cellSize;
   }
 
-  WidgetComponent(this.element, this.scope, this.grid);
+  WidgetComponent(this.element, this.scope, this.grid, this.dndGrid);
 
   set setWidget(Widget _widget) {
     widget = _widget;
-    scope.context['widget'] = widget;
+    scope.context['widget'] = _widget;
 
-    scope.watch('cellSize', (_, __) {
-      element.style.left = '${widget.x * cellSize}px';
-      element.style.top = '${widget.y * cellSize}px';
-      element.style.width = '${widget.w * cellSize}px';
-      element.style.height = '${widget.h * cellSize}px';
-    });
+    grid.add(widget, at: new Rectangle(widget.x, widget.y, widget.w, widget.h));
+
+    dndGrid.registerWidget(element, widget);
 
     scope
     ..watch('widget.x', (newX, _) {

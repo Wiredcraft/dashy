@@ -15,9 +15,10 @@ import (
 )
 
 var session Session;
+const SOURCES_DIR = "web/sources/*.yaml"
 
 func main() {
-	fmt.Println("starting dashy server on 8081 ab")
+	fmt.Println("starting dashy server on 8081")
 	router := http.NewServeMux()
 
 	conn, _ := redis.Dial("tcp", ":6379")
@@ -218,7 +219,7 @@ func (dataSource *DataSource) NewTimedEventFromRequest(body io.Reader) TimedEven
 
 func DataSourcesFromConfigurationFiles() []*DataSource {
 	//TODO (bbss) refactor magic string
-	return dataSourcesGetter(directoryIndexer("web/sources/*.yaml"))
+	return dataSourcesGetter(directoryIndexer(SOURCES_DIR))
 }
 
 func directoryIndexer(directory string) []string {

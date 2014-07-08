@@ -13,6 +13,7 @@ import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dar
 import 'package:dashy/client/message_router/message_router.dart';
 import 'package:dashy/client/websocket_wrapper/websocket_wrapper.dart';
 import 'package:dashy/client/grid/grid.dart';
+import 'package:dashy/client/grid/drag_n_drop.dart';
 import 'package:dashy/client/widget/configuration.dart';
 
 
@@ -26,6 +27,9 @@ const configYaml =
 
 class MockDashyModule extends Module {
   MockDashyModule() {
+    install(new GridModule());
+
+    bind(DndGrid);
     bind(TimedEventBroadcaster);
     bind(WidgetFactory);
     bind(App);
@@ -36,7 +40,6 @@ class MockDashyModule extends Module {
     bind(WidgetComponent);
     bind(MessageRouter);
     bind(WebSocketWrapper);
-    bind(Grid);
     bind(ConfigurationWidget);
   }
 }

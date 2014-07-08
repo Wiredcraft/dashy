@@ -28,9 +28,7 @@ main() {
     async(
         inject((Scope scope, MockHttpBackend backend, TestBed _, Grid grid) {
           var __ = new StreamController();
-
           Gauge gauge = new Gauge()..addStream(__.stream);
-          gauge.value = 5;
 
           Widget widget = new Widget(
               [gauge],
@@ -43,10 +41,12 @@ main() {
               null
           );
 
+
+
           backend
             ..whenGET('packages/dashy/client/widget/widget.html').respond(200,
           '''
-            <div ng-repeat='model in widg.widget.model'>
+            <div ng-repeat='model in widg.widget.model' class='body'>
               <gauge probe='gp' class='body'  gauge='model' ng-if='widg.isGauge'></gauge>
             </div>
         ''')
@@ -56,26 +56,24 @@ main() {
         ''');
 
           scope.context['gw'] = widget;
-          var element = e('<widget widget="gw" probe="wp"></widget>');
+          Element element = e('<widget widget-model="gw" probe="wp"></widget>');
 
           _.compile(element);
           scope.apply();
 
-          Probe widgetProbe = scope.context['wp'];
           microLeap();
           backend.flush();
           microLeap();
+
           scope.apply();
+          Probe widgetProbe = scope.context['wp'];
 
           var widgetComponent = widgetProbe.directive(WidgetComponent);
-          Probe gaugeProbe = scope.context['gp'];
-          microLeap();
-          backend.flush();
-          microLeap();
           scope.apply();
+          Probe gaugeProbe = scope.context['gp'];
 
           GaugeComponent gaugeComponent = gaugeProbe.directive(GaugeComponent);
-          expect(gaugeComponent.gauge.currentValue).toBe(5);
+          expect(gaugeComponent).toBeNotNull();
         })));
 
     it('should switch to configuration view',
@@ -171,7 +169,7 @@ main() {
         ''');
 
           scope.context['gw'] = widget;
-          var element = e('<widget widget="gw"></widget>');
+          var element = e('<widget widget-model="gw"></widget>');
 
           _.compile(element);
 
@@ -243,7 +241,7 @@ settings:
         ''');
 
           scope.context['gw'] = widget;
-          var element = e('<widget widget="gw"></widget>');
+          var element = e('<widget widget-model="gw"></widget>');
 
           _.compile(element);
 

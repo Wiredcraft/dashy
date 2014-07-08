@@ -35,7 +35,7 @@ main() {
 
         AppComponent appComponent = appProbe.directive(AppComponent);
 
-        App app = appComponent.model;
+        App app = appComponent.app;
         microLeap();
 
         expect(app.widgets.length).toBe(3);

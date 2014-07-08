@@ -28,8 +28,10 @@ class GaugeArc {
 
     element.classes.add('arc');
     element.parent.insertBefore(path, element);
+
     scope.context['element'] = element;
     scope.context['gauge'] = gauge;
+
     scope.watch('element.parent.clientHeight', (_,__) {
       path.attributes['transform'] =
       'translate(${element.parent.clientWidth/2}, ${element.parent.clientHeight/2})';

@@ -402,6 +402,8 @@ widget.moving {
   -moz-transition: 0.2s ease-out;
   transition: 0.2s ease-out; }
 
+filler-widget {
+  position: absolute; }
 /* WIDGETS */
 app {
   display: block; }
