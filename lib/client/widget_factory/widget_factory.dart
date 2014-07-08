@@ -36,20 +36,19 @@ class WidgetFactory {
 
   widgetsFromWidgetMapList(widgetList) {
     widgetConfigurationMaps.addAll(widgetList.map(createWidgetConfiguration));
-    regenerateGrid();
     return widgetConfigurationMaps.map(newWidget);
+  }
+
+  addWidget(widgets, widgetMap) {
+    widgets.add(widgetMap);
   }
 
   widgetFromWidgetMap(widgetMap) {
     var widgetConfiguration = createWidgetConfiguration(widgetMap);
     widgetConfigurationMaps.add(widgetConfiguration);
-    regenerateGrid();
     return newWidget(widgetConfiguration);
   }
 
-  regenerateGrid() {
-    grid.regenerateGrid(items: widgetConfigurationMaps);
-  }
 
   WidgetConfiguration createWidgetConfiguration(widgetConfigurationMap) =>
     new WidgetConfiguration.fromMap(widgetConfigurationMap);

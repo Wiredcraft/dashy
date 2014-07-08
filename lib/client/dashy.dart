@@ -18,6 +18,9 @@ import 'package:dashy/client/timed_event_broadcaster/timed_event_broadcaster.dar
 import 'package:dashy/client/message_router/message_router.dart';
 import 'package:dashy/client/websocket_wrapper/websocket_wrapper.dart';
 import 'package:dashy/client/grid/grid.dart';
+import 'package:dashy/client/grid/drag_n_drop.dart';
+import 'package:dashy/client/addition/addition_component.dart';
+import 'package:dashy/client/addition/addition_factory.dart';
 import 'package:dashy/client/widget/configuration.dart';
 
 
@@ -48,7 +51,8 @@ import 'package:dashy/client/widget/configuration.dart';
 
 class DashyModule extends Module {
   DashyModule() {
-    install(new AnimationModule());
+//    install(new AnimationModule());
+    install(new GridModule());
 
     bind(TimedEventBroadcaster);
     bind(Grid);
@@ -66,7 +70,9 @@ class DashyModule extends Module {
     bind(ConfigurationWidget);
     bind(MessageRouter);
     bind(WebSocketWrapper);
-
-    bind(ScopeDigestTTL, toValue: new ScopeDigestTTL.value(100));
+    bind(DndGrid);
+    bind(FillerWidget);
+    bind(FillerWidgetFactory);
+//    bind(ScopeDigestTTL, toValue: new ScopeDigestTTL.value(100));
   }
 }

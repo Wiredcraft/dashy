@@ -40,6 +40,7 @@ class ConfigurationWidget {
   }
 
   set configuration(_configuration) {
+    print(_configuration);
     if (JSON.encode(loadYaml(_configuration)) != null) {
       _lastTry = _configuration;
       yamlConfiguration = loadYaml(_configuration);
@@ -50,13 +51,16 @@ class ConfigurationWidget {
     }
   }
 
-
-  ConfigurationWidget(this.app, this.widgetFactory);
+  ConfigurationWidget(this.widgetFactory);
 
   save() {
-    print(yamlConfiguration);
-    app.updateWidget(yamlConfiguration, widget.id);
-    print('save');
+    print('$yamlConfiguration saved');
+    updateWidget(yamlConfiguration, widget.id);
+  }
+
+  updateWidget(Map widgetConfigurationMap, String id) {
+    app.widgets.removeWhere((w) => w.id ==  id);
+    widgetFactory.addWidget(app.widgets, widgetConfigurationMap);
   }
 
   set setWidth(_width) => width = _width.toString();
@@ -64,6 +68,7 @@ class ConfigurationWidget {
   set setHeight(_height) => height = _height.toString();
 
   set setYamlConfiguration(_configuration) {
+    print(_configuration);
     _lastTry = context['YAML'].callMethod('stringify', [new JsObject.jsify(_configuration), 100, 2]);
     yamlConfiguration = _configuration;
   }

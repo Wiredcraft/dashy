@@ -8,6 +8,7 @@ dependencies:
   yaml: any
   d3: any
   markdown: any
+  html5_dnd: any
 dev_dependencies:
   unittest: '>=0.10.1 <0.12.0'
   mock: '>=0.10.0 <0.12.0'

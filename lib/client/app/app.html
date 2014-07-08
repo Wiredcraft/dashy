@@ -1,5 +1,9 @@
-<widget ng-repeat='widget in app.model.widgets'
-        app-height='app.clientHeight'
-        widget='widget'
-        class='widget'
-        draggable='true'></widget>
+<widget ng-repeat='widget in appc.app.widgets'
+        app-height='appc.clientHeight'
+        widget-model='widget'
+        class='widget'></widget>
+
+<filler-widget ng-repeat='widget in appc.app.fillerWidgets'
+        app-height='appc.clientHeight'
+        widget-model='widget'
+        class='widget'></filler-widget>

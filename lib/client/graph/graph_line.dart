@@ -16,7 +16,7 @@ class GraphLine {
 
   GraphLine(this.element, this.scope);
 
-  set setGraph(graph) {
+  set setGraph(Graph graph) {
     scope.context['graph'] = graph;
     element.classes.add('line');
     scope.watch('graph.d', (_new, _) {
