@@ -16,10 +16,11 @@ doCpuRequest(client) {
   .then((HttpClientRequest req) {
     req.headers.contentType =
     new ContentType("application", "json", charset: "utf-8");
+    var value = nextCpu();
     var mockData = {
         "time": new DateTime.now().toUtc().toIso8601String(),
         "data": {
-            "value": new Random().nextInt(100),
+            "value": value,
             "some-attribute" : new Random().nextInt(100),
             "some-time-in-the-future": futureTime.toUtc().toIso8601String(),
             "some-time-in-the-past": pastTime.toUtc().toIso8601String()
@@ -35,6 +36,10 @@ doCpuRequest(client) {
   });
 }
 
+nextCpu() {
+  var higher = new Random().nextInt(20) == 20;
+  return higher ? new Random().nextInt(40) : new Random().nextInt(7);
+}
 doGitRequest(client) {
   client.openUrl('POST', Uri.parse('http://localhost:8081/git-datasource'))
   .then((HttpClientRequest req) {
