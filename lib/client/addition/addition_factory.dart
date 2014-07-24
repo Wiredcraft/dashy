@@ -20,7 +20,7 @@ class FillerWidgetFactory {
 
   call() {
     Set<Widget> newFillerWidgets = new Set();
-    List<Rectangle> locations = getFreeSpaces();
+    var locations = getFreeSpaces();
     locations.forEach((location) {
       newFillerWidgets.add(new Widget([], 'filler', location.left, location.top, location.width, location.height, [], ''));
     });
@@ -30,8 +30,7 @@ class FillerWidgetFactory {
 
   getFreeSpaces() {
     Set<Rectangle> freeSpaces = new Set();
-
-    List<int> takenRowNumbers = grid.rows.keys;
+    var takenRowNumbers = grid.rows.keys;
 
     var maxColumns = takenRowNumbers.map((rowNumber) {
       if (grid.rows[rowNumber].keys.isNotEmpty) return grid.rows[rowNumber].keys.reduce(max);
