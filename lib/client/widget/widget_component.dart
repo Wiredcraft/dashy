@@ -23,8 +23,8 @@ const HEIGHT_OFFSET=32;
     templateUrl: 'packages/dashy/client/widget/widget.html',
     publishAs: 'widg',
     map: const {
-        'widget-model' : '=>setWidget',
-        'app-height': '=>setAppHeight'
+        'app-height': '=>setAppHeight',
+        'widget-model' : '=>setWidget'
     },
     useShadowDom: false
 )
@@ -33,49 +33,78 @@ class WidgetComponent {
   Scope scope;
   Widget widget;
   bool displaying = true;
-  var appHeight = 0;
   DndGrid dndGrid;
 
   Grid grid;
 
-  int get cellSize  => (appHeight / grid.maxRow).floor();
-
-  set setAppHeight(_appHeight) {
-    appHeight = _appHeight;
-    scope.context['cellSize'] = cellSize;
-  }
-
   WidgetComponent(this.element, this.scope, this.grid, this.dndGrid);
+
+  int get cellSize  => (scope.context['appHeight'] / grid.maxRow).floor();
+
+  set setAppHeight(int _appHeight) {
+    scope.context['appHeight'] = _appHeight;
+  }
 
   set setWidget(Widget _widget) {
     widget = _widget;
     scope.context['widget'] = _widget;
-
     grid.add(widget, at: new Rectangle(widget.x, widget.y, widget.w, widget.h));
 
     dndGrid.registerWidget(element, widget);
 
     scope
-    ..watch('widget.x', (newX, _) {
-      element.style.left = '${newX * cellSize}px';
-    })
-
-    ..watch('widget.y', (newY, _) {
-      element.style.top = '${newY * cellSize}px';
-    })
-
-    ..watch('widget.w', (newW, _) {
-      element.style.width = '${newW * cellSize}px';
-    })
-
-    ..watch('widget.h', (newH, _) {
-      element.style.height = '${newH * cellSize}px';
+      ..watch('widget.x', (newX, _) {
+        _newXLocation(newX);
+      })
+      ..watch('widget.y', (newY, _) {
+        _newYLocation(newY);
+      })
+      ..watch('widget.w', (newW, _) {
+        _newBodyWidth(newW);
+      })
+      ..watch('widget.h', (newH, _) {
+        _newBodyHeight(newH);
+      })
+      ..watch('appHeight', (newHeight, _) {
+        _newBodyWidth(widget.w);
+        _newBodyHeight(widget.h);
+        _newXLocation(widget.x);
+        _newYLocation(widget.y);
     });
-
   }
 
-  get childWidth => element.clientWidth - WIDTH_OFFSET;
-  get childHeight => element.clientHeight - HEIGHT_OFFSET;
+  _newYLocation(newY) {
+    element.style.top = '${_cssDimension(newY)}px';
+  }
+
+  _newXLocation(newX) {
+    element.style.left = '${_cssDimension(newX)}px';
+  }
+
+  _newBodyHeight(int gridCount) {
+    var newHeight = _cssDimension(gridCount);
+    if (newHeight > 0) {
+      scope.context['bodyHeight'] = newHeight;
+      element.style.height = '${newHeight}px';
+    } else {
+      scope.context['bodyHeight'] = 0;
+      element.style.height  = '0px';
+    }
+  }
+
+  _newBodyWidth(int gridCount) {
+    var newWidth = _cssDimension(gridCount);
+    if (newWidth > 0) {
+      scope.context['bodyWidth'] = newWidth;
+      element.style.width = '${newWidth}px';
+    } else {
+      scope.context['bodyWidth'] = 0;
+      element.style.width = '0px';
+    }
+  }
+
+  int _cssDimension(int gridCount) => gridCount * cellSize;
+
 
   get isGauge => widget.model.isNotEmpty ? widget.model.first is Gauge : false;
   get isGraph => widget.model.isNotEmpty ? widget.model.first is Graph : false;

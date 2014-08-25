@@ -17,20 +17,20 @@ import 'package:dashy/client/addition/addition_factory.dart';
   useShadowDom: false
 )
 class AppComponent {
-  var clientHeight;
   App app;
   Scope scope;
   WidgetFactory widgetFactory;
 
   AppComponent(this.scope, this.app, this.widgetFactory) {
-    clientHeight = window.document.documentElement.clientHeight;
+    var clientHeight = window.document.documentElement.clientHeight;
+    scope.context['appHeight'] = clientHeight;
+
     window.onResize.listen((_) {
-      clientHeight = window.document.documentElement.clientHeight;
+      scope.context['appHeight'] = window.document.documentElement.clientHeight;
     });
 
     app.widgets.addAll(widgetFactory.widgetsFromYamlString(configYaml));
   }
-
 }
 
 const configYaml =

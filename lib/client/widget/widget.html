@@ -1,21 +1,28 @@
 <header class="header">
-  <h2>{{widg.widget.id}}<span ng-click='widg.displaying = !widg.displaying' class='configure'>Config {{appHeight}}</span></h2>
-
+  <h2>{{widg.widget.id}}<span ng-click='widg.displaying = !widg.displaying' class='configure'>Config</span></h2>
 </header>
 
-
 <div ng-repeat='model in widg.widget.model' class='body'>
-<gauge class='body' gauge='model' ng-if='widg.isGauge && widg.displaying'></gauge>
-<graph  class='body'
-        widget-width='widg.childWidth'
-        widget-height='widg.childHeight'
-        model='model'
-        ng-if='widg.isGraph && widg.displaying'></graph>
-<markdown class='body' model='model' ng-if='widg.isMarkdown && widg.displaying'></markdown>
+	<gauge class='body' gauge='model'
+	       widget-width='bodyWidth'
+	       widget-height='bodyHeight'
+	       ng-if='widg.isGauge && widg.displaying'></gauge>
+
+	<graph  class='body'
+	        widget-width='bodyWidth'
+	        widget-height='bodyHeight'
+	        model='model'
+	        ng-if='widg.isGraph && widg.displaying'></graph>
+
+	<markdown class='body'
+	          widget-width='bodyWidth'
+	          widget-height='bodyHeight'
+	          model='model'
+	          ng-if='widg.isMarkdown && widg.displaying'></markdown>
 </div>
 
-<widget-configuration widget-width='widg.childWidth'
-                      widget-height='widg.childHeight'
+<widget-configuration widget-width='bodyWidth'
+                      widget-height='bodyHeight'
                       configuration='widg.widget.configuration'
                       widget='widg.widget'
                       ng-if='!widg.displaying'>

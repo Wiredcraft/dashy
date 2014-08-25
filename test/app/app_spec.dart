@@ -17,7 +17,7 @@ main() {
 
     it('should query for widgets', async(
       inject((Compiler compile, Injector injector, MockHttpBackend backend,
-              Scope scope, DirectiveMap directives) {
+              RootScope scope, DirectiveMap directives) {
 
         backend
           ..whenGET('packages/dashy/client/app/app.html').respond('''
@@ -30,7 +30,8 @@ main() {
         ''');
 
         var element = e('<app probe="ap"></app>');
-        compile([element], directives)(injector, [element]);
+
+        compile([element], injector.get(DirectiveMap))(scope, null);
         Probe appProbe = _.rootScope.context['ap'];
 
         AppComponent appComponent = appProbe.directive(AppComponent);

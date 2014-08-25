@@ -22,12 +22,12 @@ class MarkdownWidget {
   Compiler compile;
   Injector injector;
   Markdown model;
-
-  DirectiveMap directives;
+  DirectiveMap directiveMap;
+  DirectiveInjector directiveInjector;
   String latestStatus;
 
 
-  MarkdownWidget(this.element, this.scope, this.compile, this.directives, this.injector);
+  MarkdownWidget(this.element, this.scope, this.compile, this.directiveInjector, this.directiveMap, this.injector);
 
   set setModel(_model) {
     model = _model;
@@ -35,12 +35,10 @@ class MarkdownWidget {
     scope
       ..watch('model.html', (newMarkdown, _) {
       if (newMarkdown != null) {
-        var anchor =  new ViewPort(element.childNodes[0],
-        injector.get(Animate));
+        var anchor =  new ViewPort(directiveInjector, scope, element.childNodes[0], injector.get(Animate));
         var newNodes = toNodeList(newMarkdown);
-        var compiledMarkdown = compile(newNodes, directives)(injector, newNodes);
-        anchor.insert(compiledMarkdown);
-        }
+        anchor.insertNew(compile(newNodes, directiveMap), insertAfter: new View([element.childNodes[0]], scope));
+      }
       })
       ..watch('model.status', (newStatus, _) {
       if (newStatus != null && newStatus != latestStatus) {

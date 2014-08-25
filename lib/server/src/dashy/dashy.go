@@ -21,10 +21,10 @@ func main() {
 	fmt.Println("starting dashy server on 8081")
 	router := http.NewServeMux()
 
-	conn, _ := redis.Dial("tcp", ":6379")
-	defer conn.Close()
+//	conn, _ := redis.Dial("tcp", ":6379")
+//	defer conn.Close()
 
-	persistor := Persistor{connection: conn, incomingTimedEvents: make(<-chan *TimedEvent)}
+//	persistor := Persistor{connection: conn, incomingTimedEvents: make(<-chan *TimedEvent)}
 
 	session = Session{connections: make(map[*connection]bool)}
 
@@ -32,7 +32,7 @@ func main() {
 
 	for _, dataSource := range session.dataSources {
 		go dataSource.run()
-		dataSource.registerPersistor <- &persistor
+//		dataSource.registerPersistor <- &persistor
 		dataSource.RegisterWebhookHandlers(router)
 	}
 

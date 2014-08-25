@@ -241,16 +241,16 @@ settings:
         ''');
 
           scope.context['gw'] = widget;
-          var element = e('<widget widget-model="gw"></widget>');
 
-          _.compile(element);
+          _.compile('<widget widget-model="gw"></widget>');
+
 
           microLeap();
           backend.flush();
           microLeap();
           scope.apply();
           Probe viewChangingClickableProbe = scope.context['clp'];
-          expect(app.widgets.length).toBe(4);
+          expect(app.widgets.length).toBe(1);
 
           _.triggerEvent(viewChangingClickableProbe.element, 'click', 'MouseEvent');
 
@@ -280,6 +280,9 @@ settings:
           _.triggerEvent(saveClickProbe.element, 'click', 'MouseEvent');
 
           var updatedWidget = app.widgets.firstWhere((w) => w.id == 'graph widget');
+
+          scope.apply();
+
           expect(updatedWidget.model.first.duration).toEqual(new Duration(seconds:5));
           clockTick(seconds:1);
         })));

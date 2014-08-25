@@ -42,12 +42,12 @@ class Graph implements TimedEventAware {
   addStream(stream) => incomingTimedEvents.addStream(stream);
 
   rescaleRange() {
-  yScale..domain = [0, 100]
-        ..clamp = true
-        ..range = [height, 0];
+    yScale..domain = [0, 100]
+          ..clamp = true
+          ..range = [height, 0];
 
-  xScale..clamp = true
-        ..range = [0, width];
+    xScale..clamp = true
+          ..range = [0, width];
   }
 
   areaDPathString() {
@@ -68,8 +68,6 @@ class Graph implements TimedEventAware {
       return areaFunc.apply([new JsArray.from(_events)]);
     }
   }
-
-
 
   dPathString() {
     var dString;

@@ -17,37 +17,24 @@ import 'package:dashy/client/graph/graph.dart';
   useShadowDom: false
 )
 class GraphWidget {
-  Graph graph;
   Element element;
   Scope scope;
 
-  int width;
-
-  int height;
-
-  set setHeight(_height) => height = _height;
-
-  set setWidth(_width) => width = _width;
-
-  String get viewBox => '2 0 ${width} ${height}';
+  String get viewBox => '2 0 ${scope.context['width']} ${scope.context['height']}';
 
   GraphWidget(this.element, this.scope);
 
-  set setModel(_graph) {
-    graph = _graph;
-
-    scope.context['width'] = width;
+  set setHeight(height) {
     scope.context['height'] = height;
+    scope.context['graph'].rescaleRange();
+  }
 
-    scope..watch('width', (_,__) {
-      graph.width = width;
-      graph.rescaleRange();
-    });
+  set setWidth(width) {
+    scope.context['width'] = width;
+    scope.context['graph'].rescaleRange();
+  }
 
-    scope..watch('height', (_,__) {
-      graph.height = height;
-      graph.rescaleRange();
-    });
-
+  set setModel(_graph) {
+    scope.context['graph'] = _graph;
   }
 }

@@ -11,8 +11,8 @@ import 'package:angular/angular.dart';
   publishAs: 'addc',
   template: '',
   map: const {
-    'widget-model' : '=>widget',
-    'app-height': '=>appHeight'
+    'widget-model' : '=>setWidget',
+    'app-height': '=>setAppHeight'
   },
   useShadowDom: false
 )
@@ -29,12 +29,12 @@ class FillerWidget {
 
   int get cellSize  => (_appHeight / grid.maxRow).floor();
 
-  set appHeight(appHeight) {
+  set setAppHeight(appHeight) {
     _appHeight = appHeight;
     scope.context['cellSize'] = cellSize;
   }
 
-  set widget(Widget widget){
+  set setWidget(Widget widget) {
     scope.context['widget'] = widget;
 
     _widget = widget;
@@ -42,21 +42,16 @@ class FillerWidget {
 
     scope
       ..watch('widget.x', (newX, _) {
-      element.style.left = '${newX * cellSize}px';
-    })
-
+        element.style.left = '${newX * cellSize}px';
+      })
       ..watch('widget.y', (newY, _) {
-      element.style.top = '${newY * cellSize}px';
-    })
-
+        element.style.top = '${newY * cellSize}px';
+      })
       ..watch('widget.w', (newW, _) {
-      element.style.width = '${newW * cellSize}px';
-    })
-
+        element.style.width = '${newW * cellSize}px';
+      })
       ..watch('widget.h', (newH, _) {
-      element.style.height = '${newH * cellSize}px';
-    });
-
+        element.style.height = '${newH * cellSize}px';
+      });
   }
-
 }

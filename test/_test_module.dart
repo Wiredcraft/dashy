@@ -14,6 +14,8 @@ import 'package:dashy/client/message_router/message_router.dart';
 import 'package:dashy/client/websocket_wrapper/websocket_wrapper.dart';
 import 'package:dashy/client/grid/grid.dart';
 import 'package:dashy/client/grid/drag_n_drop.dart';
+import 'package:dashy/client/addition/addition_factory.dart';
+import 'package:dashy/client/addition/addition_component.dart';
 import 'package:dashy/client/widget/configuration.dart';
 
 
@@ -41,6 +43,8 @@ class MockDashyModule extends Module {
     bind(MessageRouter);
     bind(WebSocketWrapper);
     bind(ConfigurationWidget);
+    bind(FillerWidget);
+    bind(FillerWidgetFactory);
   }
 }
 

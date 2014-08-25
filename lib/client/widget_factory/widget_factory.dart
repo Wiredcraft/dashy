@@ -40,7 +40,7 @@ class WidgetFactory {
   }
 
   addWidget(widgets, widgetMap) {
-    widgets.add(widgetMap);
+    widgets.add(widgetFromWidgetMap(widgetMap));
   }
 
   widgetFromWidgetMap(widgetMap) {
@@ -118,7 +118,7 @@ class WidgetFactory {
   Graph graphModelFactory(stream, widgetConfiguration) {
     var drawFromFirstEvent = widgetConfiguration.settings['drawFromFirstEvent'];
     var durationSettings = widgetConfiguration.settings['duration'];
-
+    print('duration:${durationSettings}');
     if (durationSettings != null) return graphWithDuration(durationSettings, drawFromFirstEvent, stream);
     else return new Graph()..addStream(stream);
   }
@@ -135,6 +135,7 @@ class WidgetFactory {
         minutes: minutes,
         hours: hours,
         days: days);
+
 
     if (drawFromFirstEvent != null) return
       new Graph(

@@ -32,9 +32,9 @@ main() {
 
           scope.context['md'] = markdown;
           backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'<!-- anchor -->');
-          var element = e('<markdown model="md" probe="mdp"></markdown>');
 
-          _.compile(element);
+
+          _.compile('<markdown model="md" probe="mdp"></markdown>');
           var markdownProbe = scope.context['mdp'];
 
           microLeap();
@@ -59,15 +59,14 @@ main() {
               Markdown markdown = new Markdown()..addStream(messenger.stream);
 
               scope.context['md'] = markdown;
-              var element = e('<markdown model="md" probe="mdp"></markdown>');
-              backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'');
 
-              _.compile(element);
+              backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'');
+              _.compile('<markdown model="md" probe="mdp"></markdown>');
 
               var markdownProbe = scope.context['mdp'];
 
-              microLeap();
               scope.apply();
+              microLeap();
               backend.flush();
 
               expect(markdownProbe.element.classes.contains('ok')).toBeFalsy();
@@ -97,9 +96,9 @@ That resolves an, {{ comp.model['attribute'] }}
           var messenger = new StreamController();
           Markdown markdown = new Markdown()..addStream(messenger.stream);
           scope.context['md'] = markdown;
-          var element = e('<markdown model="md" probe="mdp"></markdown>');
+
           backend.expectGET('packages/dashy/client/markdown/markdown.html').respond(200,'<!-- anchor -->');
-          _.compile(element, scope: scope);
+          _.compile('<markdown model="md" probe="mdp"></markdown>');
 
           var markdownProbe = scope.context['mdp'];
 

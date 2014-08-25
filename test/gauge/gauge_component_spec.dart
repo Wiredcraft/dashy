@@ -11,16 +11,17 @@ import 'dart:async';
 main() {
   describe('gauge', () {
     TestBed _;
-    beforeEachModule((Module module) {
+    Module module;
+    beforeEachModule((Module _module) {
+      module = _module;
       module..bind(GaugeComponent);
-
       return (TestBed tb) => _ = tb;
     });
 
     it('component should update percentage with data it gets from the model', async(
       inject((MockHttpBackend backend, VmTurnZone zone,
-              Compiler compile,
-              Injector injector, DirectiveMap directives) {
+              Compiler compile, Injector injector,
+              DirectiveMap directives) {
         var mockTimedEvents = new StreamController();
         var valueOne = new TimedEvent(null, null, null, {"value":1}, null);
         var valueTwo = new TimedEvent(null, null, null, {"value":2}, null);
@@ -32,8 +33,9 @@ main() {
         '{{comp.gauge.currentValue}}'
         );
 
-        var element = e('<gauge gauge="g" probe="i"></gauge>');
-        compile([element], directives)(injector, [element]);
+        var element = _.compile('<gauge gauge="g" probe="i"></gauge>');
+
+
 
         var context = _.rootScope.context;
         Probe probe = context['i'];
