@@ -56,7 +56,8 @@ main() {
         ''');
 
           scope.context['gw'] = widget;
-          Element element = e('<widget widget-model="gw" probe="wp"></widget>');
+          scope.context['appHeight'] = 0;
+          Element element = e('<widget app-height="appHeight" widget-model="gw" probe="wp"></widget>');
 
           _.compile(element);
           scope.apply();
@@ -169,7 +170,8 @@ main() {
         ''');
 
           scope.context['gw'] = widget;
-          var element = e('<widget widget-model="gw"></widget>');
+          scope.context['appHeight'] = 0;
+          Element element = e('<widget app-height="appHeight" widget-model="gw"></widget>');
 
           _.compile(element);
 
@@ -241,8 +243,9 @@ settings:
         ''');
 
           scope.context['gw'] = widget;
+          scope.context['appHeight'] = 0;
 
-          _.compile('<widget widget-model="gw"></widget>');
+          _.compile('<widget widget-model="gw" app-height="appHeight"></widget>');
 
 
           microLeap();

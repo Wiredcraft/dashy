@@ -51,7 +51,6 @@ class Graph implements TimedEventAware {
   }
 
   areaDPathString() {
-
     areaFunc.callMethod('x', [(TimedEvent timedEvent, _) {
       return xScale(timedEvent.time.millisecondsSinceEpoch);
     }]);

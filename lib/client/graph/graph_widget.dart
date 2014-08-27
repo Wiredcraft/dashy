@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:dashy/client/graph/graph.dart';
 
+const CSS_PADDING = 40;
 
 @Component(
     selector: 'graph',
@@ -24,13 +25,16 @@ class GraphWidget {
 
   GraphWidget(this.element, this.scope);
 
+
   set setHeight(height) {
     scope.context['height'] = height;
+    scope.context['graph'].height = height;
     scope.context['graph'].rescaleRange();
   }
 
   set setWidth(width) {
     scope.context['width'] = width;
+    scope.context['graph'].width = width - CSS_PADDING;
     scope.context['graph'].rescaleRange();
   }
 

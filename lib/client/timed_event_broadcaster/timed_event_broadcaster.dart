@@ -31,6 +31,8 @@ class TimedEventBroadcaster {
 
   newTimedEvent(json) {
     TimedEvent timedEvent = new TimedEvent.fromJson(json);
+    //TODO: paranoid programming: make sure timedEvent SC gets added on addition of widget
+    if (dataSourceStreamControllers[timedEvent.dataSource] == null) dataSourceStreamControllers[timedEvent.dataSource] = new StreamController.broadcast();
     dataSourceStreamControllers[timedEvent.dataSource].add(timedEvent);
   }
 

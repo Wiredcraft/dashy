@@ -3,7 +3,7 @@ module.exports = function(config) {
     //logLevel: config.LOG_DEBUG,
     basePath: '.',
     frameworks: ['dart-unittest'],
-
+    reporters: ['junit'],
     // list of files1 / patterns to load in the browser
     // all tests must be 'included', but all other libraries must be 'served' and
     // optionally 'watched' only.

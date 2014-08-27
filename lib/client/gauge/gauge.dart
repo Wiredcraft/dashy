@@ -12,9 +12,9 @@ const TAU =  PI * 2;
  * model in an appropriate manner.
  */
 class Gauge implements TimedEventAware {
-  int _maxValue;
-  int _minValue;
-  int currentValue;
+  num _maxValue;
+  num _minValue;
+  num currentValue;
   int smallestDimension;
 
   JsFunction arc = context['d3']['svg']['arc'].apply(null);
@@ -53,6 +53,6 @@ class Gauge implements TimedEventAware {
     return dString;
   }
 
-  set value(int value) => currentValue = value;
+  set value(num value) => currentValue = value;
 
 }

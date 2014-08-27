@@ -29,15 +29,15 @@ class AppComponent {
       scope.context['appHeight'] = window.document.documentElement.clientHeight;
     });
 
-    app.widgets.addAll(widgetFactory.widgetsFromYamlString(configYaml));
+    app.widgets.addAll(widgetFactory.widgetsFromYamlString(CONFIGYAML));
   }
 }
 
-const configYaml =
+const CONFIGYAML =
 '''widgets:
 - gauge:
     datasources:
-       - CPU
+       - system-info
     type: Gauge
     layout:
       x: 0
